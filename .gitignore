@@ -1,0 +1,124 @@
+# DEFCON SSTV Badge .gitignore
+
+# Build directories
+build/
+dist/
+*.egg-info/
+
+# Compiled C/C++ files
+*.o
+*.obj
+*.elf
+*.bin
+*.hex
+*.map
+*.lst
+*.sym
+*.dis
+
+# KiCAD backup and temporary files
+*.bak
+*.bck
+*-cache.lib
+*-rescue.lib
+*.tmp
+fp-info-cache
+*.net
+*.dsn
+*.ses
+*-save.pro
+*-save.kicad_pcb
+*.kicad_pcb-bak
+*.sch-bak
+*.pro-bak
+
+# KiCAD auto-generated files
+*.pro.user
+*.kicad_pro.user
+
+# 3D model cache
+*.3dshapes/
+
+# Manufacturing files (keep in gerbers/ directory but ignore temp files)
+*.zip.tmp
+gerber_job.txt
+
+# Firmware build artifacts
+firmware/build/
+firmware/pico-sdk/
+firmware/.pio/
+firmware/.vscode/
+*.uf2
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.tmp
+.DS_Store
+Thumbs.db
+
+# Python cache (for development scripts)
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# Logs and databases
+*.log
+*.db
+*.sqlite3
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Test coverage reports
+htmlcov/
+.coverage
+.pytest_cache/
+
+# Documentation build
+docs/_build/
+docs/.doctrees/
+
+# Temporary files
+temp/
+tmp/
+
+# Personal notes and TODO files
+TODO.txt
+NOTES.txt
+notes/
+
+# Secrets and keys (should never be committed)
+secrets.h
+keys.txt
+*.key
+*.pem
+
+# Hardware simulation files
+*.raw
+*.ac0
+*.op
+
+# Measurement and test data
+measurements/
+test_data/
+*.csv
+*.xlsx
