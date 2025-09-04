@@ -23,7 +23,7 @@ Perfect for ham radio operators, makers, and anyone interested in digital modes 
 
 ### 🔧 Hardware Capabilities
 - **RP2350 Dual-Core MCU** - Dedicated cores for UI and signal processing
-- **SA818 VHF/UHF Transceiver** - 1W output, field-programmable frequency
+- **SA818 VHF/UHF Transceiver** - 1W output, field-programmable frequency. Installed via 
 - **2MP Camera Module** - Automatic image capture and processing
 - **2.4" Color Display** - View captured and received SSTV images
 - **MicroSD Storage** - Unlimited image archival capacity
@@ -43,6 +43,101 @@ Perfect for ham radio operators, makers, and anyone interested in digital modes 
 - **Status LEDs** - TX/RX activity, battery status, and system indicators
 - **Physical Switches** - Band select, airplane mode, audio mute
 - **Customizable Settings** - Callsign, frequency, SSTV mode, and more
+
+## 🚨 Amateur Radio License Verification System
+
+To comply with FCC Part 97 regulations, the badge includes a software-based license verification system that restricts transmit functionality to licensed amateur radio operators.
+
+### How It Works
+
+The badge operates in two modes based on license verification status:
+
+- **Receive-Only Mode**: Default mode for unlicensed users - can receive and decode SSTV images but cannot transmit
+- **Licensed Mode**: Full transmit and receive functionality for verified amateur radio operators
+
+### License Verification Process
+
+During initial setup, users are prompted to enter their amateur radio callsign. The badge generates a unique unlock code using:
+
+1. The entered callsign
+2. The badge's unique device serial number
+3. A cryptographic hash function to create a device-specific verification code
+
+This approach ensures that:
+- Each unlock code is unique to a specific badge and callsign combination
+- Casual sharing of unlock codes between devices is prevented
+- Licensed operators can easily enable full functionality
+- The system creates a meaningful barrier for unlicensed operation
+
+### User Experience
+
+**For Licensed Operators:**
+1. Enter valid amateur radio callsign during first boot
+2. Badge displays "Licensed Mode Enabled" with callsign confirmation
+3. Full transmit functionality is available
+4. Transmitted images automatically include callsign overlay (FCC requirement)
+
+**For Unlicensed Users:**
+1. Can skip callsign entry or enter invalid callsign
+2. Badge operates in "Receive-Only Mode"
+3. All SSTV reception and display features work normally
+4. Transmit functions are disabled with clear user feedback
+
+### Visual Indicators
+
+The badge provides clear indication of its current mode:
+- Status LED shows license verification state
+- Main menu displays current operating mode
+- Transmit functions show appropriate enabled/disabled status
+- Prominent amateur radio license reminders in documentation and UI
+
+### Important Notes
+
+- This system is designed to encourage proper amateur radio operation, not as absolute copy protection
+- Licensed operators must still comply with all applicable amateur radio regulations
+- The badge includes educational information about amateur radio licensing
+- Users are encouraged to obtain proper licensing to access full functionality
+
+### Technical Implementation
+
+The verification system uses industry-standard cryptographic practices:
+- Callsign and device data are hashed using SHA-256
+- No plaintext callsigns or sensitive data are stored
+- Verification data is stored in encrypted flash memory
+- System can be reset for legitimate transfers or updates
+
+## ⚙️ SA818 Module Swappability
+
+The SA818 transceiver is mounted in a standard 16-pin DIP socket, allowing users to easily swap between VHF and UHF frequency bands without soldering or hardware modifications. The two module variants are pin-compatible and functionally identical except for their frequency ranges:
+
+- **SA818-V**: VHF operation (134-174 MHz) covering the 2-meter amateur band
+- **SA818-U**: UHF operation (400-480 MHz) covering the 70-centimeter amateur band
+
+### Hardware Implementation
+
+The badge PCB includes a 2-position DIP switch that allows the firmware to detect which module variant is installed. When swapping modules, users simply:
+
+1. Power down the badge completely
+2. Carefully remove the installed SA818 module from the DIP socket
+3. Set the band select DIP switch to match the new module (VHF/UHF)
+4. Insert the replacement module, ensuring proper pin 1 orientation
+5. Power on the badge - firmware automatically detects the band and adjusts frequency limits accordingly
+
+### Software Band Detection
+
+The RP2350 firmware reads the band select switch on startup and configures:
+- Frequency range validation (prevents out-of-band operation)
+- Default frequencies for each band
+- Antenna tuning parameters
+- Display indicators showing current band
+
+### Antenna Considerations
+
+While the SA818 modules are easily swappable, optimal performance requires band-appropriate antennas. The SMA connector accommodates standard amateur radio antennas:
+- **2-meter band**: 1/4 wave whip (~19.5 inches) or rubber duck antenna
+- **70-centimeter band**: 1/4 wave whip (~6.5 inches) or dual-band antenna
+
+Users operating on both bands should consider a dual-band antenna or maintain separate antennas for each frequency range to ensure proper SWR and maximum range.
 
 ## 🚧 Project Status
 
@@ -224,7 +319,5 @@ For questions about this project:
 
 - **GitHub Issues** - Technical questions and bug reports
 - **GitHub Discussions** - General discussion and community
-- **Email** - [Maintainer contact information]
-- **Ham Radio** - [Your callsign and preferred frequencies]
 
 **73s!** 📡
