@@ -1295,4 +1295,4 @@ int sstv_encode_image(image_t* image, sstv_mode_t mode, audio_buffer_t* audio_ou
 
 **🎯 This completes the comprehensive firmware architecture documentation for the DEFCON SSTV Badge. The design provides a robust foundation for real-time SSTV processing while maintaining responsive user interaction and reliable system operation.**
 
-*Ready to start coding! 73 de [Your Callsign]* 📡
+*73s!* 📡

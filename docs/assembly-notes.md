@@ -452,7 +452,7 @@ Include with completed badge:
 
 *Now you're ready to capture, encode, and share images through the magic of amateur radio. See you on the airwaves at DEFCON!*
 
-**73 de [Your Callsign]** 📡
+**73s!** 📡
 
 ---
 

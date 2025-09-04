@@ -73,7 +73,7 @@ Perfect for ham radio operators, makers, and anyone interested in digital modes 
 defcon-sstv-badge/
 ├── README.md                     # This file
 ├── docs/                        # Documentation
-│   ├── block-diagram.svg        # System overview
+│   ├── block-diagram.png        # System overview
 │   ├── schematic.md             # Complete circuit description
 │   ├── bom.md                   # Bill of materials
 │   ├── assembly-notes.md        # Build instructions
@@ -227,4 +227,4 @@ For questions about this project:
 - **Email** - [Maintainer contact information]
 - **Ham Radio** - [Your callsign and preferred frequencies]
 
-**73 de [Your Callsign]** 📡
+**73s!** 📡
