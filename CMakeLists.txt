@@ -17,6 +17,9 @@ set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
 set(CMAKE_OSX_DEPLOYMENT_TARGET "")
 set(CMAKE_OSX_SYSROOT "")
 
+# Target RP2350 board
+set(PICO_BOARD pico2)
+
 # Include Pico SDK
 include($ENV{PICO_SDK_PATH}/external/pico_sdk_import.cmake)
 
