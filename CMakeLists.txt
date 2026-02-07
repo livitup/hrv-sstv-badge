@@ -41,7 +41,11 @@ add_executable(defcon_sstv_badge
 # Link required libraries
 target_link_libraries(defcon_sstv_badge
         pico_stdlib
+        pico_multicore
         hardware_gpio
+        hardware_spi
+        hardware_i2c
+        hardware_uart
 )
 
 # Generate UF2 file for easy flashing

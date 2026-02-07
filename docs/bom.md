@@ -1,169 +1,361 @@
-# DEFCON SSTV Badge - Complete Bill of Materials
+# DEFCON SSTV Badge — Bill of Materials
 
-## Main ICs and Modules
+**Version:** 2.0
+**Last Updated:** 2025-02
+**Source:** Consolidated from `docs/electrical-design.md`
 
-| Ref | Qty | Description | Part Number | Manufacturer | Supplier | Est. Price |
-|-----|-----|-------------|-------------|--------------|----------|------------|
-| U4 | 1 | Microcontroller, ARM Cortex-M33, RP2350 | RP2350 | Raspberry Pi | DigiKey | $1.50 |
-| U8 | 1 | RF Transceiver Module (socketed) | SA818-V or SA818-U | NiceRF | AliExpress | $12.00 |
-| U7 | 1 | Camera Module, 2MP JPEG | OV2640 | OmniVision | Amazon | $8.00 |
-| U6 | 1 | TFT LCD Display, 2.4", 240x320 | ST7789 Controller | Generic | Amazon | $12.00 |
-| U5 | 1 | SPI Flash Memory, 16MB | W25Q128JVSIQ | Winbond | DigiKey | $1.25 |
+This is the consolidated BOM for the DEFCON SSTV badge. Components are organized by subsystem and assembly method.
 
-## Power Management
+---
 
-| Ref | Qty | Description | Part Number | Manufacturer | Supplier | Est. Price |
-|-----|-----|-------------|-------------|--------------|----------|------------|
-| U1 | 1 | Li-Po Battery Charger IC | MCP73871-2CCI/ML | Microchip | DigiKey | $2.50 |
-| U2 | 1 | Battery Fuel Gauge IC | LC709203FXE-01TBG | ON Semi | DigiKey | $2.25 |
-| U3 | 1 | 3.3V LDO Regulator, 1A | AMS1117-3.3 | AMS | LCSC | $0.25 |
-| BT1 | 1 | Li-Po Battery, 2000mAh | 503759 | Generic | Amazon | $8.00 |
+## Quick Summary
 
-## Audio Processing
+| Category | Est. Cost | Notes |
+|----------|-----------|-------|
+| Power System | ~$4.00 | TPS63001 buck-boost, TPS22919 load switch |
+| USB-C Interface | ~$1.20 | Connector + ESD protection |
+| Battery System | ~$11.50 | MCP73871, LC709203F, 2000mAh LiPo |
+| Audio | ~$2.10 | PCM5102A DAC + filter passives |
+| Display | ~$10.00 | ILI9341 module + backlight circuit |
+| Camera | ~$6.00 | OV2640 DVP module + resistors |
+| User Controls | ~$1.50 | Switches, PWR LED, resistors |
+| Blinky LEDs | ~$2.40 | 26× WS2812B + bypass caps |
+| MCU + Support | ~$3.00 | RP2350B, crystal, flash, passives |
+| Connectors | ~$2.00 | SAO, carrier sockets, debug |
+| **Main Badge Total** | **~$44** | Without carrier |
+| SA818 Carrier | ~$17.00 | SA818, SMA, antenna, headers |
+| **Complete Kit** | **~$61** | Main + one carrier |
 
-| Ref | Qty | Description | Part Number | Manufacturer | Supplier | Est. Price |
-|-----|-----|-------------|-------------|--------------|----------|------------|
-| U9 | 1 | Audio Codec, Stereo, Low Power | WM8960CLGEFL/RV | Cirrus Logic | DigiKey | $4.50 |
-| SP1 | 1 | Speaker, 8Ω, 0.5W (optional) | CMS-040815-67SPK | CUI Devices | DigiKey | $1.50 |
+*PCB fabrication adds ~$3-5/board at quantity.*
 
-## Connectors and Mechanical
+---
 
-| Ref | Qty | Description | Part Number | Manufacturer | Supplier | Est. Price |
-|-----|-----|-------------|-------------|--------------|----------|------------|
-| J1 | 1 | USB-C Receptacle, 16-pin | TYPE-C-31-M-12 | HRO Electronics | LCSC | $0.85 |
-| J2 | 1 | MicroSD Card Socket, Push-Push | DM3AT-SF-PEJM5 | Hirose | DigiKey | $1.75 |
-| J3 | 1 | SMA Connector, Female, PCB Mount | 142-0701-801 | Johnson | DigiKey | $3.25 |
-| J4,J5 | 2 | SAO Connector, 2x3 Pin Header | PEC03SAAN | Sullins | DigiKey | $0.35 |
+## Assembly Legend
 
-## User Interface Components
+| Code | Meaning |
+|------|---------|
+| **Fab** | Factory assembled (requires reflow/hot air) |
+| **User** | User-solderable at conference (through-hole or large pads) |
+| **Module** | Pre-assembled breakout, user installs |
 
-| Ref | Qty | Description | Part Number | Manufacturer | Supplier | Est. Price |
-|-----|-----|-------------|-------------|--------------|----------|------------|
-| SW3 | 1 | Tactile Switch, 12mm, Photo Button | B3F-4055 | Omron | DigiKey | $1.25 |
-| SW4-SW8 | 5 | Tactile Switch, 6x6mm, D-pad | B3F-4050 | Omron | DigiKey | $0.45 |
-| SW9 | 1 | Slide Switch, SPDT, Airplane Mode | SS12SDP2 | NKK Switches | DigiKey | $2.15 |
-| SW2 | 1 | Slide Switch, SPDT, Audio Mute | SS12SDP2 | NKK Switches | DigiKey | $2.15 |
-| SW1 | 1 | DIP Switch, 2-position | 219-2LPST | CTS | DigiKey | $1.25 |
+---
 
-## LEDs and Indicators
+## Power System
 
-| Ref | Qty | Description | Part Number | Manufacturer | Supplier | Est. Price |
-|-----|-----|-------------|-------------|--------------|----------|------------|
-| LED1 | 1 | LED, Orange, Charge Status | LTST-C170KFKT | Lite-On | DigiKey | $0.15 |
-| LED2 | 1 | LED, Green, Charge Complete | LTST-C170GKT | Lite-On | DigiKey | $0.15 |
-| LED3 | 1 | LED, Green, Power | LTST-C170GKT | Lite-On | DigiKey | $0.15 |
-| LED4 | 1 | LED, Red, TX Status | LTST-C170CKT | Lite-On | DigiKey | $0.15 |
-| LED5 | 1 | LED, Blue, RX Status | LTST-C170TBKT | Lite-On | DigiKey | $0.15 |
-| LED6 | 1 | LED, Yellow, SD Card | LTST-C170YKT | Lite-On | DigiKey | $0.15 |
+### Buck-Boost Regulator (TPS63001)
 
-## Resistors (0805 Package)
+| Ref | Qty | Value | Package | Assembly | Notes |
+|-----|-----|-------|---------|----------|-------|
+| U_REG | 1 | TPS63001DRCR | QFN-10 (3×3mm) | Fab | Fixed 3.3V output |
+| L1 | 1 | 1µH | 3×3mm | Fab | Coilcraft XAL3030-102 or equiv |
+| C_IN1, C_IN2 | 2 | 10µF | 0805 | Fab | X5R/X7R, 10V, input |
+| C_OUT1, C_OUT2 | 2 | 10µF | 0805 | Fab | X5R/X7R, 10V, output |
+| R_PS | 1 | 1MΩ | 0402 | Fab | Power save mode (optional) |
 
-| Ref | Qty | Value | Description | Supplier | Est. Price |
-|-----|-----|-------|-------------|----------|------------|
-| R1-R20 | 20 | Various | 1% Metal Film, 0805 | LCSC | $0.02 each |
+**Subtotal:** ~$2.50
 
-### Specific Resistor Values:
-- **1kΩ (6 qty)**: LED current limiting, pullups
-- **2kΩ (1 qty)**: MCP73871 charge current setting
-- **4.7kΩ (4 qty)**: I2C pullups
-- **5.1kΩ (2 qty)**: USB-C CC resistors
-- **10kΩ (7 qty)**: General pullups, button pullups
+### Load Switch (TPS22919)
 
-## Capacitors
+| Ref | Qty | Value | Package | Assembly | Notes |
+|-----|-----|-------|---------|----------|-------|
+| U_SW | 1 | TPS22919DCKR | SOT-23-5 | Fab | SA818 power control |
+| C_SW1 | 1 | 100µF | 1206 | Fab | Output bulk capacitor |
+| C_SW2 | 1 | 10µF | 0603 | Fab | Output bypass |
 
-| Ref | Qty | Value | Voltage | Package | Description | Supplier | Est. Price |
-|-----|-----|-------|---------|---------|-------------|----------|------------|
-| C1-C5 | 5 | 10-22µF | 16V | 1206 | Tantalum, Power decoupling | LCSC | $0.15 |
-| C6-C25 | 20 | 100nF | 16V | 0805 | Ceramic, IC decoupling | LCSC | $0.03 |
-| C26-C27 | 2 | 22pF | 16V | 0805 | Ceramic, Crystal loading | LCSC | $0.03 |
-| C28-C30 | 3 | 2.2µF | 16V | 0805 | Ceramic, Audio coupling | LCSC | $0.08 |
+**Subtotal:** ~$0.80
 
-## Inductors and Filters
+---
 
-| Ref | Qty | Value | Description | Supplier | Est. Price |
-|-----|-----|-------|-------------|----------|------------|
-| L1 | 1 | 10µH | Ferrite Bead, Camera supply filter | LCSC | $0.08 |
-| L2 | 1 | 600Ω@100MHz | Ferrite Bead, Audio supply filter | LCSC | $0.08 |
+## USB-C Interface
 
-## Semiconductors
+| Ref | Qty | Value | Package | Assembly | Notes |
+|-----|-----|-------|---------|----------|-------|
+| J_USB | 1 | USB4125-GF-A | TH 16-pin | User | GCT through-hole USB-C |
+| U_ESD1 | 1 | USBLC6-2SC6 | SOT-23-6 | Fab | D+/D- ESD protection |
+| D_VBUS | 1 | PESD5V0S1BL | SOD-323 | Fab | VBUS surge protection |
+| R_CC1, R_CC2 | 2 | 5.1kΩ | 0402 | Fab | USB sink identification |
+| C_USB | 1 | 10µF | 0603 | Fab | VBUS decoupling |
 
-| Ref | Qty | Description | Part Number | Manufacturer | Supplier | Est. Price |
-|-----|-----|-------------|-------------|--------------|----------|------------|
-| Q1-Q4 | 4 | MOSFET, N-Channel, SOT-23 | 2N7002K | Various | LCSC | $0.05 |
+**Subtotal:** ~$1.20
 
-## Crystal and Timing
+---
 
-| Ref | Qty | Description | Part Number | Manufacturer | Supplier | Est. Price |
-|-----|-----|-------------|-------------|--------------|----------|------------|
-| Y1 | 1 | Crystal, 12MHz, ±20ppm | ABM8-12.000MHZ-18-D2Y-T | Abracon | DigiKey | $0.45 |
+## Battery System
 
-## PCB and Assembly
+### Charger (MCP73871)
 
-| Item | Qty | Description | Supplier | Est. Price |
-|------|-----|-------------|----------|------------|
-| PCB | 5 | 4-layer PCB, 120x80mm, HASL | JLCPCB | $25.00 |
-| Assembly | 1 | Pick-and-place service (optional) | JLCPCB | $15.00 |
-| Stencil | 1 | Solder paste stencil | JLCPCB | $8.00 |
+| Ref | Qty | Value | Package | Assembly | Notes |
+|-----|-----|-------|---------|----------|-------|
+| U_CHG | 1 | MCP73871-2CCI/ML | QFN-20 (4×4mm) | Fab | Li-Po charge controller |
+| R_PROG | 1 | 2kΩ | 0603 | Fab | Charge current = 1000/R = 500mA |
+| R_SEL | 1 | 0Ω | 0402 | Fab | USB 500mA input mode |
+| C_IN | 1 | 10µF | 0805 | Fab | Input cap, X5R 10V |
+| C_VBAT | 1 | 10µF | 0805 | Fab | Battery cap, X5R 10V |
+| C_OUT | 1 | 10µF | 0805 | Fab | Output cap, X5R 10V |
 
-## Hardware and Accessories
+**Subtotal:** ~$3.00
 
-| Item | Qty | Description | Supplier | Est. Price |
-|------|-----|-------------|----------|------------|
-| Socket | 1 | SA818 Module Socket, 16-pin DIP | DigiKey | $1.25 |
-| Standoffs | 4 | PCB Standoffs, M3, 8mm | Amazon | $0.25 |
-| Screws | 4 | M3x6mm, Phillips head | Amazon | $0.10 |
-| Lanyard | 1 | Badge lanyard with clip | Amazon | $1.50 |
+### Fuel Gauge (LC709203F)
 
-## Cost Summary
+| Ref | Qty | Value | Package | Assembly | Notes |
+|-----|-----|-------|---------|----------|-------|
+| U_FUEL | 1 | LC709203FQH-01TWG | WDFN-8 (2×2.5mm) | Fab | Battery SoC monitor, I2C |
+| C_FUEL | 1 | 100nF | 0402 | Fab | Decoupling |
 
-| Category | Subtotal |
-|----------|----------|
-| **Main ICs and Modules** | $34.75 |
-| **Power Management** | $13.00 |
-| **Audio Processing** | $6.00 |
-| **Connectors** | $6.20 |
-| **User Interface** | $7.25 |
-| **LEDs** | $0.90 |
-| **Passives (R,C,L)** | $3.50 |
-| **Semiconductors** | $0.65 |
-| **Crystal** | $0.45 |
-| **PCB and Assembly** | $48.00 |
-| **Hardware** | $3.10 |
-| **TOTAL per badge** | **≈$124** |
+**Subtotal:** ~$2.50
 
-## Volume Pricing Estimates
+### Shared Thermistor
 
-- **10 units**: ~$95 per badge
-- **50 units**: ~$75 per badge  
-- **100 units**: ~$65 per badge
-- **500 units**: ~$55 per badge
+| Ref | Qty | Value | Package | Assembly | Notes |
+|-----|-----|-------|---------|----------|-------|
+| R_NTC | 1 | 10kΩ NTC | 0603 | Fab | B=3380, shared by MCP73871 + LC709203F |
 
-*Prices are estimated and may vary based on supplier, quantity, and market conditions*
+*Place near battery for accurate temperature reading.*
 
-## Recommended Suppliers
+### Battery + Connector
 
-1. **JLCPCB/LCSC**: PCB fabrication and common components
-2. **DigiKey**: Premium components, fast shipping
-3. **Mouser**: Alternative for premium components
-4. **Amazon**: Mechanical parts, batteries
-5. **AliExpress**: SA818 modules, displays (longer lead times)
+| Ref | Qty | Value | Package | Assembly | Notes |
+|-----|-----|-------|---------|----------|-------|
+| BAT1 | 1 | 2000mAh LiPo | Pouch ~50×35×8mm | User | JST-PH connector, 3.7V, with PCM |
+| J_BAT | 1 | JST-PH 2-pin | Through-hole | User | Battery connector |
 
-## Assembly Notes
+**Subtotal:** ~$6.50
 
-1. **Surface Mount Components**: Most components are 0805 or larger for easier hand assembly
-2. **Critical Components**: SA818 socket allows for easy module swapping
-3. **Test Points**: Include test points for major power rails and signals
-4. **Programming**: Include Tag-Connect footprint for RP2350 programming
-5. **Component Orientation**: Mark pin 1 clearly on all ICs
-6. **ESD Protection**: Include ESD protection on exposed connectors
+---
 
-## Firmware Development Requirements
+## Audio Interface
 
-- **RP2350 SDK**: Raspberry Pi Pico SDK
-- **SSTV Libraries**: Custom encoding/decoding algorithms
-- **Camera Interface**: DVP driver for OV2640
-- **Display Driver**: ST7789 SPI display driver
-- **Audio Processing**: I2S interface for WM8960
-- **SA818 Control**: UART protocol implementation
-- **File System**: FatFS for microSD card
-- **UI Framework**: Simple menu system with button handling
+| Ref | Qty | Value | Package | Assembly | Notes |
+|-----|-----|-------|---------|----------|-------|
+| U_DAC | 1 | PCM5102APWR | TSSOP-20 | Fab | I2S stereo DAC for TX |
+| C_DAC1 | 1 | 10µF | 0805 | Fab | DVDD decoupling |
+| C_DAC2 | 1 | 100nF | 0603 | Fab | AVDD decoupling |
+| R_TX1 | 1 | 47kΩ | 0603 | User | TX attenuator (high) |
+| R_TX2 | 1 | 470Ω | 0603 | User | TX attenuator (low) |
+| C_TX1 | 1 | 10nF | 0603 | User | TX low-pass filter |
+| C_TX2 | 1 | 100nF | 0603 | User | TX DC blocking |
+| C_RX1 | 1 | 1µF | 0603 | User | RX DC blocking |
+| R_RX1, R_RX2 | 2 | 4.7kΩ | 0603 | User | RX anti-alias filter |
+| C_RX2 | 1 | 4.7nF | 0603 | User | RX anti-alias filter |
+| R_RX3 | 1 | 47kΩ | 0603 | User | RX bias to 3.3V |
+| R_RX4 | 1 | 47kΩ | 0603 | User | RX bias to GND |
+
+**Subtotal:** ~$2.10
+
+---
+
+## Display Interface
+
+| Ref | Qty | Value | Package | Assembly | Notes |
+|-----|-----|-------|---------|----------|-------|
+| U_DISP | 1 | ILI9341 2.4" module | Breakout | Module | 320×240 SPI, includes SD slot |
+| Q_BL | 1 | 2N7002 | SOT-23 | Fab | Backlight control MOSFET |
+| R_BL | 1 | 1kΩ | 0603 | User | Gate pull-down |
+
+**Subtotal:** ~$10.00
+
+---
+
+## Camera Interface
+
+| Ref | Qty | Value | Package | Assembly | Notes |
+|-----|-----|-------|---------|----------|-------|
+| U_CAM | 1 | OV2640 DVP module | Breakout | Module | 2.54mm headers, parallel DVP |
+| R_CAM_RST | 1 | 10kΩ | 0603 | Fab | RESET pullup to 3.3V |
+| R_CAM_PWDN | 1 | 10kΩ | 0603 | Fab | PWDN pulldown to GND |
+
+**Subtotal:** ~$6.00
+
+---
+
+## User Controls
+
+### Switches
+
+| Ref | Qty | Value | Package | Assembly | Notes |
+|-----|-----|-------|---------|----------|-------|
+| SW_UP | 1 | Tactile 6×6mm | TH | User | D-pad up |
+| SW_DOWN | 1 | Tactile 6×6mm | TH | User | D-pad down |
+| SW_LEFT | 1 | Tactile 6×6mm | TH | User | D-pad left |
+| SW_RIGHT | 1 | Tactile 6×6mm | TH | User | D-pad right |
+| SW_CENTER | 1 | Tactile 6×6mm | TH | User | D-pad select |
+| SW_PHOTO | 1 | Tactile 12mm | TH | User | Photo capture (larger) |
+| SW_AIRPLANE | 1 | Slide SPDT | TH | User | Airplane mode toggle |
+
+### PWR Status LED (Traditional RGB)
+
+| Ref | Qty | Value | Package | Assembly | Notes |
+|-----|-----|-------|---------|----------|-------|
+| LED_PWR | 1 | RGB LED | 3528/5050 | Fab | Common cathode |
+| R_PWR_R | 1 | 220Ω | 0603 | Fab | Red current limit |
+| R_PWR_G | 1 | 100Ω | 0603 | Fab | Green current limit |
+| R_PWR_B | 1 | 100Ω | 0603 | Fab | Blue current limit |
+
+**Subtotal:** ~$1.50
+
+---
+
+## Blinky LED Matrix
+
+| Ref | Qty | Value | Package | Assembly | Notes |
+|-----|-----|-------|---------|----------|-------|
+| LED_L0–L4 | 5 | WS2812B | 5050 | Fab | Left rabbit ear |
+| LED_R0–R4 | 5 | WS2812B | 5050 | Fab | Right rabbit ear |
+| LED_B0–B15 | 16 | WS2812B | 5050 | Fab | Display border (16 LEDs) |
+| C_LED | 26 | 100nF | 0402 | Fab | Bypass caps (one per LED) |
+
+**Subtotal:** ~$2.40
+*(26× WS2812B @ ~$0.08 = $2.08, 26× caps @ ~$0.01 = $0.26)*
+
+---
+
+## MCU and Support
+
+| Ref | Qty | Value | Package | Assembly | Notes |
+|-----|-----|-------|---------|----------|-------|
+| U_MCU | 1 | RP2350B | QFN-80 (9×9mm) | Fab | 48 GPIO variant required |
+| Y1 | 1 | 12MHz | 3215 | Fab | ±20ppm, CL=10pF (required for USB) |
+| C_Y1, C_Y2 | 2 | 15pF | 0402 | Fab | Crystal load caps |
+| U_FLASH | 1 | W25Q128JVSIQ | SOIC-8 | Fab | 16MB QSPI flash |
+| C_FLASH | 1 | 100nF | 0402 | Fab | Flash decoupling |
+| C_MCU | 6 | 100nF | 0402 | Fab | MCU decoupling (one per VDD) |
+| C_MCU_BULK | 2 | 10µF | 0603 | Fab | MCU bulk caps |
+| SW_BOOT | 1 | Tactile 3×4mm | SMD | Fab | BOOTSEL for UF2 bootloader |
+| R_SDA | 1 | 4.7kΩ | 0603 | Fab | I2C SDA pullup |
+| R_SCL | 1 | 4.7kΩ | 0603 | Fab | I2C SCL pullup |
+
+**Subtotal:** ~$3.65
+
+*Note: Crystal is required — RP2350 internal oscillator is too inaccurate for USB (needs ±0.25%, ROSC is ±2-5%).*
+
+---
+
+## Connectors (Main Board)
+
+| Ref | Qty | Value | Package | Assembly | Notes |
+|-----|-----|-------|---------|----------|-------|
+| J_SAO1 | 1 | 2×3 header | 2.54mm | User | SAO connector 1 |
+| J_SAO2 | 1 | 2×3 header | 2.54mm | User | SAO connector 2 |
+| J_CAR1 | 1 | 1×8 socket | 2.54mm | User | Carrier signal (left) |
+| J_CAR2 | 1 | 1×8 socket | 2.54mm | User | Carrier signal (right) |
+| J_CAR3 | 1 | 1×3 socket | 2.54mm | User | Carrier mechanical (left) |
+| J_CAR4 | 1 | 1×3 socket | 2.54mm | User | Carrier mechanical (right) |
+| J_DEBUG | 1 | TC2030-CTX-NL | Pads only | Fab | Tag-Connect SWD (no component) |
+
+**Subtotal:** ~$2.00
+
+*Note: Debug interface is Tag-Connect pogo pads only — no installed header. Developer needs TC2030-CTX-NL cable (~$40 one-time) for programming/debug.*
+
+---
+
+## SA818 Carrier Board
+
+*Assembled separately — one per frequency band*
+
+| Ref | Qty | Value | Package | Assembly | Notes |
+|-----|-----|-------|---------|----------|-------|
+| U_RF | 1 | SA818-V or SA818-U | Module | Fab | VHF or UHF transceiver |
+| J_SMA | 1 | SMA right-angle | PCB mount | Fab | Female, 50Ω |
+| C_RF1 | 1 | 100nF | 0402 | Fab | Decoupling |
+| C_RF2 | 1 | 10µF | 0603 | Fab | Bulk capacitor |
+| R_ID | 1 | 0Ω | 0402 | Fab | Band select (GND=VHF, VCC=UHF) |
+| J1 | 1 | 1×8 male header | 2.54mm | User | Signal header (left) |
+| J2 | 1 | 1×8 male header | 2.54mm | User | Signal header (right) |
+| J3 | 1 | 1×3 male header | 2.54mm | User | Mechanical (left) |
+| J4 | 1 | 1×3 male header | 2.54mm | User | Mechanical (right) |
+| ANT | 1 | Stubby antenna | SMA male | Included | Band-matched |
+
+**Subtotal (per carrier):** ~$17.00
+*(SA818 ~$10, SMA ~$2, antenna ~$4, PCB+parts ~$1)*
+
+---
+
+## Passive Component Totals
+
+### Resistors
+
+| Value | Qty | Package | Use |
+|-------|-----|---------|-----|
+| 0Ω | 1 | 0402 | Carrier band ID |
+| 100Ω | 2 | 0603 | PWR LED G/B |
+| 220Ω | 1 | 0603 | PWR LED R |
+| 470Ω | 1 | 0603 | TX attenuator |
+| 1kΩ | 1 | 0603 | Backlight gate |
+| 2kΩ | 1 | 0603 | Charge current |
+| 4.7kΩ | 4 | 0603 | RX filter (2), I2C pullups (2) |
+| 5.1kΩ | 2 | 0402 | USB CC |
+| 10kΩ | 4+ | 0603 | Pullups, pulldowns |
+| 47kΩ | 3 | 0603 | Audio bias/attenuation |
+| 1MΩ | 1 | 0402 | TPS63001 PS |
+
+### Capacitors
+
+| Value | Qty | Package | Use |
+|-------|-----|---------|-----|
+| 15pF | 2 | 0402 | Crystal load |
+| 4.7nF | 1 | 0603 | RX anti-alias |
+| 10nF | 1 | 0603 | TX filter |
+| 100nF | 40+ | 0402/0603 | Decoupling (LEDs, ICs) |
+| 1µF | 1 | 0603 | RX DC block |
+| 10µF | 15+ | 0603/0805 | Bulk caps |
+| 100µF | 1 | 1206 | Load switch bulk |
+
+---
+
+## Sourcing Notes
+
+### Recommended Suppliers
+
+| Supplier | Best For | Lead Time |
+|----------|----------|-----------|
+| **LCSC** | Passives, WS2812B, common ICs | 1-2 weeks |
+| **Digi-Key** | TI/Microchip ICs, precision parts | 2-3 days |
+| **Mouser** | Alternative to Digi-Key | 2-3 days |
+| **AliExpress** | Display, camera, SA818 modules | 2-4 weeks |
+| **Amazon** | LiPo battery, lanyard, misc | 1-2 days |
+| **JLCPCB** | PCB fab, SMT assembly | 1-2 weeks |
+
+### Long Lead-Time Items (Order Early!)
+
+- **SA818 modules** — 2-4 weeks from China
+- **Custom PCBs** — 1-2 weeks from fab
+- **OV2640 camera modules** — 1-3 weeks
+- **ILI9341 display modules** — 1-3 weeks
+
+### Kit Packaging Suggestions
+
+- Group user-solderable parts in labeled bags by subsystem
+- Include 2-3 spare 0603 resistors/caps (easy to lose)
+- Print assembly instructions with component placement diagram
+- Include test procedure checklist
+
+---
+
+## Cost Breakdown by Assembly Type
+
+| Assembly | Component Cost | Notes |
+|----------|---------------|-------|
+| **Fab (SMT)** | ~$25 | ICs, small passives, LEDs |
+| **User (TH)** | ~$12 | Switches, modules, headers |
+| **Modules** | ~$16 | Display, camera |
+| **Battery** | ~$6 | LiPo cell |
+| **Carrier** | ~$17 | Separate board |
+| **PCB** | ~$5 | Main + carrier at qty |
+| **Total** | **~$81** | Complete kit with carrier |
+
+---
+
+## Revision History
+
+| Version | Date | Changes |
+|---------|------|---------|
+| 1.0 | 2024-XX | Initial BOM (outdated design) |
+| 2.0 | 2025-02 | Complete rewrite: TPS63001, PCM5102A, ILI9341, WS2812B blinky, USB-C with ESD |
+| 2.1 | 2025-02 | Debug interface changed to Tag-Connect TC2030-CTX-NL (pads only) |
+| 2.2 | 2025-02 | Battery system detailed: MCP73871 charger, LC709203F fuel gauge, shared NTC |
+| 2.3 | 2025-02 | MCU support: 12MHz crystal (required for USB), W25Q128 16MB flash |
+| 2.4 | 2025-02 | Added BOOTSEL button for UF2 bootloader |
+
+---
+
+*Keep this file in sync with `docs/electrical-design.md`!*

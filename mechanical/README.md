@@ -24,7 +24,7 @@ As a DEFCON badge, this device is designed to be worn **without a traditional en
 - **Rounded PCB edges** - No sharp corners that could snag or poke
 - **Component placement** - Heavy components (battery, SA818) positioned for balance
 - **Smooth back side** - Minimal components on reverse for comfort against clothing
-- **Lanyard mounting** - 4x M3 mounting holes for secure attachment
+- **Lanyard mounting** - Centered oval slot for easy lanyard attachment
 
 ## 📁 Directory Structure
 
@@ -76,8 +76,8 @@ While not required, these mechanical aids can improve assembly quality:
 ## 🎒 Wearing and Transportation
 
 ### Lanyard Attachment
-- **Mounting holes**: 4x M3 holes in PCB corners
-- **Hardware**: M3 screws and washers (included in BOM)
+- **Mounting**: Single oval slot at top center (~20mm × 5mm)
+- **Hardware**: None required - lanyard threads directly through slot
 - **Lanyard types**: Standard conference lanyards compatible
 - **Load rating**: PCB designed for >2kg static load
 
@@ -164,7 +164,7 @@ For detailed assembly information, see:
 ### Mechanical Safety  
 - **Sharp edges** - All PCB edges rounded and smooth
 - **Component security** - All parts firmly attached, no loose items
-- **Lanyard strength** - Attachment points rated for safety loads
+- **Lanyard slot** - Centered slot rated for safety loads
 - **Material safety** - Lead-free solder, RoHS compliant components
 
 ---
