@@ -1,6 +1,6 @@
 # Project Status — DEFCON SSTV Badge
 
-**Last Updated:** 2025-02
+**Last Updated:** 2026-02-07
 
 This document tracks the design and implementation status for all badge subsystems.
 
@@ -10,6 +10,7 @@ This document tracks the design and implementation status for all badge subsyste
 
 - [x] = Design complete (documented in electrical-design.md)
 - [ ] = Future work (KiCad, sourcing, prototyping, firmware)
+- 🔨 = In progress
 
 ---
 
@@ -26,7 +27,7 @@ This document tracks the design and implementation status for all badge subsyste
 | Audio RX (ADC) | ✓ | | | |
 | Display (ILI9341) | ✓ | | | |
 | Camera (OV2640) | ✓ | | | |
-| MCU (RP2350B) | ✓ | | | |
+| MCU (RP2350B) | ✓ | 🔨 | | |
 | Debug (Tag-Connect) | ✓ | | | |
 | User Controls | ✓ | | | |
 | Blinky LEDs (WS2812B) | ✓ | | | |
@@ -138,6 +139,12 @@ This document tracks the design and implementation status for all badge subsyste
 - [x] Decoupling capacitors specified (6× 100nF + 2× 10µF)
 - [x] BOOTSEL button designed (on QSPI_SS, for UF2 bootloader)
 - [x] I2C pullups specified (4.7kΩ on SDA/SCL for shared bus)
+- [x] Internal voltage regulator: L2 (3.3µH) inductor, C_DVDD (1µF), power pin assignments
+- [x] **KiCad: MCU power section entered** (VDD pins, decoupling caps, internal regulator)
+- [ ] KiCad: Crystal oscillator circuit
+- [ ] KiCad: QSPI flash circuit
+- [ ] KiCad: BOOTSEL button
+- [ ] KiCad: I2C pullups
 - [ ] Source RP2350B and verify QFN-80 footprint
 - [ ] Verify crystal footprint (3215) and load cap values
 - [ ] Verify flash footprint (SOIC-8)
@@ -206,7 +213,7 @@ This document tracks the design and implementation status for all badge subsyste
 | Electrical design complete | ✓ | Done |
 | BOM finalized | ✓ | Done |
 | PCB outline designed | ✓ | Done |
-| KiCad schematic | | Not started |
+| KiCad schematic | | **In progress** (MCU power done) |
 | KiCad layout | | Not started |
 | Gerbers generated | | Not started |
 | Prototype ordered | | Not started |

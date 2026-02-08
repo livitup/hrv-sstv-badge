@@ -2051,20 +2051,59 @@ The BOOTSEL button allows entering the RP2350 USB bootloader (UF2 mass storage m
 
 For a production badge, the physical button provides a reliable recovery method if firmware is corrupted.
 
+### RP2350 Internal Voltage Regulator
+
+The RP2350 contains an internal switching regulator that converts the 3.3V input to 1.1V for the CPU core. This regulator requires an external inductor.
+
+**Power Architecture:**
+```
++3.3V ──► VREG_VIN ──► [Internal Switcher] ──► VREG_LX ──┬──► L2 (3.3µH) ──┬──► DVDD (1.1V core)
+                                                         │                  │
+                                                         └──────────────────┘
+                                                                            │
+                                                                           ┴ C_DVDD (1µF)
+                                                                            │
+                                                                          GND
+```
+
+**Power Pin Connections:**
+
+| Pin | Function | Connection |
+|-----|----------|------------|
+| VREG_VIN | Regulator input (3.3V) | +3V3 via 10µF decoupling |
+| VREG_AVDD | Regulator analog supply | +3V3 via 100nF decoupling |
+| VREG_LX | Switching node output | To inductor L2 |
+| VREG_FB | Feedback (internal) | No external connection required |
+| VREG_PGND | Regulator power ground | GND |
+| DVDD | Core voltage output (1.1V) | From inductor L2, 1µF to GND |
+| IOVDD | I/O power (×6 internal) | +3V3 via 100nF decoupling |
+| USB_OTP_VDD | USB/OTP power | +3V3 via 100nF decoupling |
+| ADC_AVDD | ADC analog power | +3V3 via 100nF decoupling |
+| QSPI_IOVDD | Flash I/O power | +3V3 via 100nF decoupling |
+
+**Inductor Selection:**
+- Value: 3.3µH (recommended by Raspberry Pi)
+- DCR: <100mΩ
+- Saturation current: >500mA
+- Package: 3×3mm or similar
+- Example: Murata LQH3NPN3R3MM0, Bourns SRN3015-3R3M
+
 ### MCU BOM
 
 | Ref | Qty | Value | Package | Assembly | Notes |
 |-----|-----|-------|---------|----------|-------|
 | U_MCU | 1 | RP2350B | QFN-80 (9×9mm) | Fab | Dual Cortex-M33, 48 GPIO |
+| L2 | 1 | 3.3µH | 3×3mm | Fab | Internal regulator inductor |
 | Y1 | 1 | 12MHz | 3215 | Fab | ±20ppm, CL=10pF |
 | C_Y1, C_Y2 | 2 | 15pF | 0402 | Fab | Crystal load caps |
 | U_FLASH | 1 | W25Q128JVSIQ | SOIC-8 | Fab | 16MB QSPI flash |
 | C_FLASH | 1 | 100nF | 0402 | Fab | Flash decoupling |
 | C_MCU | 6 | 100nF | 0402 | Fab | MCU decoupling (one per VDD) |
 | C_MCU_BULK | 2 | 10µF | 0603 | Fab | MCU bulk caps |
+| C_DVDD | 1 | 1µF | 0402 | Fab | DVDD decoupling |
 | SW_BOOT | 1 | Tactile 3×4mm | SMD | Fab | BOOTSEL for UF2 bootloader |
 
-**Subtotal:** ~$3.60
+**Subtotal:** ~$3.85
 
 ---
 
@@ -2982,6 +3021,7 @@ Design status and open items are tracked in a separate document:
 | 2.15 | 2025-02 | PCB outline design: Simpsons TV shape, dimensions, component zones, mounting |
 | 2.16 | 2025-02 | Split PCB design to separate file (hardware/pcb-design.md) |
 | 2.17 | 2025-02 | Split project status/open items to separate file (docs/project-status.md) |
+| 2.18 | 2025-02 | RP2350 internal voltage regulator: added L2 (3.3µH inductor), C_DVDD (1µF), power pin documentation |
 
 ---
 

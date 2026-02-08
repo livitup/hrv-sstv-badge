@@ -20,11 +20,11 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 | Camera | ~$6.00 | OV2640 DVP module + resistors |
 | User Controls | ~$1.50 | Switches, PWR LED, resistors |
 | Blinky LEDs | ~$2.40 | 26× WS2812B + bypass caps |
-| MCU + Support | ~$3.00 | RP2350B, crystal, flash, passives |
+| MCU + Support | ~$3.90 | RP2350B, crystal, flash, regulator inductor, passives |
 | Connectors | ~$2.00 | SAO, carrier sockets, debug |
-| **Main Badge Total** | **~$44** | Without carrier |
+| **Main Badge Total** | **~$45** | Without carrier |
 | SA818 Carrier | ~$17.00 | SA818, SMA, antenna, headers |
-| **Complete Kit** | **~$61** | Main + one carrier |
+| **Complete Kit** | **~$62** | Main + one carrier |
 
 *PCB fabrication adds ~$3-5/board at quantity.*
 
@@ -214,19 +214,23 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 | Ref | Qty | Value | Package | Assembly | Notes |
 |-----|-----|-------|---------|----------|-------|
 | U_MCU | 1 | RP2350B | QFN-80 (9×9mm) | Fab | 48 GPIO variant required |
+| L2 | 1 | 3.3µH | 3×3mm | Fab | Internal regulator inductor |
 | Y1 | 1 | 12MHz | 3215 | Fab | ±20ppm, CL=10pF (required for USB) |
 | C_Y1, C_Y2 | 2 | 15pF | 0402 | Fab | Crystal load caps |
 | U_FLASH | 1 | W25Q128JVSIQ | SOIC-8 | Fab | 16MB QSPI flash |
 | C_FLASH | 1 | 100nF | 0402 | Fab | Flash decoupling |
 | C_MCU | 6 | 100nF | 0402 | Fab | MCU decoupling (one per VDD) |
 | C_MCU_BULK | 2 | 10µF | 0603 | Fab | MCU bulk caps |
+| C_DVDD | 1 | 1µF | 0402 | Fab | DVDD (core voltage) decoupling |
 | SW_BOOT | 1 | Tactile 3×4mm | SMD | Fab | BOOTSEL for UF2 bootloader |
 | R_SDA | 1 | 4.7kΩ | 0603 | Fab | I2C SDA pullup |
 | R_SCL | 1 | 4.7kΩ | 0603 | Fab | I2C SCL pullup |
 
-**Subtotal:** ~$3.65
+**Subtotal:** ~$3.90
 
-*Note: Crystal is required — RP2350 internal oscillator is too inaccurate for USB (needs ±0.25%, ROSC is ±2-5%).*
+*Notes:*
+- *Crystal is required — RP2350 internal oscillator is too inaccurate for USB (needs ±0.25%, ROSC is ±2-5%).*
+- *L2 is required for the RP2350's internal switching regulator (converts 3.3V → 1.1V core voltage).*
 
 ---
 
@@ -296,9 +300,16 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 | 4.7nF | 1 | 0603 | RX anti-alias |
 | 10nF | 1 | 0603 | TX filter |
 | 100nF | 40+ | 0402/0603 | Decoupling (LEDs, ICs) |
-| 1µF | 1 | 0603 | RX DC block |
+| 1µF | 2 | 0402/0603 | RX DC block, DVDD decoupling |
 | 10µF | 15+ | 0603/0805 | Bulk caps |
 | 100µF | 1 | 1206 | Load switch bulk |
+
+### Inductors
+
+| Value | Qty | Package | Use |
+|-------|-----|---------|-----|
+| 1µH | 1 | 3×3mm | TPS63001 buck-boost |
+| 3.3µH | 1 | 3×3mm | RP2350 internal regulator |
 
 ---
 
@@ -341,7 +352,7 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 | **Battery** | ~$6 | LiPo cell |
 | **Carrier** | ~$17 | Separate board |
 | **PCB** | ~$5 | Main + carrier at qty |
-| **Total** | **~$81** | Complete kit with carrier |
+| **Total** | **~$82** | Complete kit with carrier |
 
 ---
 
@@ -355,6 +366,7 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 | 2.2 | 2025-02 | Battery system detailed: MCP73871 charger, LC709203F fuel gauge, shared NTC |
 | 2.3 | 2025-02 | MCU support: 12MHz crystal (required for USB), W25Q128 16MB flash |
 | 2.4 | 2025-02 | Added BOOTSEL button for UF2 bootloader |
+| 2.5 | 2025-02 | Added L2 (3.3µH) and C_DVDD (1µF) for RP2350 internal regulator |
 
 ---
 
