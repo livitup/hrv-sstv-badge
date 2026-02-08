@@ -19,6 +19,7 @@ dist/
 # KiCAD backup and temporary files
 *.bak
 *.bck
+*-backups/
 *-cache.lib
 *-rescue.lib
 *.tmp
@@ -36,6 +37,7 @@ fp-info-cache
 *.pro.user
 *.kicad_pro.user
 **/[#]auto_saved_files[#]
+*.lck
 
 # 3D model cache
 *.3dshapes/
