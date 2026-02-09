@@ -22,7 +22,7 @@ This document tracks the design and implementation status for all badge subsyste
 | Power (TPS63001) | ✓ | ✓ | | |
 | Load Switch (TPS22919) | ✓ | ✓ | | |
 | Battery Charger (MCP73871) | ✓ | ✓ | | |
-| Fuel Gauge (LC709203F) | ✓ | | | |
+| Fuel Gauge (LC709203F) | ✓ | ✓ | | |
 | Audio TX (PCM5102A) | ✓ | | | |
 | Audio RX (ADC) | ✓ | | | |
 | Display (ILI9341) | ✓ | | | |
@@ -64,7 +64,7 @@ This document tracks the design and implementation status for all badge subsyste
 - [x] Thermistor shared between charger and fuel gauge
 - [x] JST-PH battery connector specified
 - [x] **KiCad: MCP73871 charger complete** (VBUS input, battery connector, PROG resistors, THERM)
-- [ ] KiCad: LC709203F fuel gauge
+- [x] **KiCad: LC709203F fuel gauge complete** (VSYS power, shared thermistor, I2C bus, decoupling cap)
 - [ ] Verify MCP73871 QFN-20 footprint in KiCad
 - [ ] Verify LC709203F WDFN-8 footprint in KiCad
 - [ ] Source 10K NTC thermistor (B=3380)
