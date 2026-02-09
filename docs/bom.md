@@ -70,7 +70,7 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 
 | Ref | Qty | Value | Package | Assembly | Notes |
 |-----|-----|-------|---------|----------|-------|
-| J_USB | 1 | USB4125-GF-A | TH 16-pin | User | GCT through-hole USB-C |
+| J_USB | 1 | USB4105-GF-A | SMT+TH hybrid | Fab | GCT USB-C with D+/D- (USB 2.0) |
 | U_ESD1 | 1 | USBLC6-2SC6 | SOT-23-6 | Fab | D+/D- ESD protection |
 | D_VBUS | 1 | PESD5V0S1BL | SOD-323 | Fab | VBUS surge protection |
 | R_CC1, R_CC2 | 2 | 5.1kΩ | 0402 | Fab | USB sink identification |

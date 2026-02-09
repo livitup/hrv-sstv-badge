@@ -18,10 +18,10 @@ This document tracks the design and implementation status for all badge subsyste
 
 | Subsystem | Design | KiCad | Sourced | Tested |
 |-----------|--------|-------|---------|--------|
-| USB-C | ✓ | | | |
+| USB-C | ✓ | ✓ | | |
 | Power (TPS63001) | ✓ | | | |
 | Load Switch (TPS22919) | ✓ | | | |
-| Battery Charger (MCP73871) | ✓ | | | |
+| Battery Charger (MCP73871) | ✓ | ✓ | | |
 | Fuel Gauge (LC709203F) | ✓ | | | |
 | Audio TX (PCM5102A) | ✓ | | | |
 | Audio RX (ADC) | ✓ | | | |
@@ -41,9 +41,10 @@ This document tracks the design and implementation status for all badge subsyste
 
 ### USB-C Interface
 - [x] Circuit design complete (through-hole connector, ESD protection)
-- [x] Component selection: USB4125-GF-A, USBLC6-2SC6, PESD5V0S1BL
+- [x] Component selection: USB4105-GF-A (USB 2.0 with D+/D-), USBLC6-2SC6, PESD5V0S1BL
 - [x] CC resistors for sink identification (5.1kΩ)
-- [ ] Verify USB4125-GF-A footprint in KiCad
+- [x] **KiCad: USB-C schematic complete** (connector, CC resistors, ESD protection, D+/D- to MCU)
+- [ ] Verify USB4105-GF-A footprint in KiCad
 - [ ] Test USB data connection with RP2350 bootloader
 - [ ] Test charging with various USB sources
 
@@ -60,6 +61,8 @@ This document tracks the design and implementation status for all badge subsyste
 - [x] LC709203F fuel gauge circuit designed (I2C interface)
 - [x] Thermistor shared between charger and fuel gauge
 - [x] JST-PH battery connector specified
+- [x] **KiCad: MCP73871 charger complete** (VBUS input, battery connector, PROG resistors, THERM)
+- [ ] KiCad: LC709203F fuel gauge
 - [ ] Verify MCP73871 QFN-20 footprint in KiCad
 - [ ] Verify LC709203F WDFN-8 footprint in KiCad
 - [ ] Source 10K NTC thermistor (B=3380)
@@ -141,10 +144,10 @@ This document tracks the design and implementation status for all badge subsyste
 - [x] I2C pullups specified (4.7kΩ on SDA/SCL for shared bus)
 - [x] Internal voltage regulator: L2 (3.3µH) inductor, C_DVDD (1µF), power pin assignments
 - [x] **KiCad: MCU power section entered** (VDD pins, decoupling caps, internal regulator)
-- [ ] KiCad: Crystal oscillator circuit
-- [ ] KiCad: QSPI flash circuit
-- [ ] KiCad: BOOTSEL button
-- [ ] KiCad: I2C pullups
+- [x] KiCad: Crystal oscillator circuit
+- [x] KiCad: QSPI flash circuit
+- [x] KiCad: BOOTSEL button
+- [x] KiCad: I2C pullups (with global labels)
 - [ ] Source RP2350B and verify QFN-80 footprint
 - [ ] Verify crystal footprint (3215) and load cap values
 - [ ] Verify flash footprint (SOIC-8)
@@ -213,7 +216,7 @@ This document tracks the design and implementation status for all badge subsyste
 | Electrical design complete | ✓ | Done |
 | BOM finalized | ✓ | Done |
 | PCB outline designed | ✓ | Done |
-| KiCad schematic | | **In progress** (MCU power done) |
+| KiCad schematic | | **In progress** (MCU done, USB-C done, charger done) |
 | KiCad layout | | Not started |
 | Gerbers generated | | Not started |
 | Prototype ordered | | Not started |

@@ -304,7 +304,7 @@ The USB-C connector provides two functions:
 
 | Component | Part Number | Package | Purpose | Est. Cost |
 |-----------|-------------|---------|---------|-----------|
-| USB-C Receptacle | USB4125-GF-A (GCT) | Through-hole | Power + data connector | ~$0.80 |
+| USB-C Receptacle | USB4105-GF-A (GCT) | SMT+TH hybrid | Power + data connector (USB 2.0) | ~$1.00 |
 | VBUS TVS | PESD5V0S1BL | SOD-323 | Surge/ESD protection on 5V | ~$0.10 |
 | Data ESD | USBLC6-2SC6 | SOT-23-6 | TVS array for D+/D- | ~$0.20 |
 | CC Resistors | 2× 5.1kΩ | 0402 | UFP (sink) identification | ~$0.02 |

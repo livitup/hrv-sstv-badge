@@ -5,4 +5,5 @@
   (lib (name "TPS22919DCKT")(type "KiCad")(uri "${KIPRJMOD}/symbols/TPS22919DCKT.kicad_sym")(options "")(descr ""))
   (lib (name "TPS63001DRCR")(type "KiCad")(uri "${KIPRJMOD}/symbols/TPS63001DRCR.kicad_sym")(options "")(descr ""))
   (lib (name "VHF_UHF_Modules")(type "KiCad")(uri "${KIPRJMOD}/symbols/VHF_UHF_Modules.kicad_sym")(options "")(descr ""))
+  (lib (name "USB4105-GF-A")(type "KiCad")(uri "${KIPRJMOD}/symbols/USB4105-GF-A.kicad_sym")(options "")(descr ""))
 )
