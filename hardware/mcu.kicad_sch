@@ -2876,6 +2876,12 @@
 		(uuid "a6412f4f-7381-41c7-b2df-3005c603cc34")
 	)
 	(junction
+		(at 132.08 60.96)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "abb0c2a0-ee58-4028-9306-096426424fe6")
+	)
+	(junction
 		(at 78.74 35.56)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -2892,6 +2898,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "d97033e8-d690-4b49-8fba-0656228c9a6c")
+	)
+	(junction
+		(at 123.19 58.42)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "e55911e2-a2b9-493e-9a74-41a7b9653636")
 	)
 	(junction
 		(at 85.09 35.56)
@@ -3573,6 +3585,16 @@
 	)
 	(wire
 		(pts
+			(xy 132.08 60.96) (xy 143.51 60.96)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9971d82d-7b30-4f5e-9556-4fe45ccb2351")
+	)
+	(wire
+		(pts
 			(xy 123.19 40.64) (xy 123.19 44.45)
 		)
 		(stroke
@@ -3843,6 +3865,16 @@
 	)
 	(wire
 		(pts
+			(xy 123.19 58.42) (xy 160.02 58.42)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "dd5568ef-7e24-43bd-b87d-7a70a25baa8b")
+	)
+	(wire
+		(pts
 			(xy 67.31 80.01) (xy 67.31 99.06)
 		)
 		(stroke
@@ -3891,25 +3923,49 @@
 		)
 		(uuid "f8064839-df82-44e4-96ae-fe34496ed11e")
 	)
-	(label "I2C_SCL"
-		(at 128.27 53.34 0)
+	(global_label "I2C_SCL"
+		(shape input)
+		(at 143.51 60.96 0)
+		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify left bottom)
+			(justify left)
 		)
-		(uuid "42df6185-aa27-4fee-a0fa-6baf65ee00f5")
+		(uuid "0f99dae3-9099-4a1b-9640-43e2dff16510")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 154.0547 60.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
 	)
-	(label "I2C_SDA"
-		(at 119.38 53.34 0)
+	(global_label "I2C_SDA"
+		(shape input)
+		(at 160.02 58.42 0)
+		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify left bottom)
+			(justify left)
 		)
-		(uuid "f3b67d75-ea47-4589-ac73-451bb830487d")
+		(uuid "157bf8c4-10de-459a-9251-5b2bd84f777b")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 170.6252 58.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
 	)
 	(symbol
 		(lib_id "Device:R")

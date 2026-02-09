@@ -19,7 +19,7 @@ This document tracks the design and implementation status for all badge subsyste
 | Subsystem | Design | KiCad | Sourced | Tested |
 |-----------|--------|-------|---------|--------|
 | USB-C | ✓ | ✓ | | |
-| Power (TPS63001) | ✓ | | | |
+| Power (TPS63001) | ✓ | ✓ | | |
 | Load Switch (TPS22919) | ✓ | | | |
 | Battery Charger (MCP73871) | ✓ | ✓ | | |
 | Fuel Gauge (LC709203F) | ✓ | | | |
@@ -52,6 +52,8 @@ This document tracks the design and implementation status for all badge subsyste
 - [x] TPS63001 buck-boost circuit designed (3.3V output)
 - [x] TPS22919 load switch circuit designed (SA818 power control)
 - [x] Inductor selected: 1µH (Coilcraft XAL3030 or equivalent)
+- [x] **KiCad: TPS63001 complete** (VSYS input, +3.3V output, inductor, caps)
+- [ ] KiCad: TPS22919 load switch
 - [ ] Verify TPS63001 QFN-10 footprint in KiCad
 - [ ] Verify TPS22919 SOT-23-5 footprint in KiCad
 - [ ] Prototype and validate power system across full battery range
@@ -216,7 +218,7 @@ This document tracks the design and implementation status for all badge subsyste
 | Electrical design complete | ✓ | Done |
 | BOM finalized | ✓ | Done |
 | PCB outline designed | ✓ | Done |
-| KiCad schematic | | **In progress** (MCU done, USB-C done, charger done) |
+| KiCad schematic | | **In progress** (MCU, USB-C, charger, TPS63001 done) |
 | KiCad layout | | Not started |
 | Gerbers generated | | Not started |
 | Prototype ordered | | Not started |

@@ -38,6 +38,7 @@ fp-info-cache
 *.kicad_pro.user
 **/[#]auto_saved_files[#]
 *.lck
+_autosave*
 
 # 3D model cache
 *.3dshapes/

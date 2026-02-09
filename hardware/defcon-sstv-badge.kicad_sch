@@ -6,6 +6,48 @@
 	(paper "A4")
 	(lib_symbols)
 	(sheet
+		(at -7.62 55.88)
+		(size 12.7 3.81)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "17cd243b-0ed3-4c80-b4b5-c33d52f301e8")
+		(property "Sheetname" "Power"
+			(at -7.62 55.1684 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "power.kicad_sch"
+			(at -7.62 60.2746 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "defcon-sstv-badge"
+				(path "/6bfeada4-0da3-4bdd-af4a-70929e466b35"
+					(page "3")
+				)
+			)
+		)
+	)
+	(sheet
 		(at -7.62 40.64)
 		(size 12.7 3.81)
 		(exclude_from_sim no)
