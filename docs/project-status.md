@@ -23,8 +23,8 @@ This document tracks the design and implementation status for all badge subsyste
 | Load Switch (TPS22919) | ✓ | ✓ | | |
 | Battery Charger (MCP73871) | ✓ | ✓ | | |
 | Fuel Gauge (LC709203F) | ✓ | ✓ | | |
-| Audio TX (PCM5102A) | ✓ | 🔨 | | |
-| Audio RX (ADC) | ✓ | | | |
+| Audio TX (PCM5102A) | ✓ | ✓ | | |
+| Audio RX (ADC) | ✓ | ✓ | | |
 | Display (ILI9341) | ✓ | | | |
 | Camera (OV2640) | ✓ | | | |
 | MCU (RP2350B) | ✓ | 🔨 | | |
@@ -92,9 +92,9 @@ This document tracks the design and implementation status for all badge subsyste
 - [x] RX anti-alias filter and DC blocking designed
 - [x] Assign RP2350 GPIO pins for I2S (GPIO24, 25, 29: BCK, LRCK, DIN)
 - [x] Assign RP2350 ADC GPIO pin for RX audio (GPIO26: ADC0)
-- 🔨 **KiCad: PCM5102A DAC entered** (I2S, power, charge pump caps)
-- [ ] KiCad: TX output filter (attenuator + LPF + DC block)
-- [ ] KiCad: RX input filter (DC block + anti-alias + bias)
+- [x] **KiCad: PCM5102A DAC complete** (I2S, power, charge pump caps)
+- [x] **KiCad: TX output filter complete** (R5/R6 attenuator, C24 LPF, C25 DC block → MIC+/MIC-)
+- [x] **KiCad: RX input filter complete** (C26 DC block, R7/R8/C27 anti-alias, R9/R10 bias → RX_AUDIO)
 - [ ] Verify PCM5102A TSSOP-20 footprint in KiCad
 - [ ] Test TX audio quality with oscilloscope
 - [ ] Test RX audio chain and verify bias levels
