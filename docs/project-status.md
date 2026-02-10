@@ -1,6 +1,6 @@
 # Project Status — DEFCON SSTV Badge
 
-**Last Updated:** 2026-02-07
+**Last Updated:** 2026-02-10
 
 This document tracks the design and implementation status for all badge subsystems.
 
@@ -29,8 +29,8 @@ This document tracks the design and implementation status for all badge subsyste
 | Camera (OV2640) | ✓ | ✓ | | |
 | MCU (RP2350B) | ✓ | 🔨 | | |
 | Debug (Tag-Connect) | ✓ | | | |
-| User Controls | ✓ | | | |
-| Blinky LEDs (WS2812B) | ✓ | | | |
+| User Controls | ✓ | ✓ | | |
+| Blinky LEDs (WS2812B) | ✓ | ✓ | | |
 | SAO Connectors | ✓ | | | |
 | SA818 Carrier | ✓ | | | |
 | PCB Outline | ✓ | | | |
@@ -129,13 +129,14 @@ This document tracks the design and implementation status for all badge subsyste
 - [x] D-pad circuit designed (5× tactile switches, active-low with pullups)
 - [x] Photo button circuit designed (12mm tactile)
 - [x] Airplane mode switch circuit designed (slide SPDT)
-- [x] PWR LED circuit designed (RGB common cathode with current-limit resistors)
+- [x] PWR LED circuit designed (RGB common-anode APFA3010LSEEZGKQBKC with current-limit resistors)
 - [x] Assign GPIO pins for D-pad, photo, airplane (GPIO37-43)
 - [x] Assign GPIO pins for PWR LED (GPIO44-46: R, G, B)
 - [x] Assign GPIO pin for LED_DATA (GPIO47)
+- [x] **KiCad: User Controls complete** (7× switches, PWR LED with resistors, all global labels)
 - [ ] Source tactile switches (6×6mm for D-pad, 12mm for photo)
 - [ ] Source slide switch for airplane mode
-- [ ] Source traditional RGB LED (3528 or 5050 common cathode)
+- [ ] Source RGB LED (Kingbright APFA3010LSEEZGKQBKC common-anode)
 - [ ] Implement PWM control for PWR LED
 - [ ] Implement battery status color mapping from LC709203 readings
 - [ ] Implement software debounce in firmware
@@ -178,6 +179,7 @@ This document tracks the design and implementation status for all badge subsyste
 - [x] Animation colors specified (amber, green, light blue, white, soft blue)
 - [x] PCB outline designed: Simpsons TV shape, 120×95mm body + 50mm ears
 - [x] LED placement defined: 5 per ear (10-12mm spacing), 16 border (12-15mm spacing)
+- [x] **KiCad: WS2812B chain complete** (26 LEDs with 100nF bypass caps, LED_DATA input, organized by section)
 - [ ] Create PCB outline in KiCad (edge cuts)
 - [ ] Route LED chain on PCB (ears + border)
 - [ ] Implement PIO driver for 26-LED chain
@@ -223,7 +225,7 @@ This document tracks the design and implementation status for all badge subsyste
 | Electrical design complete | ✓ | Done |
 | BOM finalized | ✓ | Done |
 | PCB outline designed | ✓ | Done |
-| KiCad schematic | | **In progress** (MCU, USB-C, charger, TPS63001 done) |
+| KiCad schematic | | **In progress** (Power, Audio, Display/Camera, User Controls done; MCU in progress) |
 | KiCad layout | | Not started |
 | Gerbers generated | | Not started |
 | Prototype ordered | | Not started |

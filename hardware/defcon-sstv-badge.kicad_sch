@@ -100,6 +100,48 @@
 		)
 	)
 	(sheet
+		(at 80.264 92.202)
+		(size 12.7 3.81)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "52eb5196-da8e-430a-af5e-431a5c1a75a9")
+		(property "Sheetname" "Switches"
+			(at 80.264 91.4904 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "switches.kicad_sch"
+			(at 80.264 96.5966 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "defcon-sstv-badge"
+				(path "/6bfeada4-0da3-4bdd-af4a-70929e466b35"
+					(page "6")
+				)
+			)
+		)
+	)
+	(sheet
 		(at 79.756 70.104)
 		(size 12.7 3.81)
 		(exclude_from_sim no)

@@ -186,10 +186,12 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 
 | Ref | Qty | Value | Package | Assembly | Notes |
 |-----|-----|-------|---------|----------|-------|
-| LED_PWR | 1 | RGB LED | 3528/5050 | Fab | Common cathode |
-| R_PWR_R | 1 | 220Ω | 0603 | Fab | Red current limit |
-| R_PWR_G | 1 | 100Ω | 0603 | Fab | Green current limit |
-| R_PWR_B | 1 | 100Ω | 0603 | Fab | Blue current limit |
+| LED_PWR | 1 | APFA3010LSEEZGKQBKC | PLCC-4 (3.0×1.0mm) | Fab | Kingbright RGB LED, **common-anode** |
+| R_PWR_R | 1 | 220Ω | 0603 | Fab | Red cathode current limit |
+| R_PWR_G | 1 | 100Ω | 0603 | Fab | Green cathode current limit |
+| R_PWR_B | 1 | 100Ω | 0603 | Fab | Blue cathode current limit |
+
+**Note:** Common-anode LED — anode connects to +3.3V, cathodes through resistors to GPIOs. Firmware uses inverted logic: GPIO LOW = LED on.
 
 **Subtotal:** ~$1.50
 

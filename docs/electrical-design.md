@@ -2307,31 +2307,39 @@ A traditional RGB LED (not WS2812B) provides battery status indication, visually
 - **Reliable** — direct GPIO drive, no protocol timing required
 - **Always visible** — battery status is critical info, separate from animations
 
-**PWR LED Circuit (Common Cathode RGB):**
+**PWR LED Circuit (Common Anode RGB):**
+
+**Part:** Kingbright APFA3010LSEEZGKQBKC (PLCC-4, 3.0×1.0mm)
 
 ```
-    RP2350
-    ┌───────┐
-    │       │      R_R (220Ω)
-    │ GPIO  ├────[████]────┐
-    │(PWR_R)│              │
-    │       │      R_G (100Ω)        RGB LED
-    │ GPIO  ├────[████]────┤──────── (common cathode)
-    │(PWR_G)│              │              │
-    │       │      R_B (100Ω)             │
-    │ GPIO  ├────[████]────┘              │
-    │(PWR_B)│                             │
-    │       │                            GND
-    │   GND ├─────────────────────────────┘
+                         +3.3V
+                           │
+                      LED Anode (A)
+                           │
+                   ┌───────┼───────┐
+                   │       │       │
+                   R       G       B   (cathodes)
+                   │       │       │
+    RP2350      [220Ω]  [100Ω]  [100Ω]
+    ┌───────┐      │       │       │
+    │ GPIO  ├──────┘       │       │
+    │(PWR_R)│              │       │
+    │       │              │       │
+    │ GPIO  ├──────────────┘       │
+    │(PWR_G)│                      │
+    │       │                      │
+    │ GPIO  ├──────────────────────┘
+    │(PWR_B)│
     └───────┘
 
-    PWM on each channel enables color mixing and brightness control
+    Logic is INVERTED: GPIO LOW = LED on, GPIO HIGH = LED off
+    PWM duty cycle inverted for brightness control
 ```
 
 **Resistor Values:**
-- Red: 220Ω (Vf ~2.0V, 5mA)
-- Green: 100Ω (Vf ~3.0V, 3mA)
-- Blue: 100Ω (Vf ~3.0V, 3mA)
+- Red: 220Ω (Vf ~2.0V, ~5mA)
+- Green: 100Ω (Vf ~3.0V, ~3mA)
+- Blue: 100Ω (Vf ~3.0V, ~3mA)
 
 **Battery Status Colors:**
 
@@ -2341,6 +2349,8 @@ A traditional RGB LED (not WS2812B) provides battery status indication, visually
 | Medium | Yellow | 255 | 200 | 0 | 3.5V - 3.7V | 20-50% |
 | Low | Red | 255 | 0 | 0 | 3.3V - 3.5V | 10-20% |
 | Critical | Blinking Red | 255 | 0 | 0 | <3.3V | <10% |
+
+*Note: R/G/B values are logical brightness (0=off, 255=full). Firmware inverts these for common-anode LED (PWM 255 → GPIO LOW → LED on).*
 
 The LC709203 fuel gauge provides accurate state-of-charge readings via I2C.
 
@@ -2452,10 +2462,10 @@ The LC709203 fuel gauge provides accurate state-of-charge readings via I2C.
 | SW_UP, SW_DOWN, SW_LEFT, SW_RIGHT, SW_CENTER | Tactile 6×6mm | Through-hole | User | D-pad switches |
 | SW_PHOTO | Tactile 12mm | Through-hole | User | Photo button (larger) |
 | SW_AIRPLANE | Slide switch SPDT | Through-hole | User | Airplane mode |
-| LED_PWR | RGB LED | 3528 or 5050 | Fab | Common cathode RGB for battery status |
-| R_PWR_R | 220Ω | 0603 | Fab | PWR LED red current limit |
-| R_PWR_G | 100Ω | 0603 | Fab | PWR LED green current limit |
-| R_PWR_B | 100Ω | 0603 | Fab | PWR LED blue current limit |
+| LED_PWR | APFA3010LSEEZGKQBKC | PLCC-4 | Fab | Kingbright RGB, common-anode |
+| R_PWR_R | 220Ω | 0603 | Fab | PWR LED red cathode current limit |
+| R_PWR_G | 100Ω | 0603 | Fab | PWR LED green cathode current limit |
+| R_PWR_B | 100Ω | 0603 | Fab | PWR LED blue cathode current limit |
 | WS2812B (×26) | WS2812B | 5050 SMD | Fab | Blinky chain (see Blinky section) |
 | C_LED (×26) | 100nF | 0402 | Fab | WS2812B bypass capacitors |
 
