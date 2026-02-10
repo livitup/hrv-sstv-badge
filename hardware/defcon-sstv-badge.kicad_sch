@@ -5,6 +5,16 @@
 	(uuid "6bfeada4-0da3-4bdd-af4a-70929e466b35")
 	(paper "A4")
 	(lib_symbols)
+	(wire
+		(pts
+			(xy 78.74 57.15) (xy 80.01 57.15)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "77b2d4e8-661d-41ad-8bde-cd1e08af74fa")
+	)
 	(sheet
 		(at 80.01 57.658)
 		(size 12.7 3.81)
@@ -90,7 +100,7 @@
 		)
 	)
 	(sheet
-		(at 80.518 71.12)
+		(at 79.756 70.104)
 		(size 12.7 3.81)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -106,7 +116,7 @@
 		)
 		(uuid "93aa96ae-ec45-4b38-a4d0-fe0c2fa30fed")
 		(property "Sheetname" "Audio"
-			(at 80.518 70.4084 0)
+			(at 79.756 69.3924 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -115,7 +125,7 @@
 			)
 		)
 		(property "Sheetfile" "audio.kicad_sch"
-			(at 80.518 75.5146 0)
+			(at 79.756 74.4986 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -127,6 +137,48 @@
 			(project "defcon-sstv-badge"
 				(path "/6bfeada4-0da3-4bdd-af4a-70929e466b35"
 					(page "4")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 80.01 82.042)
+		(size 12.7 3.81)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "efff4478-0c2e-4f80-ace8-5815c1f5ee8d")
+		(property "Sheetname" "Camera-Display"
+			(at 80.01 81.3304 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "camera-display.kicad_sch"
+			(at 80.01 86.4366 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "defcon-sstv-badge"
+				(path "/6bfeada4-0da3-4bdd-af4a-70929e466b35"
+					(page "5")
 				)
 			)
 		)

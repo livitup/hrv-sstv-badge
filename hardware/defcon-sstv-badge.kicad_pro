@@ -424,6 +424,10 @@
     [
       "93aa96ae-ec45-4b38-a4d0-fe0c2fa30fed",
       "Audio"
+    ],
+    [
+      "efff4478-0c2e-4f80-ace8-5815c1f5ee8d",
+      "Camera-Display"
     ]
   ],
   "text_variables": {}

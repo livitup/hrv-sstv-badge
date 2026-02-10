@@ -25,8 +25,8 @@ This document tracks the design and implementation status for all badge subsyste
 | Fuel Gauge (LC709203F) | ✓ | ✓ | | |
 | Audio TX (PCM5102A) | ✓ | ✓ | | |
 | Audio RX (ADC) | ✓ | ✓ | | |
-| Display (ILI9341) | ✓ | | | |
-| Camera (OV2640) | ✓ | | | |
+| Display (ILI9341) | ✓ | ✓ | | |
+| Camera (OV2640) | ✓ | ✓ | | |
 | MCU (RP2350B) | ✓ | 🔨 | | |
 | Debug (Tag-Connect) | ✓ | | | |
 | User Controls | ✓ | | | |
@@ -105,6 +105,7 @@ This document tracks the design and implementation status for all badge subsyste
 - [x] Backlight circuit designed (2N7002 MOSFET, PWM control)
 - [x] Assign RP2350 SPI pins for display (GPIO2-4: SCK, MOSI, MISO)
 - [x] Assign GPIO pins (GPIO5-7: CS/DC/RST, GPIO22: BL, GPIO23: SD_CS)
+- [x] **KiCad: Display module complete** (14-pin connector, SPI bus, backlight MOSFET circuit)
 - [ ] Source specific ILI9341 2.4" module (verify pinout, SD slot)
 - [ ] Verify backlight circuit polarity for chosen module
 - [ ] Test SPI communication at various clock speeds
@@ -116,6 +117,7 @@ This document tracks the design and implementation status for all badge subsyste
 - [x] Assign RP2350B GPIO pins for DVP (GPIO8-19: D0-D7, PCLK, VSYNC, HREF, XCLK)
 - [x] CAM_RST and CAM_PWDN: tied with resistors (not GPIO) to free pins for SAO
 - [x] XCLK generation: 20MHz via PWM
+- [x] **KiCad: Camera module complete** (18-pin connector, DVP data/control, I2C, RST/PWDN resistors)
 - [ ] Source OV2640 DVP module with 2.54mm pin header
 - [ ] Verify module pinout matches design
 - [ ] Implement PIO program for DVP capture
