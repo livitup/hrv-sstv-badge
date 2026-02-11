@@ -1714,7 +1714,7 @@ The original design mentioned RP2350 generically. After tallying GPIO requiremen
 | SRAM | 520KB |
 | Flash | External SPI (16MB in BOM) |
 | PIO | 3× PIO blocks, 12 state machines |
-| ADC | 4-channel 12-bit (GPIO26-29) |
+| ADC | 8-channel 12-bit (GPIO40-47) |
 | PWM | 12 channels |
 
 ### GPIO Pin Assignment
@@ -1782,8 +1782,10 @@ SAO I2C shared on GPIO0/1. VCC=3.3V, GND from power rails.
 |------|----------|-------|
 | 24 | I2S_BCK | Bit clock to PCM5102A |
 | 25 | I2S_LRCK | Word select (L/R clock) |
-| 26 | RX_AUDIO | ADC input from SA818 SPK (ADC0) |
 | 29 | I2S_DIN | Data to PCM5102A |
+| 40 | RX_AUDIO | ADC input from SA818 SPK (ADC0) |
+
+**Note:** RP2350B ADC channels are on GPIO40-47 (not GPIO26-29 like RP2040).
 
 **SA818 Interface:**
 
@@ -1801,10 +1803,10 @@ SAO I2C shared on GPIO0/1. VCC=3.3V, GND from power rails.
 
 | GPIO | Function | Notes |
 |------|----------|-------|
+| 26 | DPAD_RIGHT | Active low, internal pullup (moved from GPIO40 for ADC) |
 | 37 | DPAD_UP | Active low, internal pullup |
 | 38 | DPAD_DOWN | Active low, internal pullup |
 | 39 | DPAD_LEFT | Active low, internal pullup |
-| 40 | DPAD_RIGHT | Active low, internal pullup |
 | 41 | DPAD_CENTER | Active low, internal pullup |
 | 42 | PHOTO | Active low, internal pullup |
 | 43 | AIRPLANE | Active low, internal pullup |
@@ -1828,11 +1830,13 @@ GPIO 8-19:  Camera DVP (D0-D7, PCLK, VSYNC, HREF, XCLK)
 GPIO 20-21: SAO1 GPIOs
 GPIO 22-23: Display BL + SD_CS
 GPIO 24-25: Audio I2S (BCK, LRCK)
-GPIO 26:    RX Audio ADC
+GPIO 26:    DPAD_RIGHT (moved here to free GPIO40 for ADC)
 GPIO 27-28: SAO2 GPIOs
 GPIO 29:    Audio I2S (DIN)
 GPIO 30-36: SA818 (UART + control)
-GPIO 37-43: User controls (D-pad, buttons)
+GPIO 37-39: User controls (DPAD UP/DOWN/LEFT)
+GPIO 40:    RX Audio ADC (ADC0)
+GPIO 41-43: User controls (DPAD CENTER, PHOTO, AIRPLANE)
 GPIO 44-46: PWR LED (RGB)
 GPIO 47:    LED_DATA (WS2812B blinky)
 

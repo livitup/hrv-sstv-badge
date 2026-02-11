@@ -271,11 +271,19 @@ defcon-sstv-badge/
 #define DISP_BL          22   // PWM backlight
 #define SD_CS            23
 
-// Audio
+// Audio (I2S for TX)
 #define I2S_BCK          24
 #define I2S_LRCK         25
-#define RX_AUDIO         26   // ADC0
 #define I2S_DIN          29
+
+// User controls (active-low switches)
+#define DPAD_UP          37
+#define DPAD_DOWN        38
+#define DPAD_LEFT        39
+#define DPAD_RIGHT       26   // Moved from GPIO40 (GPIO40 needed for ADC)
+#define DPAD_CENTER      41
+#define PHOTO            42
+#define AIRPLANE         43
 
 // SA818 (GPIO30-36)
 #define SA818_TX         30
@@ -286,14 +294,8 @@ defcon-sstv-badge/
 #define SA818_SQ         35
 #define SA818_ID         36
 
-// User controls (GPIO37-43)
-#define DPAD_UP          37
-#define DPAD_DOWN        38
-#define DPAD_LEFT        39
-#define DPAD_RIGHT       40
-#define DPAD_CENTER      41
-#define PHOTO            42
-#define AIRPLANE         43
+// ADC input (RP2350B: ADC channels are GPIO40-47, NOT GPIO26-29 like RP2040)
+#define RX_AUDIO         40   // ADC0 - RX audio from SA818
 
 // LEDs (GPIO44-47)
 #define PWR_R            44

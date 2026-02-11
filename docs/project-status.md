@@ -1,6 +1,6 @@
 # Project Status — DEFCON SSTV Badge
 
-**Last Updated:** 2026-02-10
+**Last Updated:** 2026-02-11
 
 This document tracks the design and implementation status for all badge subsystems.
 
@@ -27,7 +27,7 @@ This document tracks the design and implementation status for all badge subsyste
 | Audio RX (ADC) | ✓ | ✓ | | |
 | Display (ILI9341) | ✓ | ✓ | | |
 | Camera (OV2640) | ✓ | ✓ | | |
-| MCU (RP2350B) | ✓ | 🔨 | | |
+| MCU (RP2350B) | ✓ | ✓ | | |
 | Debug (Tag-Connect) | ✓ | | | |
 | User Controls | ✓ | ✓ | | |
 | Blinky LEDs (WS2812B) | ✓ | ✓ | | |
@@ -156,6 +156,7 @@ This document tracks the design and implementation status for all badge subsyste
 - [x] KiCad: QSPI flash circuit
 - [x] KiCad: BOOTSEL button
 - [x] KiCad: I2C pullups (with global labels)
+- [x] **KiCad: MCU sheet complete** (all 48 GPIOs labeled, USB, debug, flash, crystal)
 - [ ] Source RP2350B and verify QFN-80 footprint
 - [ ] Verify crystal footprint (3215) and load cap values
 - [ ] Verify flash footprint (SOIC-8)
@@ -225,7 +226,7 @@ This document tracks the design and implementation status for all badge subsyste
 | Electrical design complete | ✓ | Done |
 | BOM finalized | ✓ | Done |
 | PCB outline designed | ✓ | Done |
-| KiCad schematic | | **In progress** (Power, Audio, Display/Camera, User Controls done; MCU in progress) |
+| KiCad schematic | | **In progress** (Power, Audio, Display/Camera, User Controls, MCU done; Connectors remaining) |
 | KiCad layout | | Not started |
 | Gerbers generated | | Not started |
 | Prototype ordered | | Not started |
