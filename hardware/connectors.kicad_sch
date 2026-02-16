@@ -1670,10 +1670,28 @@
 		(uuid "0d3e6aa5-4ded-4b56-8d06-89716fcc8b36")
 	)
 	(junction
+		(at 219.71 29.21)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "1cc67d25-6eb3-48f6-8c6f-c4dcf3b3882a")
+	)
+	(junction
 		(at 93.98 86.36)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "2e881e0c-238c-4b71-a903-3b35edf2089f")
+	)
+	(junction
+		(at 241.3 29.21)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "428db84d-6089-401c-bce2-204f282640b4")
+	)
+	(junction
+		(at 217.17 29.21)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "44cd0039-9fb2-4b76-93c7-a91c9a408a5b")
 	)
 	(junction
 		(at 81.28 21.59)
@@ -1688,6 +1706,18 @@
 		(uuid "5c0c052a-8412-4070-a255-e75c06f9e4bc")
 	)
 	(junction
+		(at 214.63 29.21)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "5dae949d-acb1-43e5-9bc5-1704a3b6273d")
+	)
+	(junction
+		(at 238.76 29.21)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "6955ed8e-5815-4975-829d-fb69642f0614")
+	)
+	(junction
 		(at 113.03 30.48)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -1698,6 +1728,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "8827b5b1-9421-4939-9e3b-311757be7da5")
+	)
+	(junction
+		(at 190.5 30.48)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "be2689c6-b3c6-458e-ac56-f0c81a5d9c69")
 	)
 	(junction
 		(at 39.37 100.33)
@@ -1730,28 +1766,8 @@
 		(uuid "f116f762-b22b-4356-b6ba-2a1c1f04e7d7")
 	)
 	(no_connect
-		(at 214.63 29.21)
-		(uuid "154aaf51-1665-4408-b685-e3d3e62f8f14")
-	)
-	(no_connect
-		(at 217.17 29.21)
-		(uuid "1c23392f-e46f-40b5-bc4e-6d4443c5b404")
-	)
-	(no_connect
-		(at 243.84 29.21)
-		(uuid "20b1aa87-e5d1-4dc9-b61a-485f89068c77")
-	)
-	(no_connect
 		(at 137.16 58.42)
 		(uuid "25822c25-5b68-42dc-9629-1e2e3e96b728")
-	)
-	(no_connect
-		(at 241.3 29.21)
-		(uuid "2c6928ce-d4f9-488a-af73-f8d28c8e2c94")
-	)
-	(no_connect
-		(at 238.76 29.21)
-		(uuid "31bf53a7-bbfa-4975-aa04-55acd33f30be")
 	)
 	(no_connect
 		(at 203.2 57.15)
@@ -1764,10 +1780,6 @@
 	(no_connect
 		(at 185.42 57.15)
 		(uuid "7d49c060-5287-4cfd-9a9e-5cc16307a07b")
-	)
-	(no_connect
-		(at 219.71 29.21)
-		(uuid "d0915a9a-aa5b-4b2f-a532-a1516c7bb378")
 	)
 	(wire
 		(pts
@@ -1811,6 +1823,16 @@
 	)
 	(wire
 		(pts
+			(xy 219.71 29.21) (xy 217.17 29.21)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "16ebfdc4-f373-41f0-93bb-bdbe3c284e82")
+	)
+	(wire
+		(pts
 			(xy 81.28 21.59) (xy 81.28 52.07)
 		)
 		(stroke
@@ -1828,6 +1850,16 @@
 			(type default)
 		)
 		(uuid "1cfa15b5-c6a2-4378-9484-c91c8ff86f1f")
+	)
+	(wire
+		(pts
+			(xy 190.5 29.21) (xy 190.5 30.48)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "21dd7e5f-7a6b-4156-819b-918b8dcc5924")
 	)
 	(wire
 		(pts
@@ -1861,6 +1893,16 @@
 	)
 	(wire
 		(pts
+			(xy 241.3 29.21) (xy 238.76 29.21)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "53bc1fe0-1500-4e0f-b1c5-c273fb13a228")
+	)
+	(wire
+		(pts
 			(xy 170.18 48.26) (xy 170.18 21.59)
 		)
 		(stroke
@@ -1878,6 +1920,16 @@
 			(type default)
 		)
 		(uuid "5448c46c-0d84-49d0-a464-95323141fae1")
+	)
+	(wire
+		(pts
+			(xy 243.84 29.21) (xy 241.3 29.21)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5b26a838-4c56-4698-92a2-ddbd3546e40d")
 	)
 	(wire
 		(pts
@@ -1908,6 +1960,16 @@
 			(type default)
 		)
 		(uuid "7db09524-30e4-4ea1-a547-91f0fe4fe70f")
+	)
+	(wire
+		(pts
+			(xy 217.17 29.21) (xy 214.63 29.21)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8990ff28-f8cb-4b79-ab13-aa762f250f4f")
 	)
 	(wire
 		(pts
@@ -2021,6 +2083,16 @@
 	)
 	(wire
 		(pts
+			(xy 214.63 29.21) (xy 190.5 29.21)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c388bcce-66ee-44e5-b8a2-404d7b11008e")
+	)
+	(wire
+		(pts
 			(xy 161.29 30.48) (xy 173.99 30.48)
 		)
 		(stroke
@@ -2118,6 +2190,16 @@
 			(type default)
 		)
 		(uuid "f4c50059-b599-4ba3-9a0d-faa76415679e")
+	)
+	(wire
+		(pts
+			(xy 238.76 29.21) (xy 219.71 29.21)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f5a3010e-7e58-45ae-a107-b3df6251f497")
 	)
 	(global_label "SA818_ID"
 		(shape input)
@@ -3321,7 +3403,7 @@
 				)
 			)
 		)
-		(property "Value" "Mechanical only - N/C"
+		(property "Value" "Mechanical/Grounds"
 			(at 217.17 21.59 90)
 			(effects
 				(font
@@ -3585,7 +3667,7 @@
 				)
 			)
 		)
-		(property "Value" "Mechanical only - N/C"
+		(property "Value" "Mechanical/Grounds"
 			(at 241.3 21.59 90)
 			(effects
 				(font

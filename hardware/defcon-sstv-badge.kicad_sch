@@ -6,6 +6,90 @@
 	(paper "A4")
 	(lib_symbols)
 	(sheet
+		(at 81.026 123.19)
+		(size 12.7 3.81)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "086fd88a-7a04-4fa3-8910-b61b668ad84f")
+		(property "Sheetname" "SA818-U Carrier"
+			(at 81.026 122.4784 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "SA818-U_Carrier.kicad_sch"
+			(at 81.026 127.5846 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "defcon-sstv-badge"
+				(path "/6bfeada4-0da3-4bdd-af4a-70929e466b35"
+					(page "9")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 80.772 112.776)
+		(size 12.7 3.81)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "13b51c95-a7d4-458a-be44-da0982b5e764")
+		(property "Sheetname" "SA818-V Carrier"
+			(at 80.772 112.0644 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "SA818-V_Carrier.kicad_sch"
+			(at 80.772 117.1706 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "defcon-sstv-badge"
+				(path "/6bfeada4-0da3-4bdd-af4a-70929e466b35"
+					(page "8")
+				)
+			)
+		)
+	)
+	(sheet
 		(at 80.01 57.658)
 		(size 12.7 3.81)
 		(exclude_from_sim no)

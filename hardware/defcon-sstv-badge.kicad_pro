@@ -538,6 +538,14 @@
     [
       "7e9c56de-ddef-4aba-ac8d-c699010ce68c",
       "Connectors"
+    ],
+    [
+      "13b51c95-a7d4-458a-be44-da0982b5e764",
+      "SA818-V Carrier"
+    ],
+    [
+      "086fd88a-7a04-4fa3-8910-b61b668ad84f",
+      "SA818-U Carrier"
     ]
   ],
   "text_variables": {}

@@ -1,6 +1,6 @@
 # Project Status — DEFCON SSTV Badge
 
-**Last Updated:** 2026-02-14
+**Last Updated:** 2026-02-15
 
 This document tracks the design and implementation status for all badge subsystems.
 
@@ -32,7 +32,8 @@ This document tracks the design and implementation status for all badge subsyste
 | User Controls | ✓ | ✓ | | |
 | Blinky LEDs (WS2812B) | ✓ | ✓ | | |
 | SAO Connectors | ✓ | ✓ | | |
-| SA818 Carrier | ✓ | | | |
+| SA818 Carrier (VHF) | ✓ | ✓ | | |
+| SA818 Carrier (UHF) | ✓ | ✓ | | |
 | PCB Outline | ✓ | | | |
 
 ---
@@ -76,13 +77,15 @@ This document tracks the design and implementation status for all badge subsyste
 ### RF / Carrier Board
 - [x] Carrier board architecture designed (full-width overlay, front-mounted)
 - [x] 4-point mounting defined (2× 1x8 signal + 2× 1x3 mechanical)
-- [x] Header pinouts defined (J1: power/audio, J2: control/data)
-- [x] Band auto-detection via ID resistor
+- [x] Header pinouts defined (J14/J18: Power/Audio, J15/J20: Control/Data)
+- [x] Band auto-detection via ID resistor (R18: 0Ω=VHF, DNP=UHF)
 - [x] RF section on carrier only (main board has no RF)
+- [x] Mechanical headers (J16/J17, J21/J22) connected to GND for RF shielding
+- [x] **KiCad: VHF carrier complete** (U9 SA818V, J13-J17, C54-C55, R18)
+- [x] **KiCad: UHF carrier complete** (U10 SA818U, J18-J22, C56-C57, R18 DNP)
 - [ ] Verify SA818 2mm pitch footprint dimensions
 - [ ] Source appropriate stubby antennas (VHF and UHF)
 - [ ] Determine carrier PCB layers (2 or 4 layer for RF section)
-- [ ] Design carrier board in KiCad
 - [ ] Prototype carrier and validate RF performance independently
 
 ### Audio Interface
@@ -203,8 +206,8 @@ This document tracks the design and implementation status for all badge subsyste
 - [x] PCB outline designed: 120mm wide body, 50mm ears, ~140mm total height
 - [x] Component placement zones defined
 - [x] Lanyard slot specified (centered oval cutout)
+- [x] **KiCad schematic complete** (all sheets: Power, Audio, Display/Camera, User Controls, MCU, Connectors)
 - [ ] Create PCB outline in KiCad (edge cuts)
-- [ ] Design main board schematic in KiCad
 - [ ] Layout main board in KiCad
 - [ ] Evaluate if main board can be 2-layer with RF removed
 - [ ] Integration test: carrier + main board
@@ -213,11 +216,13 @@ This document tracks the design and implementation status for all badge subsyste
 
 ## Next Steps (Priority Order)
 
-1. **KiCad schematic entry** — Start with MCU and power system
-2. **Source long-lead components** — SA818, display, camera modules
-3. **PCB layout** — Main board first, then carrier
-4. **Prototype ordering** — JLCPCB or similar
-5. **Firmware development** — Can start in parallel with hardware
+1. **Footprint assignment** — Assign footprints to all components
+2. **ERC clean-up** — Resolve any remaining warnings
+3. **Source long-lead components** — SA818, display, camera modules
+4. **PCB layout** — Main board first, then carriers
+5. **Breadboard prototype** — Validate circuits before PCB fab
+6. **Prototype ordering** — JLCPCB or similar
+7. **Firmware development** — Can start in parallel with hardware
 
 ---
 
@@ -228,7 +233,7 @@ This document tracks the design and implementation status for all badge subsyste
 | Electrical design complete | ✓ | Done |
 | BOM finalized | ✓ | Done |
 | PCB outline designed | ✓ | Done |
-| KiCad schematic | | **Complete** (all sheets done: Power, Audio, Display/Camera, User Controls, MCU, Connectors) |
+| KiCad schematic | ✓ | **Complete** (Main board + VHF/UHF carriers: Power, Audio, Display/Camera, User Controls, MCU, Connectors, SA818-V, SA818-U) |
 | KiCad layout | | Not started |
 | Gerbers generated | | Not started |
 | Prototype ordered | | Not started |
