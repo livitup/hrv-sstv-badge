@@ -63,12 +63,12 @@ Hardware Abstraction Layer
 │   ├── LED output control
 │   └── Switch position reading
 ├── SPI Driver  
-│   ├── Display interface (ST7789)
+│   ├── Display interface (ILI9341)
 │   ├── Flash memory (W25Q128)
 │   └── SD card interface
 ├── I2C Driver
 │   ├── Battery fuel gauge (LC709203F)
-│   ├── Audio codec (WM8960)
+│   ├── Audio DAC (PCM5102A)
 │   └── Camera configuration (OV2640)
 ├── UART Driver
 │   └── SA818 radio control
@@ -84,7 +84,7 @@ Hardware Abstraction Layer
 ### Layer 2: Device Drivers
 ```
 Device Drivers
-├── Display Driver (ST7789)
+├── Display Driver (ILI9341)
 │   ├── Graphics primitives
 │   ├── Font rendering
 │   ├── Image display
@@ -94,7 +94,7 @@ Device Drivers
 │   ├── Image capture
 │   ├── Format conversion
 │   └── Auto exposure/white balance
-├── Audio Codec Driver (WM8960)
+├── Audio Driver (PCM5102A DAC + RP2350 ADC)
 │   ├── ADC/DAC control
 │   ├── Volume and gain settings
 │   ├── Audio routing
@@ -328,8 +328,8 @@ int sstv_sync_detection(audio_buffer_t* audio, float* sync_time);
 ```
 Audio Processing Chain:
 ┌─────────────┐    ┌─────────────┐    ┌─────────────┐
-│   SA818     │◀──▶│   WM8960    │◀──▶│   RP2350    │
-│   Radio     │    │AudioCodec   │    │   I2S       │
+│   SA818     │◀──▶│  PCM5102A   │◀──▶│   RP2350    │
+│   Radio     │    │  Audio DAC  │    │   I2S       │
 └─────────────┘    └─────────────┘    └─────────────┘
                           │                   │
                     ┌─────▼─────┐    ┌─────────▼─────┐

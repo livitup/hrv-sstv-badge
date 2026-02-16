@@ -1,6 +1,8 @@
-## Audio Concepts Explained
+# Audio Concepts Explained
 
-*This section explains the filtering and biasing used in the audio circuits.*
+*Beginner-friendly explanation of the filtering and biasing used in the badge's audio circuits. For the actual circuit design, see [electrical-design.md](../electrical-design.md#audio-interface).*
+
+---
 
 ### What is an Audio Signal?
 
@@ -114,3 +116,5 @@ The anti-alias filter removes these too-fast frequencies before sampling.
 | **Anti-alias filter** | Removes frequencies above sample rate/2 | Preventing ghosts in the recording |
 
 ---
+
+*Last updated: 2026-02-15*

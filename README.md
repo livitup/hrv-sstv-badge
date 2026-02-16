@@ -169,10 +169,11 @@ defcon-sstv-badge/
 ├── README.md                     # This file
 ├── docs/                        # Documentation
 │   ├── block-diagram.png        # System overview
-│   ├── schematic.md             # Complete circuit description
+│   ├── electrical-design.md     # Complete electrical design
 │   ├── bom.md                   # Bill of materials
-│   ├── assembly-notes.md        # Build instructions
-│   └── firmware-architecture.md # Software design
+│   ├── firmware-architecture.md # Software design
+│   ├── project-status.md        # Design status tracker
+│   └── engineers-notebook/      # Design decisions and rationale
 ├── hardware/                    # Hardware design files
 │   ├── kicad/                  # KiCAD project files
 │   ├── gerbers/                # Production files

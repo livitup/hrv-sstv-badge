@@ -1,30 +1,16 @@
-# Electrical Design Notes
+# Electrical Design
 
-This document captures design decisions and recommendations for the electrical systems of the DEFCON SSTV Badge, including power distribution, RF/carrier board, audio interface, display, and other subsystems.
+This document describes the electrical design of the DEFCON SSTV Badge, including circuit schematics, component specifications, and pin assignments.
 
-**Status:** Design review and recommendations — not yet implemented in KiCad.
+*For design rationale and trade-off analyses, see [Engineer's Notebook: Electrical Design Decisions](engineers-notebook/electrical-design-decisions.md).*
 
 ---
 
-## Power System Redesign
+## Power System
 
-### Problem with Original Design
+### Architecture
 
-The original design used an AMS1117-3.3 LDO to regulate the LiPo battery down to 3.3V. This has several critical issues:
-
-| Issue | Detail |
-|-------|--------|
-| **Dropout voltage** | AMS1117 requires ~1.2V headroom (needs 4.5V+ input for 3.3V output) |
-| **LiPo voltage range** | 4.2V (full) → 3.7V (nominal) → 3.0V (empty) |
-| **Result** | Regulator falls out of regulation before battery is half depleted |
-| **Current rating** | AMS1117 rated 1A max; SA818 TX peaks at 1.7A |
-| **Thermal** | LDO dissipates (Vin-Vout)*I as heat — no thermal solution specified |
-
-### Revised Architecture
-
-The key insight: **Don't run the SA818 through the main 3.3V regulator.**
-
-The SA818 module has its own internal regulation and accepts 3.5V-5.5V input directly. Running it from the LiPo (which stays in that range until nearly depleted) means the main 3.3V rail only needs to handle ~250-400mA.
+The SA818 runs directly from the LiPo battery (via load switch), not through the 3.3V regulator. This separates the 1.7A TX current spikes from the main digital rail.
 
 ```
                     ┌───────────────────┐
@@ -68,7 +54,7 @@ The SA818 module has its own internal regulation and accepts 3.5V-5.5V input dir
 | Display + backlight | ~50-80mA | Backlight dominates |
 | Camera (active) | ~50mA | Only when capturing |
 | SD card (active) | ~50mA | Burst during write |
-| WM8960 codec | ~10mA | |
+| PCM5102A DAC | ~10mA | |
 | Misc (LEDs, etc.) | ~20mA | |
 | **Total typical** | **~250mA** | |
 | **Peak** | **~400mA** | All subsystems active |
@@ -83,19 +69,11 @@ The SA818 module has its own internal regulation and accepts 3.5V-5.5V input dir
 
 ---
 
-## Buck-Boost Converter Selection
+## Buck-Boost Converter (TPS63001)
 
-### Requirements
+*See [Engineer's Notebook](engineers-notebook/electrical-design-decisions.md#buck-boost-regulator-selection) for regulator selection rationale.*
 
-- Input: 3.0V - 5.0V (full LiPo range + MCP73871 SYS output)
-- Output: 3.3V regulated
-- Load: 250mA typical, 500mA peak with headroom
-- High efficiency for battery life
-- Hand-solderable for prototyping
-
-### Candidates Evaluated
-
-#### TPS63001 (Texas Instruments) — RECOMMENDED
+### TPS63001 Specifications
 
 | Spec | Value |
 |------|-------|
@@ -103,98 +81,9 @@ The SA818 module has its own internal regulation and accepts 3.5V-5.5V input dir
 | Output | Fixed 3.3V |
 | Max Current | 1.2A |
 | Peak Efficiency | ~93% |
-| Light Load (10mA) | ~80% |
 | Package | 3x3mm QFN-10 |
-| Price (qty 1) | ~$1.80 |
-| Price (qty 100) | ~$1.20 |
 
-**Pros:**
-- Fixed 3.3V output — fewer external components
-- QFN-10 is hand-solderable with hot air
-- Extensive documentation and reference designs
-- Power-save mode for good light-load efficiency
-- Well-proven part
-
-**Cons:**
-- 1.2A limit (sufficient for this application with SA818 on separate rail)
-
-#### TPS63802 (Texas Instruments)
-
-| Spec | Value |
-|------|-------|
-| Input | 1.8V - 5.5V |
-| Output | Fixed 3.3V |
-| Max Current | 2A |
-| Peak Efficiency | ~95% |
-| Light Load (10mA) | ~85% |
-| Package | 2x1.5mm WCSP-9 |
-| Price (qty 1) | ~$2.80 |
-
-**Pros:** Best efficiency, 2A headroom, tiny
-**Cons:** WCSP package difficult to hand solder
-
-#### TPS63021 (Texas Instruments)
-
-| Spec | Value |
-|------|-------|
-| Input | 1.8V - 5.5V |
-| Output | Fixed 3.3V |
-| Max Current | 3A |
-| Peak Efficiency | ~93% |
-| Light Load (10mA) | ~75% |
-| Package | 3.5x3.5mm QFN-14 |
-| Price (qty 1) | ~$3.20 |
-
-**Pros:** 3A capacity, very robust
-**Cons:** Weaker light-load efficiency, overkill current rating
-
-#### RT6150B (Richtek)
-
-| Spec | Value |
-|------|-------|
-| Input | 2.5V - 5.5V |
-| Output | Fixed 3.3V |
-| Max Current | 2A |
-| Peak Efficiency | ~94% |
-| Package | 3x3mm QFN-12 |
-| Price (qty 1) | ~$1.10 |
-
-**Pros:** Cheapest option, good efficiency
-**Cons:** 2.5V minimum input (less margin), less documentation
-
-### Efficiency Comparison
-
-```
-Efficiency @ 3.7V input → 3.3V output
-
-Load:      10mA    50mA   100mA   250mA   500mA
-           ────    ────   ─────   ─────   ─────
-TPS63802   85%     92%     94%     95%     94%    ← Best overall
-TPS63001   80%     88%     91%     93%     92%    ← Recommended
-TPS63021   75%     85%     90%     93%     93%    ← Weak at light load
-RT6150B    82%     90%     93%     94%     93%    ← Good value
-```
-
-### Battery Life Impact
-
-With 2000mAh battery, 155mA idle current:
-
-| Regulator | Efficiency | Actual Drain | Runtime |
-|-----------|------------|--------------|---------|
-| TPS63001 | 90% | 172mA | 11.6 hours |
-| TPS63802 | 94% | 165mA | 12.1 hours |
-
-Difference is ~30 minutes — not dramatic enough to justify WCSP package difficulty.
-
-### Recommendation
-
-**Use TPS63001** for both prototype and production:
-- QFN-10 is manageable with hot air for prototypes
-- Fab house handles it identically to WCSP in production
-- Cost-effective
-- Well-documented with proven reference designs
-
-### External Components (TPS63001)
+### External Components
 
 | Ref | Value | Package | Notes |
 |-----|-------|---------|-------|
@@ -352,15 +241,7 @@ The USB-C connector provides two functions:
 | A2, A3, B2, B3 | TX/RX | NC (USB 2.0 only) |
 | A8, B8 | SBU | NC |
 
-### Alternate Part Options
-
-**USB-C Connector alternatives:**
-- USB4110-GF-A (GCT) — Mid-mount SMD if TH doesn't fit
-- TYPE-C-31-M-12 (Korean Hroparts) — Budget option
-
-**ESD Protection alternatives:**
-- TPD2E001 (TI) — Single-channel, need 2 for D+/D-
-- ESD5V3U4RS (Infineon) — Integrated VBUS + data protection
+*See [Engineer's Notebook](engineers-notebook/electrical-design-decisions.md#usb-c-interface) for alternate part options.*
 
 ---
 
@@ -410,12 +291,7 @@ The battery system provides portable power with USB charging and accurate state-
 
 ### MCP73871 Charge Controller
 
-**Why MCP73871?**
-- Integrated power path management (load sharing)
-- System runs from USB when connected, seamlessly switches to battery
-- Programmable charge current
-- Thermal regulation protects battery
-- Status outputs for charge indication
+*See [Engineer's Notebook](engineers-notebook/electrical-design-decisions.md#why-mcp73871) for selection rationale.*
 
 #### MCP73871 Circuit
 
@@ -494,12 +370,7 @@ The battery system provides portable power with USB charging and accurate state-
 
 ### LC709203F Fuel Gauge
 
-**Why LC709203F?**
-- No sense resistor needed (uses battery model)
-- I2C interface (shares bus with camera, SAO)
-- Accurate SoC even at low discharge rates
-- Low quiescent current (~4µA)
-- DFUN technology for various battery chemistries
+*See [Engineer's Notebook](engineers-notebook/electrical-design-decisions.md#why-lc709203f) for selection rationale.*
 
 #### LC709203F Circuit
 
@@ -624,14 +495,7 @@ For pouch cells, the thermistor can be taped directly to the battery surface for
 | 0 | I2C SDA | LC709203F fuel gauge (shared) |
 | 1 | I2C SCL | LC709203F fuel gauge (shared) |
 
-**Note:** We have 0 spare GPIOs, so STAT1/STAT2/PG may need to be directly connected to LEDs (with transistors) rather than read by the MCU. Alternatively, the MCP73871 status can be inferred from LC709203F readings (charging = voltage rising, complete = voltage stable at 4.2V).
-
-**Design decision:** Skip dedicated status GPIOs — use LC709203F I2C readings to determine charge state. The fuel gauge already tells us:
-- Battery voltage (4.2V = full, <3.3V = critical)
-- RSOC percentage (0-100%)
-- Charging can be inferred from voltage trend
-
-This saves 3 GPIOs and simplifies the design.
+**Note:** STAT1/STAT2/PG are not connected to GPIOs. Charge state is inferred from LC709203F I2C readings. See [Engineer's Notebook](engineers-notebook/electrical-design-decisions.md#skipping-dedicated-status-gpios) for rationale.
 
 ### Battery Selection
 
@@ -664,26 +528,9 @@ This saves 3 GPIOs and simplifies the design.
 
 ### Overview
 
-The audio interface connects the RP2350 to the SA818's audio pins for SSTV transmission and reception.
+The audio interface uses a PCM5102A DAC for transmit and the RP2350 internal ADC for receive.
 
-**Design choice:** PCM5102A DAC for transmit, RP2350 internal ADC for receive.
-
-This balances cost (~$2 total) against audio quality. The PCM5102A provides excellent TX audio via I2S, while the RP2350's 12-bit ADC is adequate for receiving indoor signals at the Las Vegas Convention Center.
-
-### Why Not a Full Codec (WM8960)?
-
-The original design specified a WM8960 stereo codec. We removed it because:
-
-| Factor | WM8960 | PCM5102A + ADC |
-|--------|--------|----------------|
-| Cost | ~$3.50 | ~$2.00 |
-| Package | QFN (hard to inspect) | TSSOP-20 (visible leads) |
-| TX quality | Excellent | Excellent |
-| RX quality | Excellent | Good (adequate for indoor use) |
-| Complexity | I2C configuration required | Hardware config, no I2C |
-| Speaker output | Yes (unused) | No |
-
-The WM8960's extra features (stereo, speaker amp, mixer) aren't needed. The PCM5102A is simpler and cheaper.
+*See [Engineer's Notebook](engineers-notebook/electrical-design-decisions.md#why-pcm5102a--adc-not-wm8960-codec) for codec selection rationale.*
 
 ### Audio Signal Flow
 
@@ -920,18 +767,6 @@ This is above the SSTV maximum (~2.3kHz) but below the Nyquist limit for a ~20kH
 
 **Fab/hot air:** PCM5102A (TSSOP-20) and its decoupling caps (C1, C2).
 
-### Assembly Risk Assessment
-
-If a user makes a mistake on the solderable components:
-
-| Problem | Result |
-|---------|--------|
-| Bad TX filter (R1, R2, C3, C4) | Distorted or weak transmit, but probably still works |
-| Bad RX filter (R3-R6, C5, C6) | Degraded receive sensitivity, but TX still works |
-| Missing bias (R5, R6) | ADC clips signal, poor receive |
-
-None of these failures are catastrophic — the badge will still partially function.
-
 ---
 
 ## SA818 Carrier Board Design
@@ -940,24 +775,7 @@ None of these failures are catastrophic — the badge will still partially funct
 
 The carrier board is a full-width PCB that overlays the top portion of the main badge. It contains the SA818 module, SMA connector, and antenna — keeping **all RF circuitry on the carrier** and completely off the main badge.
 
-**Key design decisions:**
-- **Full badge width** (~120mm) for mechanical stability
-- **Overlays main badge** — top edges flush, carrier in front (visible)
-- **SMA on carrier** — right-angle connector, antenna points up
-- **All RF self-contained** — main badge has zero RF traces
-- **4-point mounting** — 2x signal headers + 2x mechanical headers
-- **Includes matched antenna** — each carrier ships with appropriate stubby antenna
-
-### Why This Approach
-
-| Benefit | Explanation |
-|---------|-------------|
-| No RF on main board | Eliminates 50Ω trace routing, via stitching, ground plane complexity |
-| Simpler main board | Could potentially be 2-layer (depends on RP2350 routing density) |
-| Band-matched antenna | VHF carrier includes VHF stubby, UHF includes UHF stubby |
-| User experience | Swap entire RF assembly as one unit, no antenna juggling |
-| Testable independently | Validate RF performance before integrating with main badge |
-| Aesthetic | Visible carrier with antenna = retro TV look, good for #badgelife |
+*See [Engineer's Notebook](engineers-notebook/electrical-design-decisions.md#why-a-separate-carrier-board) for carrier board rationale.*
 
 ### Physical Arrangement
 
@@ -1235,10 +1053,10 @@ This dramatically simplifies the main board design. A 2-layer PCB may be feasibl
 | 1 | VCC | TPS22919 output |
 | 2 | GND | Ground plane |
 | 3 | GND | Ground plane |
-| 4 | MIC+ | WM8960 codec LINPUT |
-| 5 | MIC- | WM8960 codec or GND |
-| 6 | SPK+ | WM8960 codec LOUT |
-| 7 | SPK- | WM8960 codec or GND |
+| 4 | MIC+ | TX audio filter output |
+| 5 | MIC- | GND |
+| 6 | SPK+ | RX audio filter input |
+| 7 | SPK- | GND |
 | 8 | NC | — |
 
 **J2 Socket (1x8) — Control and Data:**
@@ -1258,18 +1076,7 @@ This dramatically simplifies the main board design. A 2-layer PCB may be feasibl
 
 No electrical connection. Just sockets to receive mechanical support pins from carrier.
 
-### PCB Layer Considerations
-
-With RF removed from main board, evaluate layer requirements:
-
-| Consideration | 2-Layer | 4-Layer |
-|---------------|---------|---------|
-| RP2350 routing | Challenging | Comfortable |
-| Power integrity | Needs careful planning | Dedicated planes |
-| Cost | Cheaper | ~$5-10 more per board |
-| EMI/noise | Adequate if careful | Better with planes |
-
-**Recommendation:** Start with 4-layer design for comfort. Optimize to 2-layer later if cost pressure requires it and routing is achievable.
+*See [Engineer's Notebook](engineers-notebook/electrical-design-decisions.md#main-board-pcb-layers-2-vs-4) for PCB layer discussion.*
 
 ---
 
@@ -1287,19 +1094,7 @@ The display shows SSTV images, menus, and status information.
 - **Touch:** None (D-pad navigation instead)
 - **SD Card:** Using module's built-in SD slot (shared SPI bus)
 
-### Why 320×240?
-
-SSTV modes have varying resolutions:
-
-| Mode | Resolution | Display Strategy |
-|------|------------|------------------|
-| Robot 36/72 | 320×240 | Perfect 1:1 fit |
-| Martin M1/M2 | 320×256 | Crop 16-line gray banner, or center with bars |
-| Scottie S1/S2 | 320×256 | Crop 16-line gray banner, or center with bars |
-| PD 90 | 320×240 | Perfect 1:1 fit |
-| PD 120/180/240 | 320×480 | Scale to fit |
-
-Martin and Scottie's 256 lines include 16 gray lines reserved for callsign banners — the actual image content is 240 lines. The 320×240 display covers the vast majority of real-world SSTV traffic (Martin M1, Scottie S1, Robot 36/72) with native or near-native resolution.
+*See [Engineer's Notebook](engineers-notebook/electrical-design-decisions.md#why-320x240) for resolution selection rationale.*
 
 ### ILI9341 Module Pinout
 
@@ -1460,27 +1255,7 @@ The camera captures images for SSTV transmission and provides live viewfinder pr
 - **Resolution:** QVGA (320×240) for SSTV, up to UXGA (1600×1200) if needed
 - **Output:** RGB565 or YUV422 (for viewfinder), JPEG (for storage)
 
-### Why Parallel DVP (Not SPI)?
-
-| Factor | Parallel DVP | SPI Module |
-|--------|--------------|------------|
-| Live viewfinder | Fast, 30+ FPS | Slow, ~1-2 FPS |
-| GPIO usage | 12 dedicated | 4 dedicated |
-| Capture control | Full timing control | Module handles it |
-| Cost | ~$5-8 | ~$10-15 |
-
-**Live viewfinder requires parallel DVP.** Showing real-time preview before capture is essential for a camera badge. SPI modules are too slow for this.
-
-### GPIO Budget: RP2350B Required
-
-Parallel DVP uses 12 GPIOs for the camera alone. Combined with display, audio, SA818, and user controls, we need ~40 GPIOs total.
-
-| RP2350 Variant | Package | GPIOs | Status |
-|----------------|---------|-------|--------|
-| RP2350A | QFN-60 | 30 | Not enough |
-| **RP2350B** | **QFN-80** | **48** | **Required** |
-
-**This design commits to RP2350B (QFN-80).**
+*See [Engineer's Notebook](engineers-notebook/electrical-design-decisions.md#why-parallel-dvp-not-spi) for interface selection rationale.*
 
 ### OV2640 DVP Pinout
 
@@ -1681,28 +1456,9 @@ Position the camera for the "take a picture" use case:
 
 ---
 
-## MCU Selection: RP2350B
+## MCU: RP2350B
 
-### Why RP2350B (QFN-80)?
-
-The original design mentioned RP2350 generically. After tallying GPIO requirements:
-
-| Subsystem | Dedicated GPIOs |
-|-----------|-----------------|
-| Display + SD | 5 |
-| Audio (I2S + ADC) | 4 |
-| SA818 control | 5 |
-| User controls | 5 |
-| SAO extra | 2 |
-| Camera DVP | 12 |
-| **Total dedicated** | **~33** |
-| Shared buses | +7 |
-| **Total needed** | **~40** |
-
-| Variant | Package | GPIOs | Verdict |
-|---------|---------|-------|---------|
-| RP2350A | QFN-60 | 30 | Not enough |
-| **RP2350B** | **QFN-80** | **48** | **Selected** |
+*See [Engineer's Notebook](engineers-notebook/electrical-design-decisions.md#why-rp2350b-qfn-80) for MCU selection rationale.*
 
 ### RP2350B Specifications
 
@@ -1898,17 +1654,7 @@ The I2C bus on GPIO0 (SDA) and GPIO1 (SCL) is shared by multiple devices:
 
 ### Crystal Oscillator
 
-**Why do we need a crystal?**
-
-The RP2350 has an internal Ring Oscillator (ROSC), but it's too inaccurate for this design:
-
-| Requirement | Tolerance Needed | ROSC Accuracy | Crystal Accuracy |
-|-------------|------------------|---------------|------------------|
-| USB 2.0 | ±0.25% | ±2-5% ❌ | ±20ppm ✓ |
-| SSTV line timing | ±0.1% | ±2-5% ❌ | ±20ppm ✓ |
-| I2S audio | Low jitter | Variable ❌ | Stable ✓ |
-
-**Bottom line:** USB won't work without a crystal. SSTV timing precision is a bonus.
+*See [Engineer's Notebook](engineers-notebook/electrical-design-decisions.md#why-a-crystal-is-required) for crystal requirement rationale and part recommendations.*
 
 **Crystal Circuit:**
 
@@ -1930,17 +1676,7 @@ The RP2350 has an internal Ring Oscillator (ROSC), but it's too inaccurate for t
 | Ref | Value | Package | Notes |
 |-----|-------|---------|-------|
 | Y1 | 12MHz | 3215 (3.2×1.5mm) | ±20ppm, 10pF load, fundamental |
-| C1, C2 | 15pF | 0402 | Load capacitors (adjust per crystal spec) |
-
-**Load capacitor calculation:**
-- Crystal spec: CL = 10pF (typical)
-- Formula: C1 = C2 = 2 × CL - C_stray
-- Assuming C_stray ≈ 5pF: C1 = C2 = 2 × 10 - 5 = 15pF
-
-**Crystal recommendations:**
-- ABM8-12.000MHZ-B2-T (Abracon) — 3215, ±20ppm, CL=10pF, ~$0.35
-- ECS-120-10-36Q-ES-TR (ECS) — 3215, ±10ppm, CL=10pF, ~$0.40
-- FA-238 12.0000MF10Z-K3 (Epson) — 3215, ±10ppm, CL=10pF, ~$0.50
+| C1, C2 | 15pF | 0402 | Load capacitors (2 × CL - C_stray = 2×10 - 5 = 15pF) |
 
 **Layout notes:**
 - Keep crystal close to XIN/XOUT pins (<5mm trace length)
@@ -1987,16 +1723,7 @@ The RP2350 boots from external QSPI flash. This stores firmware and can also sto
 | U_FLASH | W25Q128JVSIQ | SOIC-8 | 16MB, QSPI, 133MHz |
 | C_FLASH | 100nF | 0402 | Decoupling, close to VCC |
 
-**Why 16MB?**
-- Firmware: ~1-2MB typical
-- SSTV images: ~150KB each (320×240 RGB565)
-- Stored images: 50+ images easily
-- Future expansion: Plenty of headroom
-
-**Flash alternatives:**
-- W25Q128JVSIM (SOIC-8 wide) — easier hand soldering
-- W25Q64JVSSIQ (8MB) — cheaper, still plenty of space
-- GD25Q128E (GigaDevice) — drop-in compatible, often cheaper
+*See [Engineer's Notebook](engineers-notebook/electrical-design-decisions.md#why-16mb-flash) for flash size rationale and alternatives.*
 
 **Layout notes:**
 - Keep traces short (<25mm total)
@@ -2303,13 +2030,7 @@ Slide switch that MCU reads to determine RF enable/disable state.
 
 ### Status LED (PWR)
 
-A traditional RGB LED (not WS2812B) provides battery status indication, visually distinct from the blinky animation LEDs.
-
-**Why Traditional RGB (not WS2812B):**
-- **Visually distinct** — smaller package, clearly "utility" vs "blinky"
-- **Independent** — works even if WS2812B chain has issues
-- **Reliable** — direct GPIO drive, no protocol timing required
-- **Always visible** — battery status is critical info, separate from animations
+A traditional RGB LED provides battery status indication, separate from the WS2812B blinky chain. *See [Engineer's Notebook](engineers-notebook/electrical-design-decisions.md#why-traditional-rgb-led-not-ws2812b-for-pwr-status) for selection rationale.*
 
 **PWR LED Circuit (Common Anode RGB):**
 
@@ -2475,16 +2196,7 @@ The LC709203 fuel gauge provides accurate state-of-charge readings via I2C.
 
 **Cost:** ~$3.50 total (RGB LED ~$0.10, 26× WS2812B ~$2.10, 26× caps ~$0.26, switches ~$1)
 
-### Debouncing
-
-Mechanical switches bounce — a single press can register as multiple transitions.
-
-**Hardware debouncing:** Add 100nF capacitor from GPIO to GND (optional, increases BOM).
-
-**Software debouncing (recommended):**
-- Sample switch state
-- Require stable reading for 10-20ms before registering change
-- Simpler, no extra components
+All switches use software debounce (no external caps). *See [Engineer's Notebook](engineers-notebook/electrical-design-decisions.md#debouncing-strategy) for rationale.*
 
 ### Blinky LED Matrix
 

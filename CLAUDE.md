@@ -185,11 +185,11 @@ See `docs/electrical-design.md` for complete user controls circuit design.
 defcon-sstv-badge/
 ├── CLAUDE.md                     # This file - project context for Claude
 ├── docs/                         # Complete documentation
+│   ├── electrical-design.md      # Circuit schematics and component specs
 │   ├── firmware-architecture.md  # Detailed software design
-│   ├── schematic.md              # Hardware connections
 │   ├── bom.md                    # Bill of materials
-│   ├── assembly-notes.md         # Build instructions
-│   └── power-and-rf-design.md    # Power system and RF design notes
+│   ├── project-status.md         # Design status tracker
+│   └── engineers-notebook/       # Design decisions and rationale
 ├── firmware/                     # RP2350 embedded C code
 │   ├── src/                      # Main source code
 │   │   ├── main.c                # Entry point and initialization
@@ -216,11 +216,11 @@ defcon-sstv-badge/
 - **Prototype testing**: Following PCB fabrication
 
 ## Key Design Documents
-- `docs/schematic.md` - Original hardware connections (needs update for power system)
-- `docs/electrical-design.md` - **NEW** - Power system redesign, SA818 carrier, RF routing
-- `docs/bom.md` - Bill of materials (needs update for new power components)
-- `docs/firmware-architecture.md` - Complete software design
-- `docs/assembly-notes.md` - Build instructions
+- `docs/electrical-design.md` - Circuit schematics, component specs, GPIO assignments
+- `docs/bom.md` - Bill of materials with costs and sourcing
+- `docs/firmware-architecture.md` - Software design
+- `docs/project-status.md` - Design and implementation status
+- `docs/engineers-notebook/` - Design decisions and rationale
 
 ## Hardware Changes from Original Design
 

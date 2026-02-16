@@ -149,8 +149,8 @@ The community is encouraged to develop and share:
 
 ## 📚 Reference Documents
 
-For detailed assembly information, see:
-- **[Assembly Guide](../docs/assembly-notes.md)** - Complete build instructions
+For detailed design information, see:
+- **[Electrical Design](../docs/electrical-design.md)** - Circuit schematics and component specs
 - **[Hardware Design](../hardware/README.md)** - PCB specifications and design files
 - **[BOM](../docs/bom.md)** - Complete parts list including mechanical hardware
 

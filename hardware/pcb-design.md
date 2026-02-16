@@ -404,7 +404,7 @@ The PCB outline will be defined as edge cuts in KiCad with:
 
 - [Electrical Design](../docs/electrical-design.md) — Circuit schematics and component selection
 - [BOM](../docs/bom.md) — Complete bill of materials
-- [Assembly Notes](../docs/assembly-notes.md) — Build instructions
+- [Project Status](../docs/project-status.md) — Design status tracker
 
 ---
 
