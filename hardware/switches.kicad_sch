@@ -1330,6 +1330,16 @@
 		)
 		(uuid "b29ee8c0-dd5d-4d55-a6ae-0d79cbf9a2a7")
 	)
+	(text "RIGHT RABBIT EAR"
+		(exclude_from_sim no)
+		(at 253.746 69.088 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "b2b50396-0b23-4951-b38d-2dd152adb309")
+	)
 	(junction
 		(at 92.71 60.96)
 		(diameter 0)
@@ -1493,6 +1503,12 @@
 		(uuid "3c77171e-3780-4987-a464-46525257b741")
 	)
 	(junction
+		(at 217.17 129.54)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "4284d772-a328-41ff-8498-9fe63ce02a98")
+	)
+	(junction
 		(at 147.32 102.87)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -1515,12 +1531,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "4b601266-6cc6-41c7-9004-31c0f478db6e")
-	)
-	(junction
-		(at 227.33 129.54)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "568df116-2e39-4ca4-93ef-862ceedb5e96")
 	)
 	(junction
 		(at 111.76 35.56)
@@ -1817,6 +1827,12 @@
 		(uuid "bb47f08b-6ad1-4a56-8f79-8a08e2909052")
 	)
 	(junction
+		(at 217.17 114.3)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "bbe944a8-956a-4c37-995a-45fdf6e31f46")
+	)
+	(junction
 		(at 147.32 35.56)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -1983,6 +1999,10 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "ff87cea9-1800-4842-b61e-e050399bad01")
+	)
+	(no_connect
+		(at 260.35 148.59)
+		(uuid "de93ea9b-23f4-4182-9159-ccb467858d8b")
 	)
 	(wire
 		(pts
@@ -2236,6 +2256,16 @@
 	)
 	(wire
 		(pts
+			(xy 217.17 129.54) (xy 200.66 129.54)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2116e839-1c24-4da7-9f72-5ad4ed2b1a89")
+	)
+	(wire
+		(pts
 			(xy 190.5 76.2) (xy 173.99 76.2)
 		)
 		(stroke
@@ -2386,7 +2416,7 @@
 	)
 	(wire
 		(pts
-			(xy 200.66 114.3) (xy 227.33 114.3)
+			(xy 200.66 114.3) (xy 217.17 114.3)
 		)
 		(stroke
 			(width 0)
@@ -2553,6 +2583,16 @@
 			(type default)
 		)
 		(uuid "4aab6e5e-6e42-48da-839b-d813b72cea92")
+	)
+	(wire
+		(pts
+			(xy 154.94 121.92) (xy 166.37 121.92)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "4bf28ed6-d0e5-488a-bc48-115a9207f70b")
 	)
 	(wire
 		(pts
@@ -2966,6 +3006,16 @@
 	)
 	(wire
 		(pts
+			(xy 181.61 121.92) (xy 193.04 121.92)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "810f4169-2ebe-4a06-a735-0d0819465e34")
+	)
+	(wire
+		(pts
 			(xy 200.66 156.21) (xy 190.5 156.21)
 		)
 		(stroke
@@ -3176,6 +3226,16 @@
 	)
 	(wire
 		(pts
+			(xy 217.17 114.3) (xy 227.33 114.3)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "96a1fe68-bdb3-49d3-8cc5-2e3cec411523")
+	)
+	(wire
+		(pts
 			(xy 92.71 140.97) (xy 111.76 140.97)
 		)
 		(stroke
@@ -3266,6 +3326,16 @@
 	)
 	(wire
 		(pts
+			(xy 129.54 121.92) (xy 139.7 121.92)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a2fa62c6-d14b-4aaf-942b-4d81aaf5b13c")
+	)
+	(wire
+		(pts
 			(xy 137.16 140.97) (xy 147.32 140.97)
 		)
 		(stroke
@@ -3306,6 +3376,16 @@
 	)
 	(wire
 		(pts
+			(xy 208.28 121.92) (xy 219.71 121.92)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a5c2d644-614f-4991-8058-07ff05efe37b")
+	)
+	(wire
+		(pts
 			(xy 92.71 87.63) (xy 92.71 114.3)
 		)
 		(stroke
@@ -3313,6 +3393,16 @@
 			(type default)
 		)
 		(uuid "a72b2ceb-f09b-4335-aac3-fdc8f303baa8")
+	)
+	(wire
+		(pts
+			(xy 217.17 114.3) (xy 217.17 118.11)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a8178650-a7c2-41b4-859e-1408cb4f870c")
 	)
 	(wire
 		(pts
@@ -3806,7 +3896,7 @@
 	)
 	(wire
 		(pts
-			(xy 227.33 129.54) (xy 200.66 129.54)
+			(xy 227.33 129.54) (xy 217.17 129.54)
 		)
 		(stroke
 			(width 0)
@@ -3843,16 +3933,6 @@
 			(type default)
 		)
 		(uuid "e2bd8d0d-640f-4aa9-9ac9-1351efc47ccf")
-	)
-	(wire
-		(pts
-			(xy 227.33 129.54) (xy 227.33 133.35)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "e3678891-32c2-451b-b2f0-5e2c9649ed86")
 	)
 	(wire
 		(pts
@@ -4036,6 +4116,16 @@
 	)
 	(wire
 		(pts
+			(xy 217.17 125.73) (xy 217.17 129.54)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f601e1b7-13e1-4c9e-af67-68a49669eeff")
+	)
+	(wire
+		(pts
 			(xy 217.17 99.06) (xy 217.17 102.87)
 		)
 		(stroke
@@ -4133,16 +4223,6 @@
 			(type default)
 		)
 		(uuid "ff4da93d-3879-49f0-9329-d1b6dfb6cc36")
-	)
-	(label "RIGHT RABBIT EAR"
-		(at 245.11 69.85 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "0ce7f109-ddcf-45e5-bc4b-e0fbfd25f94a")
 	)
 	(global_label "AIRPLANE"
 		(shape input)
