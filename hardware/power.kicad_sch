@@ -8684,7 +8684,7 @@
 				)
 			)
 		)
-		(property "Value" "10k"
+		(property "Value" "NTC 10k"
 			(at 86.6775 116.84 90)
 			(effects
 				(font

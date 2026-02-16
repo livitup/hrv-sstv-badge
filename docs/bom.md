@@ -1,8 +1,8 @@
 # DEFCON SSTV Badge — Bill of Materials
 
-**Version:** 2.0
-**Last Updated:** 2025-02
-**Source:** Consolidated from `docs/electrical-design.md`
+**Version:** 3.0
+**Last Updated:** 2026-02
+**Source:** KiCad schematic export, verified against `docs/electrical-design.md`
 
 This is the consolidated BOM for the DEFCON SSTV badge. Components are organized by subsystem and assembly method.
 
@@ -19,12 +19,12 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 | Display | ~$10.00 | ILI9341 module + backlight circuit |
 | Camera | ~$6.00 | OV2640 DVP module + resistors |
 | User Controls | ~$1.50 | Switches, PWR LED, resistors |
-| Blinky LEDs | ~$2.40 | 26× WS2812B + bypass caps |
+| Blinky LEDs | ~$2.60 | 26× WS2812B + bypass caps |
 | MCU + Support | ~$3.90 | RP2350B, crystal, flash, regulator inductor, passives |
-| Connectors | ~$2.00 | SAO, carrier sockets, debug |
-| **Main Badge Total** | **~$45** | Without carrier |
+| Connectors | ~$2.00 | SAO, carrier sockets, SD card, debug |
+| **Main Badge Total** | **~$46** | Without carrier |
 | SA818 Carrier | ~$17.00 | SA818, SMA, antenna, headers |
-| **Complete Kit** | **~$62** | Main + one carrier |
+| **Complete Kit** | **~$63** | Main + one carrier |
 
 *PCB fabrication adds ~$3-5/board at quantity.*
 
@@ -46,11 +46,11 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 
 | Ref | Qty | Value | Package | Assembly | Notes |
 |-----|-----|-------|---------|----------|-------|
-| U_REG | 1 | TPS63001DRCR | QFN-10 (3×3mm) | Fab | Fixed 3.3V output |
+| U5 | 1 | TPS63001DRCR | QFN-10 (3×3mm) | Fab | Fixed 3.3V output |
 | L1 | 1 | 1µH | 3×3mm | Fab | Coilcraft XAL3030-102 or equiv |
-| C_IN1, C_IN2 | 2 | 10µF | 0805 | Fab | X5R/X7R, 10V, input |
-| C_OUT1, C_OUT2 | 2 | 10µF | 0805 | Fab | X5R/X7R, 10V, output |
-| R_PS | 1 | 1MΩ | 0402 | Fab | Power save mode (optional) |
+| C_IN, C_OUT1 | 2 | 10µF | 0805 | Fab | X5R/X7R, 10V, input/output |
+
+*Note: PS/SYNC resistor intentionally omitted — forced PWM mode provides cleaner audio with minimal ripple. Power save mode would reduce idle current but risks noise coupling into SSTV audio path.*
 
 **Subtotal:** ~$2.50
 
@@ -58,9 +58,9 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 
 | Ref | Qty | Value | Package | Assembly | Notes |
 |-----|-----|-------|---------|----------|-------|
-| U_SW | 1 | TPS22919DCKR | SOT-23-5 | Fab | SA818 power control |
-| C_SW1 | 1 | 100µF | 1206 | Fab | Output bulk capacitor |
-| C_SW2 | 1 | 10µF | 0603 | Fab | Output bypass |
+| U6 | 1 | TPS22919DCKT | SOT-23-5 | Fab | SA818 power control |
+| C17 | 1 | 100µF | 1206 | Fab | Output bulk capacitor |
+| C18 | 1 | 10µF | 0603 | Fab | Output bypass |
 
 **Subtotal:** ~$0.80
 
@@ -70,11 +70,11 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 
 | Ref | Qty | Value | Package | Assembly | Notes |
 |-----|-----|-------|---------|----------|-------|
-| J_USB | 1 | USB4105-GF-A | SMT+TH hybrid | Fab | GCT USB-C with D+/D- (USB 2.0) |
-| U_ESD1 | 1 | USBLC6-2SC6 | SOT-23-6 | Fab | D+/D- ESD protection |
-| D_VBUS | 1 | PESD5V0S1BL | SOD-323 | Fab | VBUS surge protection |
-| R_CC1, R_CC2 | 2 | 5.1kΩ | 0402 | Fab | USB sink identification |
-| C_USB | 1 | 10µF | 0603 | Fab | VBUS decoupling |
+| J2 | 1 | USB4105-GF-A | SMT+TH hybrid | Fab | GCT USB-C with D+/D- (USB 2.0) |
+| U3 | 1 | USBLC6-2SC6 | SOT-23-6 | Fab | D+/D- ESD protection |
+| D_VBUS1 | 1 | TVS (PESD5V0S1BL) | SOD-323 | Fab | VBUS surge protection |
+| R_CC1, R_CC2 | 2 | 5.1kΩ | 0402 | Fab | USB sink identification (to GND) |
+| C_USB1 | 1 | 10µF | 0603 | Fab | VBUS decoupling |
 
 **Subtotal:** ~$1.20
 
@@ -86,12 +86,10 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 
 | Ref | Qty | Value | Package | Assembly | Notes |
 |-----|-----|-------|---------|----------|-------|
-| U_CHG | 1 | MCP73871-2CCI/ML | QFN-20 (4×4mm) | Fab | Li-Po charge controller |
-| R_PROG | 1 | 2kΩ | 0603 | Fab | Charge current = 1000/R = 500mA |
-| R_SEL | 1 | 0Ω | 0402 | Fab | USB 500mA input mode |
-| C_IN | 1 | 10µF | 0805 | Fab | Input cap, X5R 10V |
-| C_VBAT | 1 | 10µF | 0805 | Fab | Battery cap, X5R 10V |
-| C_OUT | 1 | 10µF | 0805 | Fab | Output cap, X5R 10V |
+| U4 | 1 | MCP73871-2CCI/ML | QFN-20 (4×4mm) | Fab | Li-Po charge controller |
+| R3 | 1 | 2kΩ | 0603 | Fab | PROG1: Charge current = 1000/R = 500mA |
+| R4 | 1 | 15kΩ | 0603 | Fab | PROG3: Pre-charge/termination = ~67mA |
+| C8, C10, C11 | 3 | 10µF | 0805 | Fab | Input/battery/output caps, X5R 10V |
 
 **Subtotal:** ~$3.00
 
@@ -99,8 +97,8 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 
 | Ref | Qty | Value | Package | Assembly | Notes |
 |-----|-----|-------|---------|----------|-------|
-| U_FUEL | 1 | LC709203FQH-01TWG | WDFN-8 (2×2.5mm) | Fab | Battery SoC monitor, I2C |
-| C_FUEL | 1 | 100nF | 0402 | Fab | Decoupling |
+| U7 | 1 | LC709203FQH-01TWG | WDFN-8 (2×2.5mm) | Fab | Battery SoC monitor, I2C |
+| C16 | 1 | 100nF | 0402 | Fab | Decoupling |
 
 **Subtotal:** ~$2.50
 
@@ -108,7 +106,7 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 
 | Ref | Qty | Value | Package | Assembly | Notes |
 |-----|-----|-------|---------|----------|-------|
-| R_NTC | 1 | 10kΩ NTC | 0603 | Fab | B=3380, shared by MCP73871 + LC709203F |
+| TH1 | 1 | NTC 10k | 0603 | Fab | B=3380, shared by MCP73871 (THERM) + LC709203F (TSENSE) |
 
 *Place near battery for accurate temperature reading.*
 
@@ -127,18 +125,19 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 
 | Ref | Qty | Value | Package | Assembly | Notes |
 |-----|-----|-------|---------|----------|-------|
-| U_DAC | 1 | PCM5102APWR | TSSOP-20 | Fab | I2S stereo DAC for TX |
-| C_DAC1 | 1 | 10µF | 0805 | Fab | DVDD decoupling |
-| C_DAC2 | 1 | 100nF | 0603 | Fab | AVDD decoupling |
-| R_TX1 | 1 | 47kΩ | 0603 | User | TX attenuator (high) |
-| R_TX2 | 1 | 470Ω | 0603 | User | TX attenuator (low) |
-| C_TX1 | 1 | 10nF | 0603 | User | TX low-pass filter |
-| C_TX2 | 1 | 100nF | 0603 | User | TX DC blocking |
-| C_RX1 | 1 | 1µF | 0603 | User | RX DC blocking |
-| R_RX1, R_RX2 | 2 | 4.7kΩ | 0603 | User | RX anti-alias filter |
-| C_RX2 | 1 | 4.7nF | 0603 | User | RX anti-alias filter |
-| R_RX3 | 1 | 47kΩ | 0603 | User | RX bias to 3.3V |
-| R_RX4 | 1 | 47kΩ | 0603 | User | RX bias to GND |
+| U8 | 1 | PCM5102A | TSSOP-20 | Fab | I2S stereo DAC for TX |
+| C20 | 1 | 10µF | 0805 | Fab | DVDD decoupling |
+| C19 | 1 | 100nF | 0603 | Fab | AVDD decoupling |
+| C21, C22 | 2 | 2.2µF | 0603 | Fab | Charge pump caps (CAPP, CAPM) |
+| R5 | 1 | 47kΩ | 0603 | User | TX attenuator (high) |
+| R6 | 1 | 470Ω | 0603 | User | TX attenuator (low) |
+| C24 | 1 | 10nF | 0603 | User | TX low-pass filter |
+| C25 | 1 | 100nF | 0603 | User | TX DC blocking |
+| C26 | 1 | 1µF | 0603 | User | RX DC blocking |
+| R7, R8 | 2 | 4.7kΩ | 0603 | User | RX anti-alias filter |
+| C27 | 1 | 4.7nF | 0603 | User | RX anti-alias filter |
+| R9 | 1 | 47kΩ | 0603 | User | RX bias to 3.3V |
+| R10 | 1 | 47kΩ | 0603 | User | RX bias to GND |
 
 **Subtotal:** ~$2.10
 
@@ -148,9 +147,9 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 
 | Ref | Qty | Value | Package | Assembly | Notes |
 |-----|-----|-------|---------|----------|-------|
-| U_DISP | 1 | ILI9341 2.4" module | Breakout | Module | 320×240 SPI, includes SD slot |
-| Q_BL | 1 | 2N7002 | SOT-23 | Fab | Backlight control MOSFET |
-| R_BL | 1 | 1kΩ | 0603 | User | Gate pull-down |
+| J3 | 1 | ILI9341 2.4" module | Breakout | Module | 320×240 SPI display |
+| Q1 | 1 | 2N7002 | SOT-23 | Fab | Backlight control MOSFET |
+| R11 | 1 | 1kΩ | 0603 | User | Gate pull-down |
 
 **Subtotal:** ~$10.00
 
@@ -160,9 +159,8 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 
 | Ref | Qty | Value | Package | Assembly | Notes |
 |-----|-----|-------|---------|----------|-------|
-| U_CAM | 1 | OV2640 DVP module | Breakout | Module | 2.54mm headers, parallel DVP |
-| R_CAM_RST | 1 | 10kΩ | 0603 | Fab | RESET pullup to 3.3V |
-| R_CAM_PWDN | 1 | 10kΩ | 0603 | Fab | PWDN pulldown to GND |
+| J4 | 1 | OV2640 DVP module | Breakout | Module | 2.54mm headers, parallel DVP |
+| R12, R13 | 2 | 10kΩ | 0603 | Fab | RESET pullup / PWDN pulldown |
 
 **Subtotal:** ~$6.00
 
@@ -174,22 +172,17 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 
 | Ref | Qty | Value | Package | Assembly | Notes |
 |-----|-----|-------|---------|----------|-------|
-| SW_UP | 1 | Tactile 6×6mm | TH | User | D-pad up |
-| SW_DOWN | 1 | Tactile 6×6mm | TH | User | D-pad down |
-| SW_LEFT | 1 | Tactile 6×6mm | TH | User | D-pad left |
-| SW_RIGHT | 1 | Tactile 6×6mm | TH | User | D-pad right |
-| SW_CENTER | 1 | Tactile 6×6mm | TH | User | D-pad select |
-| SW_PHOTO | 1 | Tactile 12mm | TH | User | Photo capture (larger) |
-| SW_AIRPLANE | 1 | Slide SPDT | TH | User | Airplane mode toggle |
+| SW1-SW5 | 5 | Tactile 6×6mm | TH | User | D-pad (up/down/left/right/center) |
+| SW6 | 1 | Tactile 12mm | TH | User | Photo capture (larger) |
+| SW7 | 1 | Slide SPDT | TH | User | Airplane mode toggle |
 
 ### PWR Status LED (Traditional RGB)
 
 | Ref | Qty | Value | Package | Assembly | Notes |
 |-----|-----|-------|---------|----------|-------|
-| LED_PWR | 1 | APFA3010LSEEZGKQBKC | PLCC-4 (3.0×1.0mm) | Fab | Kingbright RGB LED, **common-anode** |
-| R_PWR_R | 1 | 220Ω | 0603 | Fab | Red cathode current limit |
-| R_PWR_G | 1 | 100Ω | 0603 | Fab | Green cathode current limit |
-| R_PWR_B | 1 | 100Ω | 0603 | Fab | Blue cathode current limit |
+| D1 | 1 | APFA3010 | PLCC-4 (3.0×1.0mm) | Fab | Kingbright RGB LED, **common-anode** |
+| R14 | 1 | 220Ω | 0603 | Fab | Red cathode current limit |
+| R15, R16 | 2 | 100Ω | 0603 | Fab | Green/Blue cathode current limit |
 
 **Note:** Common-anode LED — anode connects to +3.3V, cathodes through resistors to GPIOs. Firmware uses inverted logic: GPIO LOW = LED on.
 
@@ -201,13 +194,11 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 
 | Ref | Qty | Value | Package | Assembly | Notes |
 |-----|-----|-------|---------|----------|-------|
-| LED_L0–L4 | 5 | WS2812B | 5050 | Fab | Left rabbit ear |
-| LED_R0–R4 | 5 | WS2812B | 5050 | Fab | Right rabbit ear |
-| LED_B0–B15 | 16 | WS2812B | 5050 | Fab | Display border (16 LEDs) |
-| C_LED | 26 | 100nF | 0402 | Fab | Bypass caps (one per LED) |
+| D2–D27 | 26 | WS2812B | 5050 | Fab | Rabbit ears (10) + display border (16) |
+| C28–C53 | 26 | 100nF | 0402 | Fab | Bypass caps (one per LED) |
 
-**Subtotal:** ~$2.40
-*(26× WS2812B @ ~$0.08 = $2.08, 26× caps @ ~$0.01 = $0.26)*
+**Subtotal:** ~$2.60
+*(26× WS2812B @ ~$0.08 = $2.08, 26× caps @ ~$0.02 = $0.52)*
 
 ---
 
@@ -215,24 +206,25 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 
 | Ref | Qty | Value | Package | Assembly | Notes |
 |-----|-----|-------|---------|----------|-------|
-| U_MCU | 1 | RP2350B | QFN-80 (9×9mm) | Fab | 48 GPIO variant required |
-| L2 | 1 | 3.3µH | 3×3mm | Fab | Internal regulator inductor |
+| U1 | 1 | RP2350B | QFN-80 (10×10mm) | Fab | 48 GPIO variant required |
+| L2 | 1 | 3.3µH | 3×3mm | Fab | Internal regulator inductor (VREG_LX to DVDD) |
 | Y1 | 1 | 12MHz | 3215 | Fab | ±20ppm, CL=10pF (required for USB) |
 | C_Y1, C_Y2 | 2 | 15pF | 0402 | Fab | Crystal load caps |
-| U_FLASH | 1 | W25Q128JVSIQ | SOIC-8 | Fab | 16MB QSPI flash |
-| C_FLASH | 1 | 100nF | 0402 | Fab | Flash decoupling |
-| C_MCU | 6 | 100nF | 0402 | Fab | MCU decoupling (one per VDD) |
-| C_MCU_BULK | 2 | 10µF | 0603 | Fab | MCU bulk caps |
-| C_DVDD | 1 | 1µF | 0402 | Fab | DVDD (core voltage) decoupling |
-| SW_BOOT | 1 | Tactile 3×4mm | SMD | Fab | BOOTSEL for UF2 bootloader |
-| R_SDA | 1 | 4.7kΩ | 0603 | Fab | I2C SDA pullup |
-| R_SCL | 1 | 4.7kΩ | 0603 | Fab | I2C SCL pullup |
+| U2 | 1 | W25Q128JVS | SOIC-8 | Fab | 16MB QSPI flash |
+| C9 | 1 | 100nF | 0402 | Fab | Flash decoupling |
+| C3-C7 | 5 | 100nF | 0402 | Fab | MCU VDD decoupling |
+| C2 | 1 | 10µF | 0603 | Fab | MCU bulk cap |
+| C1 | 1 | 1µF | 0402 | Fab | DVDD (core voltage) decoupling |
+| SW_BOOT1 | 1 | Tactile 3×4mm | SMD | Fab | BOOTSEL for UF2 bootloader |
+| R1, R2 | 2 | 4.7kΩ | 0603 | Fab | I2C SDA/SCL pullups (to +3V3) |
+| R17 | 1 | 10kΩ | 0603 | Fab | RUN pin pullup |
 
 **Subtotal:** ~$3.90
 
 *Notes:*
 - *Crystal is required — RP2350 internal oscillator is too inaccurate for USB (needs ±0.25%, ROSC is ±2-5%).*
 - *L2 is required for the RP2350's internal switching regulator (converts 3.3V → 1.1V core voltage).*
+- *I2C pullups MUST connect to +3V3 (IOVDD level), NOT to DVDD (1.1V core).*
 
 ---
 
@@ -240,15 +232,15 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 
 | Ref | Qty | Value | Package | Assembly | Notes |
 |-----|-----|-------|---------|----------|-------|
-| J_SAO1 | 1 | 2×3 header | 2.54mm | User | SAO connector 1 |
-| J_SAO2 | 1 | 2×3 header | 2.54mm | User | SAO connector 2 |
-| J_CAR1 | 1 | 1×8 socket | 2.54mm | User | Carrier signal (left) |
-| J_CAR2 | 1 | 1×8 socket | 2.54mm | User | Carrier signal (right) |
-| J_CAR3 | 1 | 1×3 socket | 2.54mm | User | Carrier mechanical (left) |
-| J_CAR4 | 1 | 1×3 socket | 2.54mm | User | Carrier mechanical (right) |
-| J_DEBUG | 1 | TC2030-CTX-NL | Pads only | Fab | Tag-Connect SWD (no component) |
+| J1 | 1 | JST-PH 2-pin | Through-hole | User | Battery connector |
+| J5 | 1 | 2×3 header | 2.54mm | User | SAO connector 1 |
+| J6 | 1 | 2×3 header | 2.54mm | User | SAO connector 2 |
+| J7, J8 | 2 | 1×8 socket | 2.54mm | User | Carrier signal headers |
+| J9 | 1 | TC2030-CTX-NL | Pads only | Fab | Tag-Connect SWD (no component, excluded from BOM) |
+| J10 | 1 | Micro SD Card | SMD | Fab | Standalone SD card socket |
+| J11, J12 | 2 | 1×3 socket | 2.54mm | User | Carrier mechanical (marked N/C) |
 
-**Subtotal:** ~$2.00
+**Subtotal:** ~$2.50
 
 *Note: Debug interface is Tag-Connect pogo pads only — no installed header. Developer needs TC2030-CTX-NL cable (~$40 one-time) for programming/debug.*
 
@@ -282,36 +274,42 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 
 | Value | Qty | Package | Use |
 |-------|-----|---------|-----|
-| 0Ω | 1 | 0402 | Carrier band ID |
-| 100Ω | 2 | 0603 | PWR LED G/B |
-| 220Ω | 1 | 0603 | PWR LED R |
-| 470Ω | 1 | 0603 | TX attenuator |
-| 1kΩ | 1 | 0603 | Backlight gate |
-| 2kΩ | 1 | 0603 | Charge current |
-| 4.7kΩ | 4 | 0603 | RX filter (2), I2C pullups (2) |
-| 5.1kΩ | 2 | 0402 | USB CC |
-| 10kΩ | 4+ | 0603 | Pullups, pulldowns |
-| 47kΩ | 3 | 0603 | Audio bias/attenuation |
-| 1MΩ | 1 | 0402 | TPS63001 PS |
+| 100Ω | 2 | 0603 | PWR LED G/B (R15, R16) |
+| 220Ω | 1 | 0603 | PWR LED R (R14) |
+| 470Ω | 1 | 0603 | TX attenuator (R6) |
+| 1kΩ | 1 | 0603 | Backlight gate (R11) |
+| 2kΩ | 1 | 0603 | Charge current PROG1 (R3) |
+| 4.7kΩ | 4 | 0603 | RX filter (R7, R8), I2C pullups (R1, R2) |
+| 5.1kΩ | 2 | 0402 | USB CC (R_CC1, R_CC2) |
+| 10kΩ | 3 | 0603 | Camera RST/PWDN (R12, R13), RUN pullup (R17) |
+| 15kΩ | 1 | 0603 | Pre-charge/termination PROG3 (R4) |
+| 47kΩ | 3 | 0603 | TX attenuator (R5), RX bias (R9, R10) |
+
+### Thermistor
+
+| Value | Qty | Package | Use |
+|-------|-----|---------|-----|
+| NTC 10k | 1 | 0603 | Temperature sensing, B=3380 (TH1) |
 
 ### Capacitors
 
 | Value | Qty | Package | Use |
 |-------|-----|---------|-----|
-| 15pF | 2 | 0402 | Crystal load |
-| 4.7nF | 1 | 0603 | RX anti-alias |
-| 10nF | 1 | 0603 | TX filter |
-| 100nF | 40+ | 0402/0603 | Decoupling (LEDs, ICs) |
-| 1µF | 2 | 0402/0603 | RX DC block, DVDD decoupling |
-| 10µF | 15+ | 0603/0805 | Bulk caps |
-| 100µF | 1 | 1206 | Load switch bulk |
+| 15pF | 2 | 0402 | Crystal load (C_Y1, C_Y2) |
+| 4.7nF | 1 | 0603 | RX anti-alias (C27) |
+| 10nF | 1 | 0603 | TX filter (C24) |
+| 100nF | 36 | 0402/0603 | Decoupling: MCU (C3-C7, C9), LEDs (C28-C53), ICs |
+| 1µF | 2 | 0402/0603 | DVDD (C1), RX DC block (C26) |
+| 2.2µF | 2 | 0603 | PCM5102A charge pump (C21, C22) |
+| 10µF | 12 | 0603/0805 | Bulk caps throughout |
+| 100µF | 1 | 1206 | Load switch bulk (C17) |
 
 ### Inductors
 
 | Value | Qty | Package | Use |
 |-------|-----|---------|-----|
-| 1µH | 1 | 3×3mm | TPS63001 buck-boost |
-| 3.3µH | 1 | 3×3mm | RP2350 internal regulator |
+| 1µH | 1 | 3×3mm | TPS63001 buck-boost (L1) |
+| 3.3µH | 1 | 3×3mm | RP2350 internal regulator (L2) |
 
 ---
 
@@ -369,7 +367,8 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 | 2.3 | 2025-02 | MCU support: 12MHz crystal (required for USB), W25Q128 16MB flash |
 | 2.4 | 2025-02 | Added BOOTSEL button for UF2 bootloader |
 | 2.5 | 2025-02 | Added L2 (3.3µH) and C_DVDD (1µF) for RP2350 internal regulator |
+| 3.0 | 2026-02 | **Synchronized with KiCad schematic**: Updated all ref designators to match KiCad, added R4 (15k PROG3), added C21/C22 (2.2µF charge pump), added J10 (SD card), fixed TH1 as NTC, removed PS/SYNC resistor (intentional), added I2C pullup warning |
 
 ---
 
-*Keep this file in sync with `docs/electrical-design.md`!*
+*This BOM is generated from KiCad schematic and verified against `docs/electrical-design.md`.*
