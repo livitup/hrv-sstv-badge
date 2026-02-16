@@ -1,6 +1,6 @@
 # Project Status — DEFCON SSTV Badge
 
-**Last Updated:** 2026-02-11
+**Last Updated:** 2026-02-14
 
 This document tracks the design and implementation status for all badge subsystems.
 
@@ -28,10 +28,10 @@ This document tracks the design and implementation status for all badge subsyste
 | Display (ILI9341) | ✓ | ✓ | | |
 | Camera (OV2640) | ✓ | ✓ | | |
 | MCU (RP2350B) | ✓ | ✓ | | |
-| Debug (Tag-Connect) | ✓ | | | |
+| Debug (Tag-Connect) | ✓ | ✓ | | |
 | User Controls | ✓ | ✓ | | |
 | Blinky LEDs (WS2812B) | ✓ | ✓ | | |
-| SAO Connectors | ✓ | | | |
+| SAO Connectors | ✓ | ✓ | | |
 | SA818 Carrier | ✓ | | | |
 | PCB Outline | ✓ | | | |
 
@@ -165,6 +165,7 @@ This document tracks the design and implementation status for all badge subsyste
 ### Debug Interface
 - [x] Interface selected: Tag-Connect TC2030-CTX-NL (pogo pads, no header)
 - [x] Pinout defined (ARM SWD: VCC, SWDIO, RESETn, SWCLK, GND, SWO)
+- [x] **KiCad: Tag-Connect complete** (TC2030-NL symbol with SWD signals and RUN)
 - [ ] Add TC2030-CTX-NL footprint to KiCad
 - [ ] Verify placement on back of PCB
 
@@ -195,6 +196,7 @@ This document tracks the design and implementation status for all badge subsyste
 - [x] 2× SAO connectors specified (I2C + 2 GPIO each)
 - [x] GPIO assignments: SAO1 (GPIO20-21), SAO2 (GPIO27-28)
 - [x] Shared I2C bus (GPIO0-1)
+- [x] **KiCad: SAO connectors complete** (2× 2x3 headers with I2C and GPIO labels)
 - [ ] Verify SAO 2×3 header footprint in KiCad
 
 ### Main Board
@@ -226,7 +228,7 @@ This document tracks the design and implementation status for all badge subsyste
 | Electrical design complete | ✓ | Done |
 | BOM finalized | ✓ | Done |
 | PCB outline designed | ✓ | Done |
-| KiCad schematic | | **In progress** (Power, Audio, Display/Camera, User Controls, MCU done; Connectors remaining) |
+| KiCad schematic | | **Complete** (all sheets done: Power, Audio, Display/Camera, User Controls, MCU, Connectors) |
 | KiCad layout | | Not started |
 | Gerbers generated | | Not started |
 | Prototype ordered | | Not started |
