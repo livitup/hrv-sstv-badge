@@ -1884,7 +1884,7 @@
 	)
 	(wire
 		(pts
-			(xy 147.32 43.18) (xy 87.63 43.18)
+			(xy 147.32 43.18) (xy 85.09 43.18)
 		)
 		(stroke
 			(width 0)
@@ -2394,7 +2394,7 @@
 	)
 	(wire
 		(pts
-			(xy 87.63 43.18) (xy 87.63 105.41)
+			(xy 85.09 43.18) (xy 85.09 105.41)
 		)
 		(stroke
 			(width 0)
@@ -2434,7 +2434,7 @@
 	)
 	(wire
 		(pts
-			(xy 87.63 105.41) (xy 97.79 105.41)
+			(xy 85.09 105.41) (xy 97.79 105.41)
 		)
 		(stroke
 			(width 0)
@@ -2524,8 +2524,8 @@
 			(uuid "7eaed591-9320-4f61-bdf0-d09d042ef5d2")
 		)
 		(instances
-			(project ""
-				(path "/6bfeada4-0da3-4bdd-af4a-70929e466b35/13b51c95-a7d4-458a-be44-da0982b5e764"
+			(project "sa818-v-carrier"
+				(path "/722b1e9e-d60d-4a57-9f35-4881faa3fde3"
 					(reference "R18")
 					(unit 1)
 				)
@@ -2595,8 +2595,8 @@
 			(uuid "88c578c7-6568-4576-91e8-22236526c249")
 		)
 		(instances
-			(project "defcon-sstv-badge"
-				(path "/6bfeada4-0da3-4bdd-af4a-70929e466b35/13b51c95-a7d4-458a-be44-da0982b5e764"
+			(project "sa818-v-carrier"
+				(path "/722b1e9e-d60d-4a57-9f35-4881faa3fde3"
 					(reference "J17")
 					(unit 1)
 				)
@@ -2662,8 +2662,8 @@
 			(uuid "40fbc474-17b3-4740-92ee-8e9f0ea26932")
 		)
 		(instances
-			(project ""
-				(path "/6bfeada4-0da3-4bdd-af4a-70929e466b35/13b51c95-a7d4-458a-be44-da0982b5e764"
+			(project "sa818-v-carrier"
+				(path "/722b1e9e-d60d-4a57-9f35-4881faa3fde3"
 					(reference "#FLG03")
 					(unit 1)
 				)
@@ -2748,8 +2748,8 @@
 			(uuid "16d195c3-cec4-445e-b751-eab5c02bba0d")
 		)
 		(instances
-			(project ""
-				(path "/6bfeada4-0da3-4bdd-af4a-70929e466b35/13b51c95-a7d4-458a-be44-da0982b5e764"
+			(project "sa818-v-carrier"
+				(path "/722b1e9e-d60d-4a57-9f35-4881faa3fde3"
 					(reference "J15")
 					(unit 1)
 				)
@@ -2818,8 +2818,8 @@
 			(uuid "fb8d6c92-c985-428e-a17a-a38bf9e1eef4")
 		)
 		(instances
-			(project ""
-				(path "/6bfeada4-0da3-4bdd-af4a-70929e466b35/13b51c95-a7d4-458a-be44-da0982b5e764"
+			(project "sa818-v-carrier"
+				(path "/722b1e9e-d60d-4a57-9f35-4881faa3fde3"
 					(reference "C54")
 					(unit 1)
 				)
@@ -2904,8 +2904,8 @@
 			(uuid "f7326e40-9cb5-4f2d-8b63-f34ce3132416")
 		)
 		(instances
-			(project ""
-				(path "/6bfeada4-0da3-4bdd-af4a-70929e466b35/13b51c95-a7d4-458a-be44-da0982b5e764"
+			(project "sa818-v-carrier"
+				(path "/722b1e9e-d60d-4a57-9f35-4881faa3fde3"
 					(reference "J14")
 					(unit 1)
 				)
@@ -2974,8 +2974,8 @@
 			(uuid "a8f512ab-81d1-4354-838e-551994ab407a")
 		)
 		(instances
-			(project ""
-				(path "/6bfeada4-0da3-4bdd-af4a-70929e466b35/13b51c95-a7d4-458a-be44-da0982b5e764"
+			(project "sa818-v-carrier"
+				(path "/722b1e9e-d60d-4a57-9f35-4881faa3fde3"
 					(reference "J13")
 					(unit 1)
 				)
@@ -3040,8 +3040,8 @@
 			(uuid "e7e3667d-c95f-4a89-86d8-280b40d54362")
 		)
 		(instances
-			(project ""
-				(path "/6bfeada4-0da3-4bdd-af4a-70929e466b35/13b51c95-a7d4-458a-be44-da0982b5e764"
+			(project "sa818-v-carrier"
+				(path "/722b1e9e-d60d-4a57-9f35-4881faa3fde3"
 					(reference "#PWR015")
 					(unit 1)
 				)
@@ -3110,8 +3110,8 @@
 			(uuid "69b01e7e-1df3-4543-8ae0-9d4d6d6ed12d")
 		)
 		(instances
-			(project "defcon-sstv-badge"
-				(path "/6bfeada4-0da3-4bdd-af4a-70929e466b35/13b51c95-a7d4-458a-be44-da0982b5e764"
+			(project "sa818-v-carrier"
+				(path "/722b1e9e-d60d-4a57-9f35-4881faa3fde3"
 					(reference "C55")
 					(unit 1)
 				)
@@ -3221,8 +3221,8 @@
 			(uuid "fbae36ac-f6ea-4fcd-9d9a-995a48231642")
 		)
 		(instances
-			(project ""
-				(path "/6bfeada4-0da3-4bdd-af4a-70929e466b35/13b51c95-a7d4-458a-be44-da0982b5e764"
+			(project "sa818-v-carrier"
+				(path "/722b1e9e-d60d-4a57-9f35-4881faa3fde3"
 					(reference "U9")
 					(unit 1)
 				)
@@ -3292,12 +3292,18 @@
 			(uuid "836d6f03-ffb8-4f11-8c9c-63bc33210845")
 		)
 		(instances
-			(project ""
-				(path "/6bfeada4-0da3-4bdd-af4a-70929e466b35/13b51c95-a7d4-458a-be44-da0982b5e764"
+			(project "sa818-v-carrier"
+				(path "/722b1e9e-d60d-4a57-9f35-4881faa3fde3"
 					(reference "J16")
 					(unit 1)
 				)
 			)
 		)
 	)
+	(sheet_instances
+		(path "/"
+			(page "1")
+		)
+	)
+	(embedded_fonts no)
 )
