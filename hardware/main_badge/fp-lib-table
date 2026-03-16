@@ -1,0 +1,7 @@
+(fp_lib_table
+  (version 7)
+  (lib (name "TPS63001DRCR")(type "KiCad")(uri "${KIPRJMOD}/footprints.pretty")(options "")(descr "TPS63001 buck-boost regulator"))
+  (lib (name "TPS22919DCKT")(type "KiCad")(uri "${KIPRJMOD}/footprints.pretty")(options "")(descr "TPS22919 load switch"))
+  (lib (name "USB4105-GF-A")(type "KiCad")(uri "${KIPRJMOD}/footprints.pretty")(options "")(descr "GCT USB-C connector"))
+  (lib (name "VHF_UHF_Modules")(type "KiCad")(uri "${KIPRJMOD}/footprints.pretty")(options "")(descr "SA818 VHF/UHF transceiver module"))
+)
