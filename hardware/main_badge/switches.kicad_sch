@@ -1545,12 +1545,6 @@
 		(uuid "581b2905-932a-4268-98b9-0c57cde54d5d")
 	)
 	(junction
-		(at 80.01 107.95)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "586ebf90-deb6-42f1-831e-2ffeccc43c36")
-	)
-	(junction
 		(at 80.01 102.87)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -2096,7 +2090,7 @@
 	)
 	(wire
 		(pts
-			(xy 80.01 107.95) (xy 80.01 118.11)
+			(xy 80.01 102.87) (xy 80.01 118.11)
 		)
 		(stroke
 			(width 0)
@@ -3836,16 +3830,6 @@
 	)
 	(wire
 		(pts
-			(xy 80.01 102.87) (xy 80.01 107.95)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "d706e2e0-46fc-4574-b8e0-33af368c9b5c")
-	)
-	(wire
-		(pts
 			(xy 190.5 60.96) (xy 190.5 64.77)
 		)
 		(stroke
@@ -3863,16 +3847,6 @@
 			(type default)
 		)
 		(uuid "d989acfe-bbe6-45b7-8778-273b50103d03")
-	)
-	(wire
-		(pts
-			(xy 74.93 107.95) (xy 80.01 107.95)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "d9e857b4-05d6-4c49-966f-601f67d96898")
 	)
 	(wire
 		(pts
@@ -4413,28 +4387,6 @@
 		(uuid "b7365405-e10b-4234-b024-60989ee18b76")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
 			(at 50.5362 67.31 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-				(hide yes)
-			)
-		)
-	)
-	(global_label "PHOTO"
-		(shape input)
-		(at 64.77 107.95 180)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "bb7db9fd-5c89-4a95-ab8a-2a0498b4eb73")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 55.5557 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8032,92 +7984,6 @@
 			(project "defcon-sstv-badge"
 				(path "/6bfeada4-0da3-4bdd-af4a-70929e466b35/52eb5196-da8e-430a-af5e-431a5c1a75a9"
 					(reference "C35")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Switch:SW_SPST")
-		(at 69.85 107.95 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "a54180cb-e83b-4064-b6a6-ce1eaa44beef")
-		(property "Reference" "SW6"
-			(at 69.85 101.6 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "SW_SPST"
-			(at 69.85 104.14 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Button_Switch_THT:SW_PUSH-12mm"
-			(at 69.85 107.95 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 69.85 107.95 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Single Pole Single Throw (SPST) switch"
-			(at 69.85 107.95 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "KLC_S4.2_DVDD" ""
-			(at 69.85 107.95 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "KLC_S4.2_VREG_LX" ""
-			(at 69.85 107.95 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "c4df5be7-6c5e-4a31-ae93-67b741ab360e")
-		)
-		(pin "1"
-			(uuid "b7f7a5ca-1759-471a-b5de-4f36c660d977")
-		)
-		(instances
-			(project "defcon-sstv-badge"
-				(path "/6bfeada4-0da3-4bdd-af4a-70929e466b35/52eb5196-da8e-430a-af5e-431a5c1a75a9"
-					(reference "SW6")
 					(unit 1)
 				)
 			)

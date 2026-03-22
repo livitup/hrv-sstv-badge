@@ -3121,6 +3121,10 @@
 		(uuid "f862abb7-def6-4b0c-bae7-25a2d40afad4")
 	)
 	(no_connect
+		(at 119.38 144.78)
+		(uuid "94152ed7-fdb5-4f9e-a78e-7d0b14bc1f8e")
+	)
+	(no_connect
 		(at 207.01 106.68)
 		(uuid "a8f2fdaf-eca3-442d-a4b6-ae01177a4703")
 	)
@@ -4616,16 +4620,6 @@
 	)
 	(wire
 		(pts
-			(xy 111.76 144.78) (xy 119.38 144.78)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "c73bd6d7-5d18-456f-b153-e35508ffe556")
-	)
-	(wire
-		(pts
 			(xy 63.5 35.56) (xy 71.12 35.56)
 		)
 		(stroke
@@ -5456,28 +5450,6 @@
 					(size 1.27 1.27)
 				)
 				(justify left)
-				(hide yes)
-			)
-		)
-	)
-	(global_label "PHOTO"
-		(shape input)
-		(at 111.76 144.78 180)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "8589e0e3-7452-4fe1-818f-8029c964e412")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 102.5457 144.78 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
 				(hide yes)
 			)
 		)
