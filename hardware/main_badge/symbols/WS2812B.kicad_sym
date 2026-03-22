@@ -132,7 +132,7 @@
         (name "VDD"
           (effects (font (size 1.016 1.016)))
         )
-        (number "1-VDD"
+        (number "1"
           (effects (font (size 1.016 1.016)))
         )
       )
@@ -140,7 +140,7 @@
         (name "DI"
           (effects (font (size 1.016 1.016)))
         )
-        (number "4-DIN"
+        (number "4"
           (effects (font (size 1.016 1.016)))
         )
       )
@@ -148,7 +148,7 @@
         (name "GND"
           (effects (font (size 1.016 1.016)))
         )
-        (number "3-GND"
+        (number "3"
           (effects (font (size 1.016 1.016)))
         )
       )
@@ -156,7 +156,7 @@
         (name "DO"
           (effects (font (size 1.016 1.016)))
         )
-        (number "2-DOUT"
+        (number "2"
           (effects (font (size 1.016 1.016)))
         )
       )

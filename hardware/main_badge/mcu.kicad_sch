@@ -3120,6 +3120,10 @@
 		(color 0 0 0 0)
 		(uuid "f862abb7-def6-4b0c-bae7-25a2d40afad4")
 	)
+	(no_connect
+		(at 207.01 106.68)
+		(uuid "a8f2fdaf-eca3-442d-a4b6-ae01177a4703")
+	)
 	(wire
 		(pts
 			(xy 170.18 88.9) (xy 207.01 88.9)
@@ -5491,28 +5495,6 @@
 		(uuid "85df3379-5c59-451c-b8ad-f0c2760b809d")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
 			(at 221.4857 127 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-				(hide yes)
-			)
-		)
-	)
-	(global_label "CAM_XCLK"
-		(shape input)
-		(at 207.01 106.68 0)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "8606b657-bf85-4441-b43f-92daa09e1ba6")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 219.5504 106.68 0)
 			(effects
 				(font
 					(size 1.27 1.27)
