@@ -721,7 +721,7 @@
 	(footprint "LED_SMD:LED_WS2812B_PLCC4_5.0x5.0mm_P3.2mm"
 		(layer "F.Cu")
 		(uuid "012dda15-c965-4535-b198-7fb92ae223c3")
-		(at 109.85 -14.61 -45)
+		(at 106.97 -14.61 -45)
 		(descr "5.0mm x 5.0mm Addressable RGB LED NeoPixel, https://cdn-shop.adafruit.com/datasheets/WS2812B.pdf")
 		(tags "LED RGB NeoPixel PLCC-4 5050")
 		(property "Reference" "D11"
@@ -8899,7 +8899,7 @@
 	(footprint "Capacitor_SMD:C_0402_1005Metric"
 		(layer "F.Cu")
 		(uuid "4917b26a-bf0d-43bc-a3fa-95108ed05139")
-		(at 106.32 -11.07 -45)
+		(at 103.43 -11.07 -45)
 		(descr "Capacitor SMD 0402 (1005 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf), generated with kicad-footprint-generator")
 		(tags "capacitor")
 		(property "Reference" "C37"
@@ -9402,7 +9402,7 @@
 	(footprint "Capacitor_SMD:C_0402_1005Metric"
 		(layer "F.Cu")
 		(uuid "4cd7d6d6-4013-440f-bf4f-e832ac60e681")
-		(at 135.16 -39.89 -45)
+		(at 132.28 -39.89 -45)
 		(descr "Capacitor SMD 0402 (1005 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf), generated with kicad-footprint-generator")
 		(tags "capacitor")
 		(property "Reference" "C34"
@@ -9944,7 +9944,7 @@
 	(footprint "Capacitor_SMD:C_0402_1005Metric"
 		(layer "F.Cu")
 		(uuid "51e083dd-0158-4906-ab1b-982862ebb962")
-		(at 142.77 -49.49 -45)
+		(at 141.83 -49.49 -45)
 		(descr "Capacitor SMD 0402 (1005 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf), generated with kicad-footprint-generator")
 		(tags "capacitor")
 		(property "Reference" "C33"
@@ -11060,7 +11060,7 @@
 	(footprint "Capacitor_SMD:C_0402_1005Metric"
 		(layer "F.Cu")
 		(uuid "55c8a884-519c-4459-871e-2e699e95b222")
-		(at 115.93 -20.68 -45)
+		(at 113.05 -20.68 -45)
 		(descr "Capacitor SMD 0402 (1005 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf), generated with kicad-footprint-generator")
 		(tags "capacitor")
 		(property "Reference" "C36"
@@ -14809,7 +14809,7 @@
 	(footprint "LED_SMD:LED_WS2812B_PLCC4_5.0x5.0mm_P3.2mm"
 		(layer "F.Cu")
 		(uuid "7f8db492-2aa6-4ee4-b7fe-4ce384f609b1")
-		(at 146.31 -53.03 -45)
+		(at 145.37 -53.03 -45)
 		(descr "5.0mm x 5.0mm Addressable RGB LED NeoPixel, https://cdn-shop.adafruit.com/datasheets/WS2812B.pdf")
 		(tags "LED RGB NeoPixel PLCC-4 5050")
 		(property "Reference" "D7"
@@ -17636,7 +17636,7 @@
 	(footprint "LED_SMD:LED_WS2812B_PLCC4_5.0x5.0mm_P3.2mm"
 		(layer "F.Cu")
 		(uuid "9f0a05cb-97c7-4908-8d6c-bc0ea2fddc66")
-		(at 119.47 -24.21 -45)
+		(at 116.58 -24.21 -45)
 		(descr "5.0mm x 5.0mm Addressable RGB LED NeoPixel, https://cdn-shop.adafruit.com/datasheets/WS2812B.pdf")
 		(tags "LED RGB NeoPixel PLCC-4 5050")
 		(property "Reference" "D10"
@@ -20856,7 +20856,7 @@
 	(footprint "LED_SMD:LED_WS2812B_PLCC4_5.0x5.0mm_P3.2mm"
 		(layer "F.Cu")
 		(uuid "c5b1234a-98f0-4aad-adaa-c354511cc7f0")
-		(at 129.08 -33.82 -45)
+		(at 126.2 -33.82 -45)
 		(descr "5.0mm x 5.0mm Addressable RGB LED NeoPixel, https://cdn-shop.adafruit.com/datasheets/WS2812B.pdf")
 		(tags "LED RGB NeoPixel PLCC-4 5050")
 		(property "Reference" "D9"
@@ -21829,7 +21829,7 @@
 	(footprint "LED_SMD:LED_WS2812B_PLCC4_5.0x5.0mm_P3.2mm"
 		(layer "F.Cu")
 		(uuid "caac7994-b2bf-4192-9695-4747678cb9d7")
-		(at 138.7 -43.42 -45)
+		(at 135.81 -43.42 -45)
 		(descr "5.0mm x 5.0mm Addressable RGB LED NeoPixel, https://cdn-shop.adafruit.com/datasheets/WS2812B.pdf")
 		(tags "LED RGB NeoPixel PLCC-4 5050")
 		(property "Reference" "D8"
@@ -23608,7 +23608,7 @@
 	(footprint "Capacitor_SMD:C_0402_1005Metric"
 		(layer "F.Cu")
 		(uuid "d5976738-2a7a-47a1-8ac2-b5a5f5a178e2")
-		(at 125.55 -30.28 -45)
+		(at 122.66 -30.28 -45)
 		(descr "Capacitor SMD 0402 (1005 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf), generated with kicad-footprint-generator")
 		(tags "capacitor")
 		(property "Reference" "C35"
@@ -35275,8 +35275,8 @@
 		(uuid "e410dd79-7edd-4b28-8d19-997b831d68db")
 	)
 	(gr_line
-		(start 118 120)
-		(end 2 120)
+		(start 112 120)
+		(end 8 120)
 		(stroke
 			(width 0.05)
 			(type default)
@@ -35284,10 +35284,9 @@
 		(layer "Edge.Cuts")
 		(uuid "108a64bf-26e4-4e19-a9bb-971149307775")
 	)
-	(gr_arc
-		(start 2 120)
-		(mid 0.585786 119.414214)
-		(end 0 118)
+	(gr_line
+		(start 8 120)
+		(end 4.118 134.489)
 		(stroke
 			(width 0.05)
 			(type default)
@@ -35306,9 +35305,9 @@
 		(uuid "18f52f43-8cea-4c81-b620-7aa9a0492f3f")
 	)
 	(gr_arc
-		(start 138.784864 -51.078289)
-		(mid 150.173298 -59.779803)
-		(end 148.434609 -45.553428)
+		(start 137.892835 -53.033002)
+		(mid 150.599675 -58.38483)
+		(end 145.5524 -45.553975)
 		(stroke
 			(width 0.05)
 			(type solid)
@@ -35317,8 +35316,8 @@
 		(uuid "2b835e3b-002b-4915-865b-bf4aa9db1f8c")
 	)
 	(gr_line
-		(start 102.881181 0)
-		(end 148.434609 -45.553428)
+		(start 99.998425 0)
+		(end 145.5524 -45.553975)
 		(stroke
 			(width 0.05)
 			(type solid)
@@ -35327,8 +35326,8 @@
 		(uuid "34b351ba-4a54-47f4-b63d-bb17d6dbcc4b")
 	)
 	(gr_line
-		(start 138.784864 -51.078289)
-		(end 87.582429 0)
+		(start 137.892835 -53.033002)
+		(end 84.694 0)
 		(stroke
 			(width 0.05)
 			(type default)
@@ -35348,13 +35347,55 @@
 	)
 	(gr_line
 		(start 120 2)
-		(end 120 118)
+		(end 120 120)
 		(stroke
 			(width 0.05)
 			(type default)
 		)
 		(layer "Edge.Cuts")
 		(uuid "87cf9448-d9a2-491f-8774-702bffb8875c")
+	)
+	(gr_arc
+		(start 4.118 134.489)
+		(mid 0.118 138.489)
+		(end -3.882 134.489)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(layer "Edge.Cuts")
+		(uuid "a1000001-0001-0001-0001-000000000001")
+	)
+	(gr_line
+		(start -3.882 134.489)
+		(end 0 120)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(layer "Edge.Cuts")
+		(uuid "a1000001-0001-0001-0001-000000000002")
+	)
+	(gr_arc
+		(start 123.882 134.489)
+		(mid 119.882 138.489)
+		(end 115.882 134.489)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(layer "Edge.Cuts")
+		(uuid "a1000001-0001-0001-0001-000000000003")
+	)
+	(gr_line
+		(start 115.882 134.489)
+		(end 112 120)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(layer "Edge.Cuts")
+		(uuid "a1000001-0001-0001-0001-000000000004")
 	)
 	(gr_arc
 		(start 0 2)
@@ -35390,7 +35431,7 @@
 	)
 	(gr_line
 		(start 35.306 0)
-		(end 87.582429 0)
+		(end 84.694 0)
 		(stroke
 			(width 0.05)
 			(type default)
@@ -35399,7 +35440,7 @@
 		(uuid "f0f85e3b-475d-442c-9daa-7e57be7e3536")
 	)
 	(gr_line
-		(start 102.881181 0)
+		(start 99.998425 0)
 		(end 118 0)
 		(stroke
 			(width 0.05)
@@ -35419,10 +35460,9 @@
 		(layer "Edge.Cuts")
 		(uuid "f4f8d900-4d1d-428a-9ab6-0826b677ebca")
 	)
-	(gr_arc
-		(start 120 118)
-		(mid 119.414214 119.414214)
-		(end 118 120)
+	(gr_line
+		(start 120 120)
+		(end 123.882 134.489)
 		(stroke
 			(width 0.05)
 			(type default)
@@ -35431,7 +35471,7 @@
 		(uuid "fb979cc1-7cd1-4ad8-acc5-76c52dff774f")
 	)
 	(gr_line
-		(start 0 118)
+		(start 0 120)
 		(end 0 2)
 		(stroke
 			(width 0.05)

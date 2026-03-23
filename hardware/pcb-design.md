@@ -1,7 +1,7 @@
 # PCB Design — DEFCON SSTV Badge
 
-**Version:** 1.0
-**Last Updated:** 2025-02
+**Version:** 1.1
+**Last Updated:** 2026-03
 
 This document defines the physical PCB design for the main badge, including outline, dimensions, component placement zones, and manufacturing specifications.
 
@@ -14,6 +14,7 @@ The badge PCB is cut in the shape of a classic 1950s/60s CRT television, inspire
 - **Rounded rectangular body** — the "cabinet" of the TV
 - **Rabbit ear antennas** — V-shaped extensions at the top
 - **Display as the "screen"** — centered in the cabinet
+- **Stubby feet** — angled legs at bottom corners, badge can stand on a table
 - **Retro proportions** — slightly taller than wide, chunky feel
 
 ---
@@ -42,7 +43,7 @@ The badge PCB is cut in the shape of a classic 1950s/60s CRT television, inspire
     │     ┌───────────────────────────────┐        │
     │   ● │                               │ ●      │
     │     │                               │        │
-    │   ● │          DISPLAY              │ ●      │  ← ~95mm body height
+    │   ● │          DISPLAY              │ ●      │  ← ~120mm body height
     │     │          320×240              │        │
     │   ● │         (2.4" TFT)            │ ●      │
     │     │                               │        │
@@ -55,7 +56,7 @@ The badge PCB is cut in the shape of a classic 1950s/60s CRT television, inspire
     │                                              │
     └────┬────────────────────────────────────┬────┘
          │                                    │
-         ╱                                    ╲      ← Stubby angled legs
+         ╱                                    ╲      ← Stubby angled feet
     ____╱                                      ╲____   (~15mm, 15° outward)
 
                          ↑
@@ -69,23 +70,23 @@ The badge PCB is cut in the shape of a classic 1950s/60s CRT television, inspire
 | Dimension | Value | Notes |
 |-----------|-------|-------|
 | **Total width** | 120mm | Matches carrier board |
-| **Body height** | 95mm | Main TV cabinet |
+| **Body height** | 120mm | Main TV cabinet |
 | **Ear length** | 50mm | From body to tip |
-| **Ear angle** | ~30° | V-shape spread from center |
+| **Ear angle** | ~45° | V-shape spread from center |
 | **Leg length** | ~15mm | From body to foot |
 | **Leg angle** | ~15° | Outward from vertical |
-| **Leg/foot width** | ~8mm | Rounded feet |
-| **Total height** | ~155mm | Ears + body + legs |
-| **Corner radius** | 8mm | Rounded TV look |
+| **Foot width** | ~8mm | Semicircular rounded feet |
+| **Total height** | ~190mm | Ears + body + feet |
+| **Corner radius** | 2mm | Top corners only (square at leg junctions) |
 | **Ear width at base** | 15mm | Where ear meets body |
-| **Ear tip width** | 8mm | Rounded tip |
+| **Ear tip width** | ~15mm | Semicircular ball shape (~15mm diameter) |
 
 ---
 
 ## Rabbit Ear Detail
 
 ```
-                    ●(L4) ← 8mm rounded tip
+                    ●(L4) ← ~15mm semicircular ball tip
                    ╱
                   ╱  ~15mm between LEDs
                  ╱
@@ -106,7 +107,7 @@ The badge PCB is cut in the shape of a classic 1950s/60s CRT television, inspire
     └── Body top edge
 ```
 
-**Ear shape:** Tapered from 15mm at base to 8mm at tip, with smooth curves.
+**Ear shape:** Tapered from 15mm at base, with semicircular ball tips (~15mm diameter).
 
 **LED placement:** 5 LEDs per ear, centered on ear width, evenly spaced ~10-12mm apart.
 
@@ -285,10 +286,10 @@ Based on the classic Simpsons TV design:
     │   [D-pad]    [buttons]                     │
     │                                            │
     │    "73 de HRV"                    v1.0    │ ← Bottom info
-    └────────────────────────────────────────────┘
-         ╱                              ╲
-    ____╱                                ╲____    ← Stubby angled legs
-                                                   (part of PCB outline)
+    └────┬──────────────────────────────────┬────┘
+         ╱                                  ╲
+    ____╱                                    ╲____    ← Stubby angled feet
+                                                       (part of PCB outline)
 ```
 
 **Art elements:**
@@ -300,38 +301,31 @@ Based on the classic Simpsons TV design:
 
 ---
 
-## Legs (PCB Extensions)
+## Feet (PCB Extensions)
 
-The badge includes two short, angled legs at the bottom corners - part of the PCB outline, not separate pieces.
+The badge includes two short, angled feet at the bottom corners — part of the PCB outline, not separate pieces.
 
 ```
     Main body
     ┌──────────────────────────────────────────┐
     │                                          │
     │                                          │
-    │                                          │
     └────┬────────────────────────────────┬────┘
-         │                                │
+         │         104mm flat bottom      │
          ╱                                ╲
-        ╱                                  ╲    ← ~15° outward angle
+        ╱   ← 15° outward angle           ╲     ← ~15mm leg length
    ____╱                                    ╲____
-                                               ← ~15mm leg length
-
-    Left leg detail:
-
-         │ body edge
-         │
-         ╱  ← 15° angle outward (splays out)
-        ╱
-   ____╱  ← rounded foot (~8mm wide)
+  (   )                                    (   )  ← 8mm semicircular feet
 ```
 
 | Parameter | Value |
 |-----------|-------|
 | Leg length | ~15mm |
 | Leg angle | ~15° outward from vertical |
-| Foot width | ~8mm |
-| Leg width | ~8mm tapering to foot |
+| Foot shape | 8mm diameter semicircle |
+| Leg width | 8mm (matches foot) |
+| Body junction | Square corners (no radius) |
+| Bottom edge between legs | 104mm flat |
 
 **Benefits:**
 - Authentic Simpsons TV aesthetic
@@ -343,9 +337,9 @@ The badge includes two short, angled legs at the bottom corners - part of the PC
 ## Edge Cuts (KiCad)
 
 The PCB outline will be defined as edge cuts in KiCad with:
-- Main body: Rounded rectangle (8mm corner radius)
-- Ears: Tapered shapes with rounded tips (at top)
-- Legs: Angled extensions at bottom corners
+- Main body: Rounded rectangle (2mm corner radius at top, square at bottom for leg junctions)
+- Ears: Tapered shapes with semicircular ball tips (at top)
+- Feet: Angled extensions with semicircular rounded ends (at bottom)
 - All corners and transitions smoothed with arcs
 - Minimum internal angle: >90° for manufacturability
 
@@ -383,7 +377,7 @@ The PCB outline will be defined as edge cuts in KiCad with:
 ## KiCad Implementation Notes
 
 ### Edge Cuts Layer
-- Use arcs for all rounded corners (8mm radius on body)
+- Use arcs for rounded top corners (2mm radius) and semicircular feet
 - Ears are tapered shapes with rounded tips
 - Ensure continuous closed outline
 - Verify with DRC before fabrication
@@ -413,6 +407,7 @@ The PCB outline will be defined as edge cuts in KiCad with:
 | Version | Date | Changes |
 |---------|------|---------|
 | 1.0 | 2025-02 | Initial PCB outline design |
+| 1.1 | 2026-03 | Added feet, updated ears to ball tips, body 120mm, corners 2mm |
 
 ---
 
