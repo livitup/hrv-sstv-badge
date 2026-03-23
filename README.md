@@ -25,9 +25,9 @@ Perfect for ham radio operators, makers, and anyone interested in digital modes 
 - **RP2350B Dual-Core MCU** - QFN-80, 48 GPIOs, dedicated cores for UI and signal processing
 - **SA818 VHF/UHF Transceiver** - 1W output on swappable carrier board (see below)
 - **OV2640 2MP Camera** - Parallel DVP interface with 15-20 FPS live viewfinder via PIO
-- **2.4" ILI9341 TFT Display** - 320x240 landscape, SPI interface with built-in SD card slot
+- **2.4" ILI9341 TFT Display** - 320x240 landscape, SPI interface
 - **PCM5102A DAC + RP2350 ADC** - I2S DAC for TX audio, internal ADC for RX audio
-- **MicroSD Storage** - Via display module's built-in SD card slot (shared SPI bus)
+- **MicroSD Storage** - Standalone SD socket (J10), shared SPI bus with display
 - **2000mAh LiPo Battery** - 8-10 hours operation with USB-C charging
 - **2x SAO Connectors** - Standard Shitty Add-On expansion ports
 - **26x WS2812B LEDs** - Animated blinky chain across rabbit ears and display border
@@ -167,7 +167,7 @@ hrv-sstv-badge/
 | **Display** | 2.4" ILI9341 TFT LCD, 320x240 landscape, SPI |
 | **Audio TX** | PCM5102A DAC via I2S |
 | **Audio RX** | RP2350B internal ADC with anti-alias filter |
-| **Storage** | MicroSD via display module (shared SPI bus) |
+| **Storage** | MicroSD via standalone SD socket J10 (shared SPI bus) |
 | **Battery** | 2000mAh LiPo, USB-C charging (MCP73871) |
 | **Regulator** | TPS63001 buck-boost, 3.3V output |
 | **Operating Time** | 8-10 hours typical use |

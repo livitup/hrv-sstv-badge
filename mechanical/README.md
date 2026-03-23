@@ -15,7 +15,7 @@ As a DEFCON badge, this device is designed to be worn **without a traditional en
 ### Dimensions and Weight
 | Parameter | Value | Notes |
 |-----------|-------|-------|
-| **PCB Size** | 120mm × 80mm | TV-shaped outline with rounded corners |
+| **PCB Size** | 120mm × 120mm body, ~190mm total height | TV-shaped outline with rabbit ear antennas and stubby feet |
 | **Thickness** | ~15mm max | Including tallest components |
 | **Weight** | ~150g | Including 2000mAh battery |
 | **Balance Point** | Center-bottom | Optimized for comfortable wearing |

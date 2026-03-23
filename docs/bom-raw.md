@@ -27,7 +27,8 @@
 | 2N7002 | N-MOSFET SOT-23 | 1 |
 | PESD5V0S1BL | TVS Diode | 1 |
 | APFA3010 | RGB LED (common-anode) | 1 |
-| WS2812B | Addressable LED | 26 |
+| WS2812B (5050) | Addressable LED | 10 |
+| WS2812B-2020 | Addressable LED | 16 |
 
 ## Capacitors
 
@@ -96,8 +97,7 @@
 
 | Type | Qty | Notes |
 |------|-----|-------|
-| Tactile 6x6mm | 5 | D-pad |
-| Tactile 12mm | 1 | Photo button |
+| Tactile 6x6mm | 5 | D-pad (center doubles as photo capture) |
 | Slide SPDT | 1 | Airplane mode |
 | Tactile 3x4mm SMD | 1 | BOOTSEL |
 
@@ -126,7 +126,7 @@
 | Resistors | 19 |
 | LEDs | 27 |
 | Connectors | 13 |
-| Switches | 8 |
+| Switches | 7 |
 | Modules | 3 |
 
 ---

@@ -1094,7 +1094,7 @@ The display shows SSTV images, menus, and status information.
 - **Interface:** SPI (up to 62.5 MHz)
 - **Backlight:** PWM dimming via GPIO + MOSFET
 - **Touch:** None (D-pad navigation instead)
-- **SD Card:** Using module's built-in SD slot (shared SPI bus)
+- **SD Card:** Standalone SD socket (J10), shared SPI bus with display
 
 *See [Engineer's Notebook](engineers-notebook/electrical-design-decisions.md#why-320x240) for resolution selection rationale.*
 
@@ -1111,7 +1111,7 @@ The display shows SSTV images, menus, and status information.
 | SCK | SPI Clock | SPI SCK GPIO | |
 | LED/BLK | Backlight | GPIO via MOSFET | PWM dimming |
 | SDO/MISO | SPI Data Out | SPI RX GPIO | Optional, for read-back |
-| SD_CS | SD Card Select | GPIO | For module's SD slot |
+| SD_CS | SD Card Select | GPIO | For standalone SD socket (J10) |
 
 ### SPI Configuration
 
@@ -1127,7 +1127,7 @@ For static SSTV images, even 10 FPS is more than sufficient.
 
 ### SD Card (Shared SPI Bus)
 
-The display module's built-in SD card slot shares the SPI bus with the display. This means:
+The standalone SD card socket (J10) shares the SPI bus with the display. This means:
 - Only one device active at a time (display OR SD card)
 - Must manage separate CS pins for each device
 - May need to adjust SPI clock when switching (SD cards are pickier)

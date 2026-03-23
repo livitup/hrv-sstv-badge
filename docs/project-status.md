@@ -106,7 +106,7 @@ This document tracks the design and implementation status for all badge subsyste
 - [ ] Validate SSTV encode/decode with audio circuits
 
 ### Display Interface
-- [x] ILI9341 2.4" module selected (320×240 with SD slot)
+- [x] ILI9341 2.4" module selected (320×240), standalone SD socket (J10)
 - [x] Backlight circuit designed (2N7002 MOSFET, PWM control)
 - [x] Assign RP2350 SPI pins for display (GPIO2-4: SCK, MOSI, MISO)
 - [x] Assign GPIO pins (GPIO5-7: CS/DC/RST, GPIO22: BL, GPIO23: SD_CS)
