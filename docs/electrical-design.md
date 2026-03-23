@@ -1250,7 +1250,7 @@ The camera captures images for SSTV transmission and provides live viewfinder pr
 
 **Specifications:**
 - **Sensor:** OV2640 2MP CMOS
-- **Module:** Pre-assembled breakout with 2.54mm pin header (user-solderable)
+- **Module:** Pre-assembled breakout with 2.54mm 2×9 pin header (user-solderable)
 - **Interface:** Parallel DVP (8-bit) + SCCB (I2C) for control
 - **Resolution:** QVGA (320×240) for SSTV, up to UXGA (1600×1200) if needed
 - **Output:** RGB565 or YUV422 (for viewfinder), JPEG (for storage)
@@ -1331,7 +1331,7 @@ The camera needs a master clock input (XCLK), typically 20-24 MHz.
 
 For user-solderable assembly, use an OV2640 module with 2.54mm pin headers.
 
-**Recommended:** Generic "OV2640 DVP module" with 18-24 pin header
+**Recommended:** Generic "OV2640 DVP module" with 2×9 pin header (Conn_02x09_Socket)
 
 ```
     ┌───────────────────────────────┐
@@ -1346,12 +1346,26 @@ For user-solderable assembly, use an OV2640 module with 2.54mm pin headers.
     │  │ Supporting circuitry  │    │  ← Voltage reg, crystal, etc.
     │  └───────────────────────┘    │
     │                               │
-    │  ○ ○ ○ ○ ○ ○ ○ ○ ○ ○ ○ ○ ○    │  ← 2.54mm through-hole pins
-    │  (user-solderable)            │
+    │  ○ ○ ○ ○ ○ ○ ○ ○ ○           │  ← 2×9 (2.54mm) through-hole pins
+    │  ○ ○ ○ ○ ○ ○ ○ ○ ○           │     (user-solderable)
     └───────────────────────────────┘
 
     Typical size: ~25mm × 25mm
 ```
+
+**J4 Camera Connector Pin Mapping (2×9, Conn_02x09_Socket):**
+
+| Pin | Signal | Pin | Signal |
+|-----|--------|-----|--------|
+| 1 | GND | 2 | +3.3V |
+| 3 | I2C_SCL | 4 | CAM_VSYNC |
+| 5 | I2C_SDA | 6 | CAM_HREF |
+| 7 | CAM_D0 | 8 | RST (10k pull-up to +3.3V) |
+| 9 | CAM_D2 | 10 | CAM_D1 |
+| 11 | CAM_D4 | 12 | CAM_D3 |
+| 13 | CAM_D6 | 14 | CAM_D5 |
+| 15 | CAM_PCLK | 16 | CAM_D7 |
+| 17 | PWDN (10k pull-down to GND) | 18 | NC |
 
 **Search terms:** "OV2640 camera module DVP" or "OV2640 module for STM32/ESP32"
 
@@ -1441,7 +1455,7 @@ For user-solderable assembly, use an OV2640 module with 2.54mm pin headers.
 
 | Ref | Value | Package | Assembly | Notes |
 |-----|-------|---------|----------|-------|
-| U_CAM | OV2640 DVP module | Breakout | User | 2.54mm pin header, ~$5-8 |
+| U_CAM | OV2640 DVP module | Breakout (2×9 header) | User | 2.54mm 2×9 pin header, ~$5-8 |
 | R_CAM_RST | 10kΩ | 0603 | Fab | Reset pullup (optional if GPIO controlled) |
 | R_CAM_PWDN | 10kΩ | 0603 | Fab | PWDN pulldown (optional if GPIO controlled) |
 
@@ -1475,7 +1489,7 @@ Position the camera for the "take a picture" use case:
 
 ### GPIO Pin Assignment
 
-All 48 GPIOs are allocated. Camera RST/PWDN are tied with resistors to free pins for SAO.
+47 of 48 GPIOs are allocated (GPIO42 is spare). Camera RST/PWDN are tied with resistors to free pins for SAO.
 
 **I2C Bus (Shared):**
 
@@ -1564,7 +1578,7 @@ SAO I2C shared on GPIO0/1. VCC=3.3V, GND from power rails.
 | 38 | DPAD_DOWN | Active low, internal pullup |
 | 39 | DPAD_LEFT | Active low, internal pullup |
 | 41 | DPAD_CENTER | Active low, internal pullup |
-| 42 | PHOTO | Active low, internal pullup |
+| 42 | (spare) | Unallocated |
 | 43 | AIRPLANE | Active low, internal pullup |
 
 **LEDs:**
@@ -1592,11 +1606,13 @@ GPIO 29:    Audio I2S (DIN)
 GPIO 30-36: SA818 (UART + control)
 GPIO 37-39: User controls (DPAD UP/DOWN/LEFT)
 GPIO 40:    RX Audio ADC (ADC0)
-GPIO 41-43: User controls (DPAD CENTER, PHOTO, AIRPLANE)
+GPIO 41:    User controls (DPAD CENTER)
+GPIO 42:    Spare (unallocated)
+GPIO 43:    User controls (AIRPLANE)
 GPIO 44-46: PWR LED (RGB)
 GPIO 47:    LED_DATA (WS2812B blinky)
 
-Total: 48/48 GPIOs allocated (0 spare)
+Total: 47/48 GPIOs allocated (1 spare)
 ```
 
 ### I2C Bus (Shared)
@@ -1932,12 +1948,11 @@ User controls provide physical interaction with the badge.
 
 | Control | Type | GPIOs | Purpose |
 |---------|------|-------|---------|
-| D-pad | 5× tactile switches | 5 | Menu navigation (up/down/left/right/center) |
-| Photo button | 1× tactile switch | 1 | Capture image |
+| D-pad | 5× tactile switches | 5 | Menu navigation + capture (center doubles as photo button when idle) |
 | Airplane mode | Slide switch | 1 | Disable RF (read by MCU) |
 | Status LEDs | 3× LEDs | 3 | Power, TX, RX indicators |
 
-**Total: 10 GPIOs** for user controls
+**Total: 9 GPIOs** for user controls
 
 ### D-Pad (5-Way Navigation)
 
@@ -1978,28 +1993,6 @@ Five individual tactile switches arranged in a plus pattern with center select.
 Each D-pad button connects GPIO to GND when pressed. RP2350 internal pullups eliminate external resistors.
 
 **Recommended switch:** 6mm × 6mm tactile switch (through-hole or SMD), e.g., Omron B3F series or generic equivalent.
-
-### Photo Button
-
-Larger tactile switch for ergonomic "shutter" feel.
-
-```
-    RP2350
-    ┌───────┐
-    │       │
-    │  GPIO ├────────────┬──────────┐
-    │(PHOTO)│            │          │
-    │       │       ┌────┴────┐     │
-    └───────┘       │   SW    │     │  Tactile switch
-                    │ (12mm)  │     │  (larger, satisfying click)
-                    └────┬────┘     │
-                         │          │
-                        GND ────────┘
-
-    Same active-low circuit as D-pad
-```
-
-**Recommended switch:** 12mm tactile switch for bigger target and better tactile feedback.
 
 ### Airplane Mode Switch
 
@@ -2112,8 +2105,8 @@ The LC709203 fuel gauge provides accurate state-of-charge readings via I2C.
     │              │ ▼ │                            ◯            │
     │              └───┘                                         │
     │                                                            │
-    │   ◯ PHOTO                 ═══════════════════════════      │
-    │   (large button)           AIRPLANE MODE (slide sw)        │
+    │                              ═══════════════════════════      │
+    │                               AIRPLANE MODE (slide sw)        │
     │                                                            │
     └────────────────────────────────────────────────────────────┘
 ```
@@ -2137,10 +2130,7 @@ The LC709203 fuel gauge provides accurate state-of-charge readings via I2C.
     │ (DPAD_RIGHT)           pullup                               │
     │                                                             │
     │  GPIO ──────────────────┬────[SW_CENTER]── GND              │
-    │ (DPAD_CENTER)          pullup                               │
-    │                                                             │
-    │  GPIO ──────────────────┬────[SW_PHOTO]─── GND              │
-    │ (PHOTO)                pullup                               │
+    │ (DPAD_CENTER)          pullup  (doubles as photo capture)   │
     │                                                             │
     │  GPIO ──────────────────┬────[SLIDE_SW]─── GND              │
     │ (AIRPLANE)             pullup    (airplane mode)            │
@@ -2158,6 +2148,7 @@ The LC709203 fuel gauge provides accurate state-of-charge readings via I2C.
     └─────────────────────────────────────────────────────────────┘
 
     All switches: active-low with internal pullups (no external resistors needed)
+    D-pad center doubles as photo capture when idle (no separate photo button)
     PWR LED: Traditional RGB, direct GPIO drive (3 GPIOs)
     Blinky: 26× WS2812B chain (1 GPIO) — ears + display border
 ```
@@ -2170,28 +2161,27 @@ The LC709203 fuel gauge provides accurate state-of-charge readings via I2C.
 | DPAD_DOWN | TBD | Active low, internal pullup |
 | DPAD_LEFT | TBD | Active low, internal pullup |
 | DPAD_RIGHT | TBD | Active low, internal pullup |
-| DPAD_CENTER | TBD | Active low, internal pullup |
-| PHOTO | TBD | Active low, internal pullup |
+| DPAD_CENTER | TBD | Active low, internal pullup (doubles as photo capture) |
 | AIRPLANE | TBD | Active low, internal pullup |
 | PWR_R | TBD | PWR LED red channel (PWM) |
 | PWR_G | TBD | PWR LED green channel (PWM) |
 | PWR_B | TBD | PWR LED blue channel (PWM) |
 | LED_DATA | TBD | WS2812B blinky chain (26 LEDs: ears + border) |
 
-**Total: 11 GPIOs** for user controls (7 switches + 4 LED control)
+**Total: 10 GPIOs** for user controls (6 switches + 4 LED control)
 
 ### User Controls BOM
 
 | Ref | Value | Package | Assembly | Notes |
 |-----|-------|---------|----------|-------|
-| SW_UP, SW_DOWN, SW_LEFT, SW_RIGHT, SW_CENTER | Tactile 6×6mm | Through-hole | User | D-pad switches |
-| SW_PHOTO | Tactile 12mm | Through-hole | User | Photo button (larger) |
+| SW_UP, SW_DOWN, SW_LEFT, SW_RIGHT, SW_CENTER | Tactile 6×6mm | Through-hole | User | D-pad switches (center doubles as photo capture) |
 | SW_AIRPLANE | Slide switch SPDT | Through-hole | User | Airplane mode |
 | LED_PWR | APFA3010LSEEZGKQBKC | PLCC-4 | Fab | Kingbright RGB, common-anode |
 | R_PWR_R | 220Ω | 0603 | Fab | PWR LED red cathode current limit |
 | R_PWR_G | 100Ω | 0603 | Fab | PWR LED green cathode current limit |
 | R_PWR_B | 100Ω | 0603 | Fab | PWR LED blue cathode current limit |
-| WS2812B (×26) | WS2812B | 5050 SMD | Fab | Blinky chain (see Blinky section) |
+| WS2812B (×10) | WS2812B | 5050 SMD | Fab | Ear LEDs — blinky chain (see Blinky section) |
+| WS2812B-2020 (×16) | WS2812B-2020 | 2020 SMD | Fab | Border LEDs — blinky chain (see Blinky section) |
 | C_LED (×26) | 100nF | 0402 | Fab | WS2812B bypass capacitors |
 
 **Cost:** ~$3.50 total (RGB LED ~$0.10, 26× WS2812B ~$2.10, 26× caps ~$0.26, switches ~$1)
@@ -2204,14 +2194,23 @@ The badge features a 26-LED WS2812B chain for full #badgelife blinky appeal. The
 
 Battery status is handled by a separate traditional RGB LED (see Status LED section).
 
+**Dual-Package Approach:**
+
+The chain uses two different WS2812B packages optimized for their location:
+- **Ear LEDs (D2-D11):** 10× WS2812B in **5050 package** (5.0×5.0mm) — large and visible on the rabbit ear antennas, 5 per ear
+- **Display border LEDs (D12-D27):** 16× WS2812B-2020 in **2020 package** (2.0×2.0mm) — compact for tight spacing around the display, 3×5×3×5 layout
+- Each LED has a 100nF bypass cap between VDD and GND
+
+Both packages use the same WS2812B protocol and are daisy-chained on a single data line.
+
 **LED Sections:**
 
-| Section | LEDs | Index | Purpose |
-|---------|------|-------|---------|
-| Left Ear | 5 | #0-4 | L0 (base) → L4 (tip) |
-| Right Ear | 5 | #5-9 | R0 (base) → R4 (tip) |
-| Display Border | 16 | #10-25 | B0-B15 clockwise from top-left |
-| **Total** | **26** | | |
+| Section | LEDs | Package | Index | Purpose |
+|---------|------|---------|-------|---------|
+| Left Ear | 5 | WS2812B 5050 | #0-4 | L0 (base) → L4 (tip) |
+| Right Ear | 5 | WS2812B 5050 | #5-9 | R0 (base) → R4 (tip) |
+| Display Border | 16 | WS2812B-2020 | #10-25 | B0-B15 clockwise from top-left |
+| **Total** | **26** | | | |
 
 **Physical Layout:**
 
@@ -2529,15 +2528,16 @@ TX "Capacitor Discharge":              RX "Filling The Tank":
 
 | Ref | Qty | Value | Package | Assembly | Notes |
 |-----|-----|-------|---------|----------|-------|
-| LED_L0-L4 | 5 | WS2812B | 5050 | Fab | Left rabbit ear |
-| LED_R0-R4 | 5 | WS2812B | 5050 | Fab | Right rabbit ear |
-| LED_B0-B15 | 16 | WS2812B | 5050 | Fab | Display border |
-| C_LED | 26 | 100nF | 0402 | Fab | Bypass capacitors |
+| LED_L0-L4 | 5 | WS2812B | 5050 (5.0×5.0mm) | Fab | Left rabbit ear |
+| LED_R0-R4 | 5 | WS2812B | 5050 (5.0×5.0mm) | Fab | Right rabbit ear |
+| LED_B0-B15 | 16 | WS2812B-2020 | 2020 (2.0×2.0mm) | Fab | Display border |
+| C_LED | 26 | 100nF | 0402 | Fab | Bypass capacitors (one per LED) |
 
 **Cost:**
-- 26× WS2812B @ $0.08 = $2.08
+- 10× WS2812B 5050 @ $0.08 = $0.80
+- 16× WS2812B-2020 @ $0.06 = $0.96
 - 26× 100nF 0402 @ $0.01 = $0.26
-- **Total blinky: ~$2.35**
+- **Total blinky: ~$2.02**
 
 Note: PWR LED (traditional RGB) is listed in User Controls BOM.
 
@@ -2625,29 +2625,28 @@ Test carrier independently before mating with main badge:
 
 ### User Controls Verification
 
-1. **D-pad switches:** Press each direction, verify GPIO reads LOW
-2. **Photo button:** Press and verify GPIO response
-3. **Airplane mode switch:** Toggle switch, verify GPIO state changes
-4. **Debounce test:** Rapid button presses, verify no double-triggers in firmware
-5. **PWR LED (Traditional RGB):**
+1. **D-pad switches:** Press each direction, verify GPIO reads LOW (center doubles as photo capture)
+2. **Airplane mode switch:** Toggle switch, verify GPIO state changes
+3. **Debounce test:** Rapid button presses, verify no double-triggers in firmware
+4. **PWR LED (Traditional RGB):**
    - Test each channel individually (R, G, B)
    - Test color mixing: yellow (R+G), cyan (G+B), magenta (R+B), white (R+G+B)
    - Test PWM dimming on each channel
    - Verify battery status colors match LC709203 fuel gauge readings
    - Test blinking mode for critical battery warning
 
-6. **WS2812B Blinky Chain (26 LEDs):**
+5. **WS2812B Blinky Chain (26 LEDs):**
    - Send full chain test pattern via PIO, verify all 26 LEDs respond
-   - LEDs #0-4 (Left Ear): Test lightning TX animation, materialize RX animation
-   - LEDs #5-9 (Right Ear): Test animations, verify sync with left ear
-   - LEDs #10-25 (Border): Test rainbow chase, waterfall fill effects
+   - LEDs #0-4 (Left Ear, 5050): Test lightning TX animation, materialize RX animation
+   - LEDs #5-9 (Right Ear, 5050): Test animations, verify sync with left ear
+   - LEDs #10-25 (Border, 2020): Test rainbow chase, waterfall fill effects
    - Test ear tip breathing animation (idle)
    - Test TX capacitor discharge effect (charge → ZAP!)
    - Test RX filling tank effect (pulse per row)
    - Verify all animations are smooth (~30-60ms per step)
    - Test power consumption at various brightness levels
    - Verify auto-dim and power saving modes
-7. **Combination test:** Hold multiple D-pad directions, verify all register correctly
+6. **Combination test:** Hold multiple D-pad directions, verify all register correctly
 
 ### Integrated System Test
 
@@ -2733,11 +2732,11 @@ Design status and open items are tracked in a separate document:
 | 2.1 | 2025-02 | Audio interface: PCM5102A DAC + RP2350 ADC, filter/bias circuits |
 | 2.2 | 2025-02 | Display interface: ILI9341 320×240, PWM backlight, shared SPI with SD |
 | 2.3 | 2025-02 | Camera interface: OV2640 parallel DVP, requires RP2350B (QFN-80) |
-| 2.4 | 2025-02 | User controls: 5-way D-pad, photo button, airplane switch, status LEDs |
+| 2.4 | 2025-02 | User controls: 5-way D-pad (center doubles as photo capture), airplane switch, status LEDs |
 | 2.5 | 2025-02 | All status LEDs consolidated to 2× WS2812B chain (saves 2 GPIOs), rainbow idle animation on TX/RX LED |
 | 2.6 | 2025-02 | Blinky LED matrix: 26 WS2812B (10 ears + 16 border), Simpsons TV aesthetic |
 | 2.7 | 2025-02 | PWR LED changed to traditional RGB (separate from chain), TX/RX status LED removed (animations are the indicator) |
-| 2.8 | 2025-02 | Complete GPIO pin assignment (48/48 allocated), camera RST/PWDN tied to free pins for SAO |
+| 2.8 | 2025-02 | Complete GPIO pin assignment (47/48 allocated, GPIO42 spare), camera RST/PWDN tied to free pins for SAO |
 | 2.9 | 2025-02 | USB-C interface: through-hole connector, VBUS + data ESD protection, CC resistors for sink ID |
 | 2.10 | 2025-02 | Debug interface: Tag-Connect TC2030-CTX-NL pogo pads (no header) |
 | 2.11 | 2025-02 | Battery management: MCP73871 charger + LC709203F fuel gauge, shared thermistor |

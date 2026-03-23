@@ -1,6 +1,6 @@
 # Project Status — DEFCON SSTV Badge
 
-**Last Updated:** 2026-02-15
+**Last Updated:** 2026-03-22
 
 This document tracks the design and implementation status for all badge subsystems.
 
@@ -34,7 +34,8 @@ This document tracks the design and implementation status for all badge subsyste
 | SAO Connectors | ✓ | ✓ | | |
 | SA818 Carrier (VHF) | ✓ | ✓ | | |
 | SA818 Carrier (UHF) | ✓ | ✓ | | |
-| PCB Outline | ✓ | | | |
+| SA818 Carrier PCBs | ✓ | ✓ | | |
+| Main Badge PCB | ✓ | In progress | | |
 
 ---
 
@@ -81,11 +82,12 @@ This document tracks the design and implementation status for all badge subsyste
 - [x] Band auto-detection via ID resistor (R18: 0Ω=VHF, DNP=UHF)
 - [x] RF section on carrier only (main board has no RF)
 - [x] Mechanical headers (J16/J17, J21/J22) connected to GND for RF shielding
-- [x] **KiCad: VHF carrier complete** (U9 SA818V, J13-J17, C54-C55, R18)
-- [x] **KiCad: UHF carrier complete** (U10 SA818U, J18-J22, C56-C57, R18 DNP)
+- [x] **KiCad: VHF carrier schematic complete** (U9 SA818V, J13-J17, C54-C55, R18)
+- [x] **KiCad: UHF carrier schematic complete** (U10 SA818U, J18-J22, C56-C57, R18 DNP)
+- [x] **KiCad: VHF carrier PCB layout complete** (routed, DRC clean)
+- [x] **KiCad: UHF carrier PCB layout complete** (routed, DRC clean)
 - [ ] Verify SA818 2mm pitch footprint dimensions
 - [ ] Source appropriate stubby antennas (VHF and UHF)
-- [ ] Determine carrier PCB layers (2 or 4 layer for RF section)
 - [ ] Prototype carrier and validate RF performance independently
 
 ### Audio Interface
@@ -120,7 +122,7 @@ This document tracks the design and implementation status for all badge subsyste
 - [x] Assign RP2350B GPIO pins for DVP (GPIO8-19: D0-D7, PCLK, VSYNC, HREF, XCLK)
 - [x] CAM_RST and CAM_PWDN: tied with resistors (not GPIO) to free pins for SAO
 - [x] XCLK generation: 20MHz via PWM
-- [x] **KiCad: Camera module complete** (18-pin connector, DVP data/control, I2C, RST/PWDN resistors)
+- [x] **KiCad: Camera module complete** (2x9 connector matching OV2640 module, DVP data/control, I2C, RST/PWDN resistors)
 - [ ] Source OV2640 DVP module with 2.54mm pin header
 - [ ] Verify module pinout matches design
 - [ ] Implement PIO program for DVP capture
@@ -129,15 +131,14 @@ This document tracks the design and implementation status for all badge subsyste
 - [ ] Test JPEG capture mode for storage
 
 ### User Controls
-- [x] D-pad circuit designed (5× tactile switches, active-low with pullups)
-- [x] Photo button circuit designed (12mm tactile)
+- [x] D-pad circuit designed (5× tactile switches, active-low with pullups; center doubles as photo capture)
 - [x] Airplane mode switch circuit designed (slide SPDT)
 - [x] PWR LED circuit designed (RGB common-anode APFA3010LSEEZGKQBKC with current-limit resistors)
-- [x] Assign GPIO pins for D-pad, photo, airplane (GPIO37-43)
+- [x] Assign GPIO pins for D-pad, airplane (GPIO37-43)
 - [x] Assign GPIO pins for PWR LED (GPIO44-46: R, G, B)
 - [x] Assign GPIO pin for LED_DATA (GPIO47)
-- [x] **KiCad: User Controls complete** (7× switches, PWR LED with resistors, all global labels)
-- [ ] Source tactile switches (6×6mm for D-pad, 12mm for photo)
+- [x] **KiCad: User Controls complete** (6× switches — D-pad center doubles as capture, PWR LED with resistors, all global labels)
+- [ ] Source tactile switches (6×6mm for D-pad)
 - [ ] Source slide switch for airplane mode
 - [ ] Source RGB LED (Kingbright APFA3010LSEEZGKQBKC common-anode)
 - [ ] Implement PWM control for PWR LED
@@ -182,11 +183,11 @@ This document tracks the design and implementation status for all badge subsyste
   - RX: "Filling Tank" (pulse per row)
   - Idle: Rainbow border + breathing ear tips
 - [x] Animation colors specified (amber, green, light blue, white, soft blue)
-- [x] PCB outline designed: Simpsons TV shape, 120×95mm body + 50mm ears
-- [x] LED placement defined: 5 per ear (10-12mm spacing), 16 border (12-15mm spacing)
+- [x] PCB outline designed: 120×120mm body with diagonal rabbit ear antennas and semicircular ball tips
+- [x] LED placement defined: 5 per ear (WS2812B 5050), 16 border (WS2812B-2020 in 3x5x3x5 layout)
 - [x] **KiCad: WS2812B chain complete** (26 LEDs with 100nF bypass caps, LED_DATA input, organized by section)
-- [ ] Create PCB outline in KiCad (edge cuts)
-- [ ] Route LED chain on PCB (ears + border)
+- [x] **KiCad: PCB outline created** (edge cuts with rabbit ear antennas and ball tips)
+- [x] **KiCad: All 26 LEDs placed** (10 ear LEDs on antennas, 16 border LEDs around display)
 - [ ] Implement PIO driver for 26-LED chain
 - [ ] Implement HSV rainbow animation for border
 - [ ] Implement ear lightning animations (TX discharge, RX materialize)
@@ -203,12 +204,15 @@ This document tracks the design and implementation status for all badge subsyste
 - [ ] Verify SAO 2×3 header footprint in KiCad
 
 ### Main Board
-- [x] PCB outline designed: 120mm wide body, 50mm ears, ~140mm total height
+- [x] PCB outline designed: 120×120mm body with diagonal rabbit ear antennas and semicircular ball tips
 - [x] Component placement zones defined
 - [x] Lanyard slot specified (centered oval cutout)
 - [x] **KiCad schematic complete** (all sheets: Power, Audio, Display/Camera, User Controls, MCU, Connectors)
-- [ ] Create PCB outline in KiCad (edge cuts)
-- [ ] Layout main board in KiCad
+- [x] **KiCad: Board outline created** (edge cuts with rabbit ear antennas and ball tips)
+- [x] **KiCad: Component placement nearly complete** (MCU, power, audio, display, camera sections placed; power ICs on back side)
+- [ ] Trace routing (main board)
+- [ ] Ground pour
+- [ ] DRC clean-up
 - [ ] Evaluate if main board can be 2-layer with RF removed
 - [ ] Integration test: carrier + main board
 
@@ -216,13 +220,12 @@ This document tracks the design and implementation status for all badge subsyste
 
 ## Next Steps (Priority Order)
 
-1. **Footprint assignment** — Assign footprints to all components
-2. **ERC clean-up** — Resolve any remaining warnings
-3. **Source long-lead components** — SA818, display, camera modules
-4. **PCB layout** — Main board first, then carriers
-5. **Breadboard prototype** — Validate circuits before PCB fab
-6. **Prototype ordering** — JLCPCB or similar
-7. **Firmware development** — Can start in parallel with hardware
+1. **Main board routing** — Complete trace routing, ground pour, and DRC on main badge PCB
+2. **Source long-lead components** — SA818, display, camera modules
+3. **Generate carrier Gerbers** — VHF and UHF carriers are DRC clean and ready
+4. **Prototype ordering** — JLCPCB or similar (carriers can go first)
+5. **Breadboard prototype** — Validate circuits before main board PCB fab
+6. **Firmware development** — Can start in parallel with hardware
 
 ---
 
@@ -233,9 +236,10 @@ This document tracks the design and implementation status for all badge subsyste
 | Electrical design complete | ✓ | Done |
 | BOM finalized | ✓ | Done |
 | PCB outline designed | ✓ | Done |
-| KiCad schematic | ✓ | **Complete** (Main board + VHF/UHF carriers: Power, Audio, Display/Camera, User Controls, MCU, Connectors, SA818-V, SA818-U) |
-| KiCad layout | | Not started |
-| Gerbers generated | | Not started |
+| KiCad schematic | ✓ | **Complete** — ERC clean (Main board + VHF/UHF carriers) |
+| Carrier PCB layout | ✓ | **Complete** — Both VHF and UHF carriers routed, DRC clean |
+| Main badge PCB layout | | **In progress** — Component placement nearly complete, routing next |
+| Gerbers generated | | Not started (carriers ready soon) |
 | Prototype ordered | | Not started |
 | First power-on | | Not started |
 | Firmware MVP | | Not started |

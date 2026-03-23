@@ -1,7 +1,7 @@
 # DEFCON SSTV Badge — Bill of Materials
 
-**Version:** 3.1
-**Last Updated:** 2026-02-15
+**Version:** 3.2
+**Last Updated:** 2026-03-22
 **Source:** KiCad schematic export, verified against `docs/electrical-design.md`
 
 This is the consolidated BOM for the DEFCON SSTV badge. Components are organized by subsystem and assembly method.
@@ -18,13 +18,13 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 | Audio | ~$2.10 | PCM5102A DAC + filter passives |
 | Display | ~$10.00 | ILI9341 module + backlight circuit |
 | Camera | ~$6.00 | OV2640 DVP module + resistors |
-| User Controls | ~$1.50 | Switches, PWR LED, resistors |
-| Blinky LEDs | ~$2.60 | 26× WS2812B + bypass caps |
+| User Controls | ~$1.30 | Switches, PWR LED, resistors |
+| Blinky LEDs | ~$2.28 | 10× WS2812B-5050 + 16× WS2812B-2020 + bypass caps |
 | MCU + Support | ~$3.90 | RP2350B, crystal, flash, regulator inductor, passives |
 | Connectors | ~$2.00 | SAO, carrier sockets, SD card, debug |
-| **Main Badge Total** | **~$46** | Without carrier |
+| **Main Badge Total** | **~$45** | Without carrier |
 | SA818 Carrier | ~$17.00 | SA818, SMA, antenna, headers |
-| **Complete Kit** | **~$63** | Main + one carrier |
+| **Complete Kit** | **~$62** | Main + one carrier |
 
 *PCB fabrication adds ~$3-5/board at quantity.*
 
@@ -159,7 +159,7 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 
 | Ref | Qty | Value | Package | Assembly | Notes |
 |-----|-----|-------|---------|----------|-------|
-| J4 | 1 | OV2640 DVP module | Breakout | Module | 2.54mm headers, parallel DVP |
+| J4 | 1 | OV2640 DVP module | Breakout | Module | 2×9 socket (PinSocket_2x09_P2.54mm_Vertical), parallel DVP |
 | R12, R13 | 2 | 10kΩ | 0603 | Fab | RESET pullup / PWDN pulldown |
 
 **Subtotal:** ~$6.00
@@ -172,8 +172,7 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 
 | Ref | Qty | Value | Package | Assembly | Notes |
 |-----|-----|-------|---------|----------|-------|
-| SW1-SW5 | 5 | Tactile 6×6mm | TH | User | D-pad (up/down/left/right/center) |
-| SW6 | 1 | Tactile 12mm | TH | User | Photo capture (larger) |
+| SW1-SW5 | 5 | Tactile 6×6mm | TH | User | D-pad (up/down/left/right/center); center doubles as photo capture |
 | SW7 | 1 | Slide SPDT | TH | User | Airplane mode toggle |
 
 ### PWR Status LED (Traditional RGB)
@@ -186,7 +185,7 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 
 **Note:** Common-anode LED — anode connects to +3.3V, cathodes through resistors to GPIOs. Firmware uses inverted logic: GPIO LOW = LED on.
 
-**Subtotal:** ~$1.50
+**Subtotal:** ~$1.30
 
 ---
 
@@ -194,11 +193,12 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 
 | Ref | Qty | Value | Package | Assembly | Notes |
 |-----|-----|-------|---------|----------|-------|
-| D2–D27 | 26 | WS2812B | 5050 | Fab | Rabbit ears (10) + display border (16) |
+| D2–D11 | 10 | WS2812B | 5050 (5.0×5.0mm) | Fab | Rabbit ear antennas (5 per ear) |
+| D12–D27 | 16 | WS2812B-2020 | 2020 (2.0×2.0mm) | Fab | Display border (3×5×3×5 layout) |
 | C28–C53 | 26 | 100nF | 0402 | Fab | Bypass caps (one per LED) |
 
-**Subtotal:** ~$2.60
-*(26× WS2812B @ ~$0.08 = $2.08, 26× caps @ ~$0.02 = $0.52)*
+**Subtotal:** ~$2.28
+*(10× WS2812B-5050 @ ~$0.08 = $0.80, 16× WS2812B-2020 @ ~$0.06 = $0.96, 26× caps @ ~$0.02 = $0.52)*
 
 ---
 
@@ -393,12 +393,12 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 | Assembly | Component Cost | Notes |
 |----------|---------------|-------|
 | **Fab (SMT)** | ~$25 | ICs, small passives, LEDs |
-| **User (TH)** | ~$12 | Switches, modules, headers |
+| **User (TH)** | ~$11 | Switches, modules, headers |
 | **Modules** | ~$16 | Display, camera |
 | **Battery** | ~$6 | LiPo cell |
 | **Carrier** | ~$17 | Separate board |
 | **PCB** | ~$5 | Main + carrier at qty |
-| **Total** | **~$82** | Complete kit with carrier |
+| **Total** | **~$81** | Complete kit with carrier |
 
 ---
 
@@ -415,6 +415,7 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 | 2.5 | 2025-02 | Added L2 (3.3µH) and C_DVDD (1µF) for RP2350 internal regulator |
 | 3.0 | 2026-02 | **Synchronized with KiCad schematic**: Updated all ref designators to match KiCad, added R4 (15k PROG3), added C21/C22 (2.2µF charge pump), added J10 (SD card), fixed TH1 as NTC, removed PS/SYNC resistor (intentional), added I2C pullup warning |
 | 3.1 | 2026-02 | **Added SA818 carrier boards**: VHF (U9, J13-J17, C54-C55, R18) and UHF (U10, J18-J22, C56-C57) schematics complete with header pinout tables, mechanical headers connected to GND |
+| 3.2 | 2026-03 | **LED split**: WS2812B-5050 for ears (D2-D11), WS2812B-2020 for display border (D12-D27). **Removed SW6** (12mm photo button) — D-pad center doubles as capture. Camera connector J4 updated to 2×9 socket. |
 
 ---
 

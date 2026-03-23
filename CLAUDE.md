@@ -96,6 +96,8 @@ See `docs/electrical-design.md` for complete display circuit design.
 
 **Why parallel DVP (not SPI)?** Live viewfinder requires fast capture. SPI camera modules are too slow (~1-2 FPS) for real-time preview.
 
+**Connector:** 2×9 (Conn_02x09) socket matches OV2640 module pinout.
+
 **Why RP2350B?** Camera uses 12 GPIOs, user controls use 10. Total system needs ~47 GPIOs, exceeding RP2350A's 30. RP2350B (QFN-80) provides 48 GPIOs with 1 spare.
 
 See `docs/electrical-design.md` for complete camera circuit design.
@@ -107,28 +109,29 @@ See `docs/electrical-design.md` for complete camera circuit design.
 | Control | Type | GPIOs |
 |---------|------|-------|
 | D-pad | 5× tactile switches (up/down/left/right/center) | 5 |
-| Photo button | 12mm tactile switch | 1 |
 | Airplane mode | Slide switch (GPIO read) | 1 |
 | PWR LED | Traditional RGB (battery status) | 3 |
 | Blinky chain | 26× WS2812B (ears + border) | 1 |
 
-**Total: 11 GPIOs** for user controls
+**Total: 10 GPIOs** for user controls
+
+Note: D-pad center button doubles as photo capture when idle (no dedicated photo button).
 
 - All switches: active-low with internal pullups (no external resistors)
 - PWR LED: Traditional RGB, direct GPIO drive (visually distinct from blinky)
 - Software debounce (no hardware debounce caps)
 
-**Blinky LED Matrix (26 WS2812B):**
+**Blinky LED Matrix (26 LEDs, dual packages):**
 - PCB shaped like Simpsons-style retro TV with rabbit ear antennas
 - Single GPIO drives entire WS2812B chain via PIO
-- **Rabbit Ears (#0-9):** 5 LEDs per ear
-  - TX: Amber chase UP → tip flashes light blue → WHITE lightning discharge ⚡
-  - RX: WHITE materializes at tips → light blue → green chase DOWN 📡
+- **Rabbit Ears D2-D11 (#0-9):** 10× WS2812B (5050 package), 5 LEDs per ear
+  - TX: Amber chase UP → tip flashes light blue → WHITE lightning discharge
+  - RX: WHITE materializes at tips → light blue → green chase DOWN
   - Idle: Tips breathe soft blue (~4sec cycle, very subtle) — "listening to the ether"
-- **Display Border (#10-25):** 16 LEDs framing display
-  - Idle: Rainbow chase flowing around frame 🌈
-  - TX: "Capacitor Discharge" — border charges up, ears ZAP, everything flashes WHITE 💥
-  - RX: "Filling Tank" — each ear pulse adds a row, border fills up over multiple pulses 📥
+- **Display Border D12-D27 (#10-25):** 16× WS2812B-2020 (2020 package) for smaller profile
+  - Idle: Rainbow chase flowing around frame
+  - TX: "Capacitor Discharge" — border charges up, ears ZAP, everything flashes WHITE
+  - RX: "Filling Tank" — each ear pulse adds a row, border fills up over multiple pulses
 - Power budget: ~70mA idle, ~110mA active TX/RX
 
 See `docs/electrical-design.md` for complete user controls circuit design.
@@ -207,12 +210,11 @@ defcon-sstv-badge/
 ```
 
 ## Current Development Status
-- **Hardware design**: Schematic concept complete, power system redesigned
+- **Hardware design**: Schematic complete, ERC clean
+- **KiCad**: All schematic sheets complete, carrier board PCBs complete, main badge PCB layout in progress
 - **Documentation**: Comprehensive technical docs, power/RF design documented
 - **Project structure**: Professional repository setup
-- **KiCad entry**: Not started - need to implement redesigned power system
 - **Firmware development**: Not started
-- **PCB layout**: Planned after schematic entry
 - **Prototype testing**: Following PCB fabrication
 
 ## Key Design Documents
@@ -237,7 +239,10 @@ defcon-sstv-badge/
 | Display | 2.4" ST7789 (separate SD socket) | 2.4" ILI9341 with built-in SD slot |
 | SD card | Separate socket | Via display module (shared SPI) |
 | Camera | OV2640 (interface unspecified) | OV2640 parallel DVP (8-bit + control) |
+| Camera connector | 1×18 socket | 2×9 socket (matches OV2640 module pinout) |
 | MCU variant | RP2350 (unspecified) | RP2350B (QFN-80, 48 GPIOs) |
+| Photo button | Dedicated SW6 (12mm) | D-pad center doubles as capture |
+| Display border LEDs | WS2812B (5050) | WS2812B-2020 (2020) for smaller profile |
 
 ## Key Hardware Interfaces
 ```c
@@ -282,7 +287,7 @@ defcon-sstv-badge/
 #define DPAD_LEFT        39
 #define DPAD_RIGHT       26   // Moved from GPIO40 (GPIO40 needed for ADC)
 #define DPAD_CENTER      41
-#define PHOTO            42
+// GPIO42 SPARE (was PHOTO — removed, D-pad center doubles as capture)
 #define AIRPLANE         43
 
 // SA818 (GPIO30-36)
@@ -347,5 +352,5 @@ openocd -f interface/cmsis-dap.cfg -f target/rp2350.cfg
 - **Power system was redesigned** - original LDO approach had fatal flaws
 
 ---
-*Context file version: 2.0*
-*Last updated: 2025-02*
+*Context file version: 2.1*
+*Last updated: 2026-03*
