@@ -2413,20 +2413,44 @@
 		(layer "Edge.Cuts")
 		(uuid "aa6786c6-99b3-44c0-8349-b6bce8eb6b43")
 	)
-	(gr_text "HRV SSTV BADGE\nVHF CARRIER BOARD\nREV 0.1"
-		(at 82.24 87.73 0)
+	(gr_text "HRV SSTV BADGE"
+		(at 80.9752 68.5 0)
 		(layer "F.SilkS")
 		(uuid "770608d6-84ce-4665-bf4e-b61257f6144e")
 		(effects
 			(font
-				(size 1.5 1.5)
-				(thickness 0.1875)
+				(size 3 3)
+				(thickness 0.375)
 			)
 			(justify left bottom)
 		)
 	)
-	(gr_text "HAM RADIO VILLAGE SSTV BADGE (VHF)\nSEND ME YOUR MEMES OR POSE FOR A SELFIE\nJOIN US! https://hamvillage.org"
-		(at 140 76.32 0)
+	(gr_text "SEND ME\nUR MEMES!"
+		(at 173.4632 70.9676 0)
+		(layer "F.SilkS")
+		(uuid "a1b2c3d4-e5f6-7890-abcd-ef1234567890")
+		(effects
+			(font
+				(size 3 3)
+				(thickness 0.375)
+			)
+			(justify left bottom)
+		)
+	)
+	(gr_text "VHF CARRIER BOARD\nRev 0.1"
+		(at 198.6788 87.4776 0)
+		(layer "F.SilkS")
+		(uuid "b2c3d4e5-f6a7-8901-bcde-f12345678901")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.1)
+			)
+			(justify right bottom)
+		)
+	)
+	(gr_text "HAM RADIO VILLAGE SSTV BADGE (VHF)\nJOIN US! https://www.hamvillage.org"
+		(at 139.875 70.1375 0)
 		(layer "B.SilkS")
 		(uuid "c85c6cf6-28cf-402a-ae63-6fec5317a857")
 		(effects
