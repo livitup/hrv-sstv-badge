@@ -45,7 +45,7 @@ The DEFCON SSTV Badge firmware is designed as a real-time embedded system runnin
 - **Key Functions**:
   - SSTV encoding algorithms (Martin, Scottie, Robot modes)
   - SSTV decoding and automatic mode detection
-  - Audio codec control and DSP operations
+  - Audio DAC/ADC control and DSP operations
   - Camera image capture and processing
   - SA818 radio control and frequency management
   - Image format conversion and compression
@@ -68,12 +68,14 @@ Hardware Abstraction Layer
 │   └── SD card interface
 ├── I2C Driver
 │   ├── Battery fuel gauge (LC709203F)
-│   ├── Audio DAC (PCM5102A)
-│   └── Camera configuration (OV2640)
+│   ├── Camera configuration (OV2640 SCCB)
+│   └── SAO expansion devices
 ├── UART Driver
 │   └── SA818 radio control
 ├── I2S Driver
-│   └── Audio codec data interface
+│   └── PCM5102A DAC data interface (TX audio)
+├── ADC Driver
+│   └── RP2350 internal ADC (RX audio)
 ├── DVP Driver
 │   └── Camera data interface
 └── PWM Driver
@@ -326,17 +328,17 @@ int sstv_sync_detection(audio_buffer_t* audio, float* sync_time);
 
 ### Audio Signal Chain
 ```
-Audio Processing Chain:
+TX Path (PCM5102A DAC):
 ┌─────────────┐    ┌─────────────┐    ┌─────────────┐
-│   SA818     │◀──▶│  PCM5102A   │◀──▶│   RP2350    │
-│   Radio     │    │  Audio DAC  │    │   I2S       │
+│   SA818     │◀───│  PCM5102A   │◀───│   RP2350    │
+│   MIC In    │    │  DAC (I2S)  │    │  I2S Out    │
 └─────────────┘    └─────────────┘    └─────────────┘
-                          │                   │
-                    ┌─────▼─────┐    ┌─────────▼─────┐
-                    │  Analog   │    │   Digital     │
-                    │   Audio   │    │    Audio      │
-                    │Processing │    │  Processing   │
-                    └───────────┘    └───────────────┘
+
+RX Path (RP2350 Internal ADC):
+┌─────────────┐    ┌─────────────┐    ┌─────────────┐
+│   SA818     │───▶│  Anti-Alias │───▶│   RP2350    │
+│   SPK Out   │    │  Filter     │    │  ADC Input  │
+└─────────────┘    └─────────────┘    └─────────────┘
 ```
 
 ### Audio Buffer Management
@@ -353,7 +355,7 @@ typedef struct {
 } audio_buffer_t;
 
 // Audio processing functions
-int audio_init_codec(void);
+int audio_init(void);
 int audio_start_capture(void);
 int audio_start_playback(void);
 int audio_get_buffer(audio_buffer_t** buffer);
@@ -695,7 +697,7 @@ int system_init(void) {
     // Stage 4: Device drivers
     display_init();
     camera_init();
-    audio_codec_init();
+    audio_init();  // PCM5102A DAC + RP2350 ADC
     radio_init();
     
     // Stage 5: Application services
