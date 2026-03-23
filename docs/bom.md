@@ -22,9 +22,9 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 | Blinky LEDs | ~$2.28 | 10× WS2812B-5050 + 16× WS2812B-2020 + bypass caps |
 | MCU + Support | ~$3.90 | RP2350B, crystal, flash, regulator inductor, passives |
 | Connectors | ~$2.00 | SAO, carrier sockets, SD card, debug |
-| **Main Badge Total** | **~$45** | Without carrier |
+| **Main Badge Total** | **~$64** | Without carrier |
 | SA818 Carrier | ~$17.00 | SA818, SMA, antenna, headers |
-| **Complete Kit** | **~$62** | Main + one carrier |
+| **Complete Kit** | **~$81** | Main + one carrier |
 
 *PCB fabrication adds ~$3-5/board at quantity.*
 
@@ -238,7 +238,7 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 | J7, J8 | 2 | 1×8 socket | 2.54mm | User | Carrier signal headers |
 | J9 | 1 | TC2030-CTX-NL | Pads only | Fab | Tag-Connect SWD (no component, excluded from BOM) |
 | J10 | 1 | Micro SD Card | SMD | Fab | Standalone SD card socket |
-| J11, J12 | 2 | 1×3 socket | 2.54mm | User | Carrier mechanical (marked N/C) |
+| J11, J12 | 2 | 1×3 socket | 2.54mm | User | Carrier mechanical (GND) |
 
 **Subtotal:** ~$2.50
 

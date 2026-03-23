@@ -835,8 +835,8 @@ The carrier board is a full-width PCB that overlays the top portion of the main 
 
     ┌──────────────────────────────────────────────────────────────────┐
     │○ ○ ○                                                        ○ ○ ○│ ─┬─
-    │J3 (NC)                                                    J4 (NC)│  │
-    │mech only            ┌──────┐                              mech   │  │
+    │J3 (GND)                                                  J4 (GND)│  │
+    │mechanical           ┌──────┐                              mech   │  │
     │                     │ SMA  │ ← right-angle connector             │  │
     │                     │  ↑   │   antenna points UP                 │  │
     │                     └──┬───┘   (tilt awat slightly at assembly)  │ ~25mm
@@ -869,45 +869,47 @@ The carrier board is a full-width PCB that overlays the top portion of the main 
 
 | Element | Position from left edge | Purpose |
 |---------|------------------------|---------|
-| J3 (top-left) | 5-13mm | 1x3 mechanical, NC |
-| J1 (bottom-left) | 10-30mm | 1x8 signal (power + audio) |
-| SMA connector | ~55-65mm | Center-right |
-| J2 (bottom-right) | 90-110mm | 1x8 signal (control + data) |
-| J4 (top-right) | 107-115mm | 1x3 mechanical, NC |
+| J3 (top-left) | 5-13mm | 1x3 mechanical, GND (KiCad: J16/J21) |
+| J1 (bottom-left) | 10-30mm | 1x8 signal (power + audio) (KiCad: J14/J18) |
+| SMA connector | ~55-65mm | Center-right (KiCad: J13/J19) |
+| J2 (bottom-right) | 90-110mm | 1x8 signal (control + data) (KiCad: J15/J20) |
+| J4 (top-right) | 107-115mm | 1x3 mechanical, GND (KiCad: J17/J22) |
 
 The 4-point mounting (J1, J2 at bottom + J3, J4 at top corners) prevents wobble and keeps the carrier securely attached.
 
 ### Carrier Header Pinouts
 
 **J1 (Left, 1x8) — Power and Audio:**
+*(KiCad: J14 on VHF carrier, J18 on UHF carrier; main board socket J7)*
 
 | Pin | Signal | Notes |
 |-----|--------|-------|
 | 1 | VCC | From TPS22919 on main board |
-| 2 | GND | Power ground |
-| 3 | GND | Audio ground |
-| 4 | MIC+ | Audio to SA818 |
-| 5 | MIC- | Audio to SA818 |
-| 6 | SPK+ | Audio from SA818 |
-| 7 | SPK- | Audio from SA818 |
-| 8 | NC | Spare |
+| 2 | GND | Ground |
+| 3 | MIC+ | TX audio input to SA818 |
+| 4 | GND | Ground |
+| 5 | SPK+ | RX audio output from SA818 |
+| 6 | GND | Ground |
+| 7 | GND | Ground |
+| 8 | GND | Ground |
 
 **J2 (Right, 1x8) — Control and Data:**
+*(KiCad: J15 on VHF carrier, J20 on UHF carrier; main board socket J8)*
 
 | Pin | Signal | Notes |
 |-----|--------|-------|
-| 1 | TXD | SA818 → MCU |
-| 2 | RXD | MCU → SA818 |
-| 3 | PTT | Push-to-talk |
-| 4 | PD | Power down |
-| 5 | HL | High/low power |
-| 6 | SQ | Squelch detect |
-| 7 | ID | Band detect |
-| 8 | GND | Signal ground |
+| 1 | PTT | Push-to-talk (active low) |
+| 2 | PD | Power down (active low) |
+| 3 | HL | High/low power select |
+| 4 | SQ | Squelch detect |
+| 5 | TXD | UART TX (MCU → SA818) |
+| 6 | RXD | UART RX (SA818 → MCU) |
+| 7 | ID | Band detect (GND=VHF, float=UHF) |
+| 8 | GND | Ground |
 
-**J3, J4 (Top corners, 1x3 each) — Mechanical only:**
+**J3, J4 (Top corners, 1x3 each) — Mechanical:**
 
-All pins NC. These provide physical stability only — no electrical connection.
+All pins connected to GND for RF shielding and mechanical stability.
 
 ### Band Auto-Detection
 
@@ -916,8 +918,8 @@ Instead of a DIP switch, the carrier includes a band ID resistor:
 | Module | ID Pin State | Implementation |
 |--------|--------------|----------------|
 | SA818-V (VHF) | LOW | 0Ω resistor to GND on carrier |
-| SA818-U (UHF) | HIGH | 0Ω resistor to VCC on carrier |
-| No module | Floating | MCU pulldown, detect via UART timeout |
+| SA818-U (UHF) | Float | No resistor populated (DNP) |
+| No module | Float | MCU pulldown, detect via UART timeout |
 
 Firmware reads ID pin on startup and configures frequency limits accordingly.
 
@@ -971,11 +973,11 @@ User receives a complete, band-matched RF assembly. No antenna selection confusi
 | J_SMA | SMA right-angle | PCB mount | Female, 50Ω |
 | C1 | 100nF | 0402/0603 | Decoupling |
 | C2 | 10µF | 0603/0805 | Bulk |
-| R_ID | 0Ω | 0402 | To GND (VHF) or VCC (UHF) |
+| R_ID | 0Ω | 0402 | To GND (VHF); DNP on UHF (float = UHF) |
 | J1 | 1x8 male header | 0.1" pitch | Through-hole, pointing backward |
 | J2 | 1x8 male header | 0.1" pitch | Through-hole, pointing backward |
-| J3 | 1x3 male header | 0.1" pitch | Through-hole, mechanical only |
-| J4 | 1x3 male header | 0.1" pitch | Through-hole, mechanical only |
+| J3 | 1x3 male header | 0.1" pitch | Through-hole, all pins GND (KiCad: J16/J21) |
+| J4 | 1x3 male header | 0.1" pitch | Through-hole, all pins GND (KiCad: J17/J22) |
 | ANT | Stubby antenna | SMA male | VHF or UHF matched |
 
 **Per-carrier cost:** ~$15-20 (SA818 ~$10, SMA ~$1-2, antenna ~$3-5, PCB + passives ~$2)
@@ -1023,13 +1025,13 @@ This dramatically simplifies the main board design. A 2-layer PCB may be feasibl
 
      ┌─────────────────────────────────────────────────────────────┐
      │                                                             │
-     │  □ □ □                                               □ □ □  │ ← J3, J4 so
-     │  (J3)                                                 (J4)  │   1x3, mech.
+     │  □ □ □                                               □ □ □  │ ← J3, J4 (J11, J12)
+     │  (J3)                                                 (J4)  │   1x3, GND
      │                                                             │
     ...                                                           ...
      │                                                             │
      │                                                             │
-     │  □ □ □ □ □ □ □ □                           □ □ □ □ □ □ □ □  │ ← J1, J2
+     │  □ □ □ □ □ □ □ □                           □ □ □ □ □ □ □ □  │ ← J1, J2 (J7, J8)
      │  (J1 socket)                                 (J2 socket)    │   1x8, sig
      │                                                             │
      │                                                             │
@@ -1046,35 +1048,35 @@ This dramatically simplifies the main board design. A 2-layer PCB may be feasibl
 
 ### Main Board Socket Connections
 
-**J1 Socket (1x8) — Power and Audio:**
+**J1 Socket (1x8, KiCad: J7) — Power and Audio:**
 
 | Pin | Signal | Connects To |
 |-----|--------|-------------|
 | 1 | VCC | TPS22919 output |
 | 2 | GND | Ground plane |
-| 3 | GND | Ground plane |
-| 4 | MIC+ | TX audio filter output |
-| 5 | MIC- | GND |
-| 6 | SPK+ | RX audio filter input |
-| 7 | SPK- | GND |
-| 8 | NC | — |
+| 3 | MIC+ | TX audio filter output |
+| 4 | GND | Ground plane |
+| 5 | SPK+ | RX audio filter input |
+| 6 | GND | Ground plane |
+| 7 | GND | Ground plane |
+| 8 | GND | Ground plane |
 
-**J2 Socket (1x8) — Control and Data:**
+**J2 Socket (1x8, KiCad: J8) — Control and Data:**
 
 | Pin | Signal | Connects To |
 |-----|--------|-------------|
-| 1 | TXD | RP2350 UART RX |
-| 2 | RXD | RP2350 UART TX |
-| 3 | PTT | RP2350 GPIO |
-| 4 | PD | RP2350 GPIO (directly drive) or TPS22919 EN (power control) |
-| 5 | HL | RP2350 GPIO |
-| 6 | SQ | RP2350 GPIO |
-| 7 | ID | RP2350 GPIO (with internal pulldown) |
+| 1 | PTT | RP2350 GPIO (SA818_PTT) |
+| 2 | PD | RP2350 GPIO (SA818_PD / TPS22919 EN) |
+| 3 | HL | RP2350 GPIO (SA818_HL) |
+| 4 | SQ | RP2350 GPIO (SA818_SQ) |
+| 5 | TXD | RP2350 UART TX (SA818_TX) |
+| 6 | RXD | RP2350 UART RX (SA818_RX) |
+| 7 | ID | RP2350 GPIO (SA818_ID, with internal pulldown) |
 | 8 | GND | Ground plane |
 
 **J3, J4 Sockets (1x3 each) — Mechanical:**
 
-No electrical connection. Just sockets to receive mechanical support pins from carrier.
+All pins connected to GND for RF shielding and mechanical stability.
 
 *See [Engineer's Notebook](engineers-notebook/electrical-design-decisions.md#main-board-pcb-layers-2-vs-4) for PCB layer discussion.*
 
@@ -1211,14 +1213,14 @@ Most modules wire the backlight LED directly to VCC. To add PWM dimming, we swit
 
 | Function | GPIO | Notes |
 |----------|------|-------|
-| SPI SCK | TBD | Shared SPI clock |
-| SPI TX (MOSI) | TBD | Shared SPI data out |
-| SPI RX (MISO) | TBD | Shared SPI data in (optional for display, needed for SD) |
-| DISP_CS | TBD | Display chip select |
-| DISP_DC | TBD | Data/Command select |
-| DISP_RST | TBD | Display reset |
-| DISP_BL | TBD | Backlight PWM |
-| SD_CS | TBD | SD card chip select |
+| SPI SCK | GPIO2 | Shared SPI clock |
+| SPI TX (MOSI) | GPIO3 | Shared SPI data out |
+| SPI RX (MISO) | GPIO4 | Shared SPI data in (optional for display, needed for SD) |
+| DISP_CS | GPIO5 | Display chip select |
+| DISP_DC | GPIO6 | Data/Command select |
+| DISP_RST | GPIO7 | Display reset |
+| DISP_BL | GPIO22 | Backlight PWM |
+| SD_CS | GPIO23 | SD card chip select |
 
 **Total: 6-7 dedicated GPIOs** (plus SPI bus which may be shared with other peripherals)
 
@@ -1426,15 +1428,15 @@ For user-solderable assembly, use an OV2640 module with 2.54mm pin headers.
 
 | Function | GPIO | Notes |
 |----------|------|-------|
-| I2C SCL | Shared | SCCB clock (shared with SAO) |
-| I2C SDA | Shared | SCCB data (shared with SAO) |
-| CAM_XCLK | TBD | PWM output, ~20MHz |
-| CAM_PCLK | TBD | Pixel clock input (PIO) |
-| CAM_VSYNC | TBD | Frame sync input |
-| CAM_HREF | TBD | Line valid input |
-| CAM_D0-D7 | TBD | 8× parallel data (PIO) |
-| CAM_RST | TBD | Reset (optional, can tie high) |
-| CAM_PWDN | TBD | Power down (optional, can tie low) |
+| I2C SCL | GPIO1 | SCCB clock (shared with SAO, fuel gauge) |
+| I2C SDA | GPIO0 | SCCB data (shared with SAO, fuel gauge) |
+| CAM_XCLK | GPIO19 | PWM output, ~20MHz |
+| CAM_PCLK | GPIO16 | Pixel clock input (PIO) |
+| CAM_VSYNC | GPIO17 | Frame sync input |
+| CAM_HREF | GPIO18 | Line valid input |
+| CAM_D0-D7 | GPIO8-15 | 8× parallel data (PIO), consecutive for PIO |
+| CAM_RST | — | Tied HIGH via 10kΩ pullup (not GPIO controlled) |
+| CAM_PWDN | — | Tied LOW via 10kΩ pulldown (not GPIO controlled) |
 
 **Dedicated GPIOs: 10-12** (depending on whether RST/PWDN are GPIO-controlled)
 
@@ -1478,7 +1480,7 @@ Position the camera for the "take a picture" use case:
 
 | Parameter | Value |
 |-----------|-------|
-| Package | QFN-80 (9×9mm) |
+| Package | QFN-80 (10×10mm) |
 | GPIOs | 48 (GPIO0-GPIO47) |
 | CPU | Dual ARM Cortex-M33 @ 150MHz |
 | SRAM | 520KB |
@@ -1839,7 +1841,7 @@ The RP2350 contains an internal switching regulator that converts the 3.3V input
 
 | Ref | Qty | Value | Package | Assembly | Notes |
 |-----|-----|-------|---------|----------|-------|
-| U_MCU | 1 | RP2350B | QFN-80 (9×9mm) | Fab | Dual Cortex-M33, 48 GPIO |
+| U_MCU | 1 | RP2350B | QFN-80 (10×10mm) | Fab | Dual Cortex-M33, 48 GPIO |
 | L2 | 1 | 3.3µH | 3×3mm | Fab | Internal regulator inductor |
 | Y1 | 1 | 12MHz | 3215 | Fab | ±20ppm, CL=10pF |
 | C_Y1, C_Y2 | 2 | 15pF | 0402 | Fab | Crystal load caps |
@@ -1950,9 +1952,10 @@ User controls provide physical interaction with the badge.
 |---------|------|-------|---------|
 | D-pad | 5× tactile switches | 5 | Menu navigation + capture (center doubles as photo button when idle) |
 | Airplane mode | Slide switch | 1 | Disable RF (read by MCU) |
-| Status LEDs | 3× LEDs | 3 | Power, TX, RX indicators |
+| PWR LED | RGB common-anode | 3 | Battery status indicator |
+| LED_DATA | WS2812B chain | 1 | 26-LED blinky (ears + border, TX/RX animations) |
 
-**Total: 9 GPIOs** for user controls
+**Total: 10 GPIOs** for user controls
 
 ### D-Pad (5-Way Navigation)
 
@@ -2157,16 +2160,16 @@ The LC709203 fuel gauge provides accurate state-of-charge readings via I2C.
 
 | Function | GPIO | Notes |
 |----------|------|-------|
-| DPAD_UP | TBD | Active low, internal pullup |
-| DPAD_DOWN | TBD | Active low, internal pullup |
-| DPAD_LEFT | TBD | Active low, internal pullup |
-| DPAD_RIGHT | TBD | Active low, internal pullup |
-| DPAD_CENTER | TBD | Active low, internal pullup (doubles as photo capture) |
-| AIRPLANE | TBD | Active low, internal pullup |
-| PWR_R | TBD | PWR LED red channel (PWM) |
-| PWR_G | TBD | PWR LED green channel (PWM) |
-| PWR_B | TBD | PWR LED blue channel (PWM) |
-| LED_DATA | TBD | WS2812B blinky chain (26 LEDs: ears + border) |
+| DPAD_UP | GPIO37 | Active low, internal pullup |
+| DPAD_DOWN | GPIO38 | Active low, internal pullup |
+| DPAD_LEFT | GPIO39 | Active low, internal pullup |
+| DPAD_RIGHT | GPIO26 | Active low, internal pullup (moved from GPIO40 for ADC) |
+| DPAD_CENTER | GPIO41 | Active low, internal pullup (doubles as photo capture) |
+| AIRPLANE | GPIO43 | Active low, internal pullup |
+| PWR_R | GPIO44 | PWR LED red channel (PWM) |
+| PWR_G | GPIO45 | PWR LED green channel (PWM) |
+| PWR_B | GPIO46 | PWR LED blue channel (PWM) |
+| LED_DATA | GPIO47 | WS2812B blinky chain (26 LEDs: ears + border) |
 
 **Total: 10 GPIOs** for user controls (6 switches + 4 LED control)
 
@@ -2550,9 +2553,10 @@ The physical PCB design (outline, dimensions, component placement, manufacturing
 **See: [hardware/pcb-design.md](../hardware/pcb-design.md)**
 
 Key specs:
-- **Body:** 120mm × 95mm with 8mm corner radius
-- **Ears:** 50mm long, 30° angle, tapered 15mm→8mm
-- **Total height:** ~140mm
+- **Body:** 120mm × 120mm with 2mm corner radius (top only, square at leg junctions)
+- **Ears:** ~50mm at ~45°, with ~15mm ball tips
+- **Feet:** ~15mm at 15° outward with semicircular ends
+- **Total height:** ~190mm
 - **Color:** Purple soldermask (Simpsons TV aesthetic)
 - **Layers:** 4-layer recommended
 
@@ -2669,13 +2673,13 @@ Test carrier independently before mating with main badge:
 - PCM5102A (TSSOP-20)
 - All 0402/0603 passives
 - RP2350 and other fine-pitch ICs
-- Female header sockets (J1-J4) — through-hole, easy
+- Female header sockets (J7, J8 signal; J11, J12 mechanical) — through-hole, easy
 
 **Carrier board (hot air assembly):**
 - SA818 module (2mm pitch castellated — needs careful alignment)
 - SMA connector (through-hole or reflow depending on part)
 - 0402/0603 passives
-- Male headers (J1-J4) — through-hole, easy
+- Male headers (J14-J17 for VHF, J18-J22 for UHF) — through-hole, easy
 
 ### Production Kit Assembly
 
@@ -2683,7 +2687,7 @@ Test carrier independently before mating with main badge:
 
 *Main badge:*
 - All SMD components
-- Through-hole header sockets (J1-J4) — could be user-assembled if preferred
+- Through-hole header sockets (J7, J8, J11, J12) — could be user-assembled if preferred
 
 *Carrier boards (separate assembly):*
 - SA818 module soldered to carrier
@@ -2708,7 +2712,7 @@ Test carrier independently before mating with main badge:
 ### Assembly Tip: Antenna Tilt
 
 To angle the antenna slightly backward (more comfortable, won't bump chin):
-- When soldering J3/J4 (top mechanical headers) to carrier
+- When soldering J3/J4 (top mechanical headers, KiCad: J16/J17 or J21/J22) to carrier
 - Don't push pins fully through
 - Leave ~1-2mm extra on top side
 - This tilts the carrier back ~10-15° when installed

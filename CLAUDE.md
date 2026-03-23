@@ -7,8 +7,8 @@ This is an open-source SSTV (Slow Scan Television) badge for DEFCON and the badg
 - **MCU**: Raspberry Pi RP2350B (QFN-80, 48 GPIOs) — dual ARM Cortex-M33 cores
 - **Radio**: SA818 VHF/UHF transceiver module (1W output) on swappable carrier board
 - **Camera**: OV2640 2MP module, parallel DVP interface (8-bit data + control signals)
-- **Display**: 2.4" ILI9341 TFT LCD (320×240 landscape, SPI) with built-in SD slot
-- **Storage**: MicroSD card via display module's SD slot (shared SPI bus)
+- **Display**: 2.4" ILI9341 TFT LCD (320×240 landscape, SPI)
+- **Storage**: MicroSD card via standalone SD socket (J10), shared SPI bus with display
 - **Power**: 2000mAh LiPo battery with USB-C charging
 - **Audio**: PCM5102A DAC (TX) + RP2350 ADC (RX) for SSTV signal processing
 - **Expansion**: 2x SAO (Shitty Add-On) connectors
@@ -67,12 +67,12 @@ See `docs/electrical-design.md` for complete audio circuit design and component 
 
 ## Display Interface
 
-**Module:** 2.4" ILI9341-based TFT LCD breakout with built-in SD card slot.
+**Module:** 2.4" ILI9341-based TFT LCD breakout.
 
 - **Resolution**: 320×240 pixels, landscape orientation
 - **Interface**: SPI (up to 62.5 MHz)
 - **Backlight**: PWM dimming via GPIO + 2N7002 MOSFET
-- **SD Card**: Built-in slot, shared SPI bus with display (separate CS pins)
+- **SD Card**: Standalone SD socket (J10) on main badge, shared SPI bus with display (separate CS pins)
 - **Touch**: None (D-pad navigation)
 
 **SSTV Compatibility:**
@@ -191,6 +191,7 @@ defcon-sstv-badge/
 │   ├── electrical-design.md      # Circuit schematics and component specs
 │   ├── firmware-architecture.md  # Detailed software design
 │   ├── bom.md                    # Bill of materials
+│   ├── bom-raw.md                # Raw BOM export
 │   ├── project-status.md         # Design status tracker
 │   └── engineers-notebook/       # Design decisions and rationale
 ├── firmware/                     # RP2350 embedded C code
@@ -204,8 +205,10 @@ defcon-sstv-badge/
 │   ├── lib/                      # External libraries
 │   └── examples/                 # Test programs
 ├── hardware/                     # KiCAD PCB design files
-│   ├── main-badge/               # Main badge PCB (planned)
-│   └── sa818-carrier/            # SA818 carrier board (planned)
+│   ├── main_badge/               # Main badge PCB
+│   ├── sa818-v-carrier/          # SA818 VHF carrier board
+│   ├── sa818-u-carrier/          # SA818 UHF carrier board
+│   └── pcb-design.md             # Physical PCB layout and dimensions
 └── mechanical/                   # Badge accessories and mounting
 ```
 
@@ -236,13 +239,14 @@ defcon-sstv-badge/
 | SMA connector | On main badge | On carrier, right-angle, antenna points up |
 | Antenna | User-supplied | Included with each carrier (band-matched) |
 | Audio codec | WM8960 (stereo, $3.50) | PCM5102A DAC + RP2350 ADC ($2.05) |
-| Display | 2.4" ST7789 (separate SD socket) | 2.4" ILI9341 with built-in SD slot |
-| SD card | Separate socket | Via display module (shared SPI) |
+| Display | 2.4" ST7789 (separate SD socket) | 2.4" ILI9341 TFT LCD |
+| SD card | Separate socket | Standalone SD socket (J10), shared SPI bus |
 | Camera | OV2640 (interface unspecified) | OV2640 parallel DVP (8-bit + control) |
 | Camera connector | 1×18 socket | 2×9 socket (matches OV2640 module pinout) |
 | MCU variant | RP2350 (unspecified) | RP2350B (QFN-80, 48 GPIOs) |
 | Photo button | Dedicated SW6 (12mm) | D-pad center doubles as capture |
 | Display border LEDs | WS2812B (5050) | WS2812B-2020 (2020) for smaller profile |
+| TV feet | None | Stubby angled feet at bottom corners (~15mm, 15° outward) |
 
 ## Key Hardware Interfaces
 ```c

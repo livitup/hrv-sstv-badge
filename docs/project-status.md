@@ -96,7 +96,7 @@ This document tracks the design and implementation status for all badge subsyste
 - [x] TX attenuator/filter component values specified
 - [x] RX anti-alias filter and DC blocking designed
 - [x] Assign RP2350 GPIO pins for I2S (GPIO24, 25, 29: BCK, LRCK, DIN)
-- [x] Assign RP2350 ADC GPIO pin for RX audio (GPIO26: ADC0)
+- [x] Assign RP2350 ADC GPIO pin for RX audio (GPIO40: ADC0)
 - [x] **KiCad: PCM5102A DAC complete** (I2S, power, charge pump caps)
 - [x] **KiCad: TX output filter complete** (R5/R6 attenuator, C24 LPF, C25 DC block → MIC+/MIC-)
 - [x] **KiCad: RX input filter complete** (C26 DC block, R7/R8/C27 anti-alias, R9/R10 bias → RX_AUDIO)
