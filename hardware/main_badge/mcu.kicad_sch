@@ -3091,12 +3091,6 @@
 		(uuid "d8c35911-fa65-4939-86ad-dbc90179b581")
 	)
 	(junction
-		(at 105.41 82.55)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "db6ad36d-15b8-4eb1-848a-7eae5f9e1d74")
-	)
-	(junction
 		(at 85.09 35.56)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -3113,12 +3107,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "f2858f6a-5741-448d-b399-9ac00546a241")
-	)
-	(junction
-		(at 60.96 82.55)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "f862abb7-def6-4b0c-bae7-25a2d40afad4")
 	)
 	(no_connect
 		(at 119.38 144.78)
@@ -3547,16 +3535,6 @@
 			(type default)
 		)
 		(uuid "379bff3d-cef9-43cd-a1c3-cedd1fb1f875")
-	)
-	(wire
-		(pts
-			(xy 105.41 80.01) (xy 105.41 82.55)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "38fb69f1-142a-4b86-a924-a2d95c802438")
 	)
 	(wire
 		(pts
@@ -4060,7 +4038,7 @@
 	)
 	(wire
 		(pts
-			(xy 50.8 82.55) (xy 60.96 82.55)
+			(xy 50.8 82.55) (xy 105.41 82.55)
 		)
 		(stroke
 			(width 0)
@@ -4220,7 +4198,7 @@
 	)
 	(wire
 		(pts
-			(xy 60.96 80.01) (xy 50.8 80.01)
+			(xy 50.8 80.01) (xy 107.95 80.01)
 		)
 		(stroke
 			(width 0)
@@ -4237,16 +4215,6 @@
 			(type default)
 		)
 		(uuid "95c80e78-a937-4892-a44c-c4fe66e8d413")
-	)
-	(wire
-		(pts
-			(xy 105.41 80.01) (xy 107.95 80.01)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "96c32849-e2eb-4c51-aae4-5db8ecbe0d3a")
 	)
 	(wire
 		(pts
@@ -4317,16 +4285,6 @@
 			(type default)
 		)
 		(uuid "a35545ee-118e-48b1-806c-137e2a34c0f6")
-	)
-	(wire
-		(pts
-			(xy 60.96 82.55) (xy 105.41 82.55)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "a46a11af-08af-4420-a6b8-e2564ea5f16c")
 	)
 	(wire
 		(pts
@@ -4937,16 +4895,6 @@
 			(type default)
 		)
 		(uuid "fb6b5f0e-98e7-4b2f-8014-445ded1f7ae8")
-	)
-	(wire
-		(pts
-			(xy 60.96 82.55) (xy 60.96 80.01)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "fbf6c6e5-1880-404e-853f-468fd0309b08")
 	)
 	(global_label "SWDIO"
 		(shape input)
