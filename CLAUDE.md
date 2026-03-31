@@ -295,13 +295,13 @@ defcon-sstv-badge/
 #define AIRPLANE         43
 
 // SA818 (GPIO30-36)
-#define SA818_TX         30
-#define SA818_RX         31
+#define SA818_RX         30
+#define SA818_TX         31
 #define SA818_PTT        32
 #define SA818_PD         33   // Also TPS22919 enable
 #define SA818_HL         34
-#define SA818_SQ         35
-#define SA818_ID         36
+#define SA818_ID         35
+#define SA818_SQ         36
 
 // ADC input (RP2350B: ADC channels are GPIO40-47, NOT GPIO26-29 like RP2040)
 #define RX_AUDIO         40   // ADC0 - RX audio from SA818

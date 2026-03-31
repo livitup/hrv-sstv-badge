@@ -1563,13 +1563,13 @@ SAO I2C shared on GPIO0/1. VCC=3.3V, GND from power rails.
 
 | GPIO | Function | Notes |
 |------|----------|-------|
-| 30 | SA818_TX | UART1_TX → SA818 RXD |
-| 31 | SA818_RX | UART1_RX ← SA818 TXD |
+| 30 | SA818_RX | UART1_RX ← SA818 TXD |
+| 31 | SA818_TX | UART1_TX → SA818 RXD |
 | 32 | SA818_PTT | Push-to-talk (active low) |
 | 33 | SA818_PD | Power down / TPS22919 enable |
 | 34 | SA818_HL | High/Low power select |
-| 35 | SA818_SQ | Squelch detect input |
-| 36 | SA818_ID | Band ID from carrier |
+| 35 | SA818_ID | Band ID from carrier |
+| 36 | SA818_SQ | Squelch detect input |
 
 **User Controls:**
 
