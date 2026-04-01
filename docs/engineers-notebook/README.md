@@ -20,6 +20,8 @@ This directory contains design decisions, trade-off analyses, and educational ba
 
 - **[gpio-optimization.md](gpio-optimization.md)** — Complete GPIO reassignment to minimize trace crossings. Maps each peripheral group to one physical side of the QFN-80 package: display+camera on left, controls on bottom, SA818 on right, audio on top. Includes RP2350B pin layout diagram, peripheral mux verification, carrier header matching, and I2S pin-order matching to PCM5102A. Reduced trace crossings from ~8-12 to 1.
 
+- **[gpio-rewiring-checklist.md](gpio-rewiring-checklist.md)** — Step-by-step checklist used to rewire U1 in the KiCad schematic. Groups signals by dependency order to avoid conflicts (especially SA818 which has overlapping old/new GPIOs). Includes post-rewiring verification steps. **Completed 2026-03-31, all 48 GPIOs verified programmatically.**
+
 ### Educational Background
 
 - **[audio-concepts-explained.md](audio-concepts-explained.md)** — Beginner-friendly explanation of filtering, bias, DC blocking, anti-aliasing, and other audio concepts used in the badge's RX/TX circuits

@@ -94,22 +94,22 @@ U1 sits on the right side of the board:
 
 Every assignment was verified against the RP2350B GPIO function multiplexing table:
 
-| Peripheral | GPIO | Mux Function | Verified |
-|-----------|------|-------------|----------|
-| SPI0 SCK | 6 | F0 | Valid: 2, **6**, 18, 22, 34, 38 |
-| SPI0 TX (MOSI) | 7 | F0 | Valid: 3, **7**, 19, 23, 35, 39 |
-| SPI0 RX (MISO) | 4 | F0 | Valid: 0, **4**, 16, 20, 32, 36 |
-| I2C0 SDA | 44 | F2 | Valid: 0, 4, 8, ..., 40, **44** |
-| I2C0 SCL | 45 | F2 | Valid: 1, 5, 9, ..., 41, **45** |
-| UART1 TX | 36 | F1 | Valid: 4, 8, 20, 24, **36**, 40 |
-| UART1 RX | 37 | F1 | Valid: 5, 9, 21, 25, **37**, 41 |
-| ADC0 | 40 | ADC | Valid: GPIO40-47 only |
-| PIO (camera DVP) | 8-15 | F6/F7/F8 | Valid: all GPIOs support PIO |
-| PIO (I2S) | 1-3 | F6/F7/F8 | Valid: all GPIOs support PIO |
-| PIO (WS2812B) | 0 | F6/F7/F8 | Valid: all GPIOs support PIO |
-| PWM (CAM_XCLK) | 20 | F4 (PWM2A) | Valid: all GPIOs support PWM |
-| PWM (DISP_BL) | 29 | F4 (PWM6B) | Valid |
-| PWM (PWR LED) | 30-32 | F4 (PWM7A/7B/8A) | Valid |
+| Peripheral       | GPIO  | Mux Function     | Verified                        |
+| ---------------- | ----- | ---------------- | ------------------------------- |
+| SPI0 SCK         | 6     | F0               | Valid: 2, **6**, 18, 22, 34, 38 |
+| SPI0 TX (MOSI)   | 7     | F0               | Valid: 3, **7**, 19, 23, 35, 39 |
+| SPI0 RX (MISO)   | 4     | F0               | Valid: 0, **4**, 16, 20, 32, 36 |
+| I2C0 SDA         | 44    | F2               | Valid: 0, 4, 8, ..., 40, **44** |
+| I2C0 SCL         | 45    | F2               | Valid: 1, 5, 9, ..., 41, **45** |
+| UART1 TX         | 36    | F1               | Valid: 4, 8, 20, 24, **36**, 40 |
+| UART1 RX         | 37    | F1               | Valid: 5, 9, 21, 25, **37**, 41 |
+| ADC0             | 40    | ADC              | Valid: GPIO40-47 only           |
+| PIO (camera DVP) | 8-15  | F6/F7/F8         | Valid: all GPIOs support PIO    |
+| PIO (I2S)        | 1-3   | F6/F7/F8         | Valid: all GPIOs support PIO    |
+| PIO (WS2812B)    | 0     | F6/F7/F8         | Valid: all GPIOs support PIO    |
+| PWM (CAM_XCLK)   | 20    | F4 (PWM2A)       | Valid: all GPIOs support PWM    |
+| PWM (DISP_BL)    | 29    | F4 (PWM6B)       | Valid                           |
+| PWM (PWR LED)    | 30-32 | F4 (PWM7A/7B/8A) | Valid                           |
 
 ## SA818 Carrier Header Matching
 

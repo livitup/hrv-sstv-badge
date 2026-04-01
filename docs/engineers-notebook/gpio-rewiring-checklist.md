@@ -41,85 +41,85 @@ Work through these groups in order. For each signal: disconnect the global label
 
 ### Group 1: I2C Bus (move from top to right side)
 
-- [ ] **I2C_SDA**: disconnect from GPIO0 → reconnect to **GPIO44**
-- [ ] **I2C_SCL**: disconnect from GPIO1 → reconnect to **GPIO45**
+- [x] **I2C_SDA**: disconnect from GPIO0 → reconnect to **GPIO44**
+- [x] **I2C_SCL**: disconnect from GPIO1 → reconnect to **GPIO45**
 
 ### Group 2: I2S Audio (move to where I2C was)
 
-- [ ] **I2S_LRCK**: disconnect from GPIO25 → reconnect to **GPIO1**
-- [ ] **I2S_DIN**: disconnect from GPIO29 → reconnect to **GPIO2**
-- [ ] **I2S_BCK**: disconnect from GPIO24 → reconnect to **GPIO3**
+- [x] **I2S_LRCK**: disconnect from GPIO25 → reconnect to **GPIO1**
+- [x] **I2S_DIN**: disconnect from GPIO29 → reconnect to **GPIO2**
+- [x] **I2S_BCK**: disconnect from GPIO24 → reconnect to **GPIO3**
 
 ### Group 3: SPI Bus (shift from GPIO2-3 to GPIO6-7)
 
-- [ ] **SPI_SCK**: disconnect from GPIO2 → reconnect to **GPIO6**
-- [ ] **SPI_MOSI**: disconnect from GPIO3 → reconnect to **GPIO7**
+- [x] **SPI_SCK**: disconnect from GPIO2 → reconnect to **GPIO6**
+- [x] **SPI_MOSI**: disconnect from GPIO3 → reconnect to **GPIO7**
 
 ### Group 4: Display Control (scatter to new homes)
 
-- [ ] **DISP_DC**: disconnect from GPIO6 → reconnect to **GPIO19** (was no_connect, remove the NC marker first)
-- [ ] **DISP_RST**: disconnect from GPIO7 → reconnect to **GPIO43**
-- [ ] **DISP_BL**: disconnect from GPIO22 → reconnect to **GPIO29**
-- [ ] **SD_CS**: disconnect from GPIO23 → reconnect to **GPIO46**
+- [x] **DISP_DC**: disconnect from GPIO6 → reconnect to **GPIO19** (was no_connect, remove the NC marker first)
+- [x] **DISP_RST**: disconnect from GPIO7 → reconnect to **GPIO43**
+- [x] **DISP_BL**: disconnect from GPIO22 → reconnect to **GPIO29**
+- [x] **SD_CS**: disconnect from GPIO23 → reconnect to **GPIO46**
 
 ### Group 5: LED Chain (move to top side)
 
-- [ ] **LED_DATA**: disconnect from GPIO47 → reconnect to **GPIO0**
-- [ ] Mark **GPIO47** as no_connect (add NC marker)
+- [x] **LED_DATA**: disconnect from GPIO47 → reconnect to **GPIO0**
+- [x] Mark **GPIO47** as no_connect (add NC marker)
 
 ### Group 6: Camera XCLK (new signal)
 
-- [ ] Remove no_connect marker from **GPIO19** (if not already done in Group 4)
-- [ ] **CAM_XCLK**: create new global label, connect to **GPIO20** (was SAO1_GPIO1)
+- [x] Remove no_connect marker from **GPIO19** (if not already done in Group 4)
+- [x] **CAM_XCLK**: create new global label, connect to **GPIO20** (was SAO1_GPIO1)
 
 ### Group 7: SAO Connectors (rearrange)
 
-- [ ] **SAO1_GPIO1**: disconnect from GPIO20 → reconnect to **GPIO27**
-- [ ] **SAO1_GPIO2**: disconnect from GPIO21 → reconnect to **GPIO28**
-- [ ] **SAO2_GPIO1**: disconnect from GPIO27 → reconnect to **GPIO41**
-- [ ] **SAO2_GPIO2**: disconnect from GPIO28 → reconnect to **GPIO42** (was no_connect, remove NC marker first)
+- [x] **SAO1_GPIO1**: disconnect from GPIO20 → reconnect to **GPIO27**
+- [x] **SAO1_GPIO2**: disconnect from GPIO21 → reconnect to **GPIO28**
+- [x] **SAO2_GPIO1**: disconnect from GPIO27 → reconnect to **GPIO41**
+- [x] **SAO2_GPIO2**: disconnect from GPIO28 → reconnect to **GPIO42** (was no_connect, remove NC marker first)
 
 ### Group 8: D-pad Switches (consolidate to bottom-left)
 
-- [ ] **DPAD_UP**: disconnect from GPIO37 → reconnect to **GPIO21**
-- [ ] **DPAD_DOWN**: disconnect from GPIO38 → reconnect to **GPIO22**
-- [ ] **DPAD_LEFT**: disconnect from GPIO39 → reconnect to **GPIO23**
-- [ ] **DPAD_RIGHT**: disconnect from GPIO26 → reconnect to **GPIO24**
-- [ ] **DPAD_CENTER**: disconnect from GPIO41 → reconnect to **GPIO25**
+- [x] **DPAD_UP**: disconnect from GPIO37 → reconnect to **GPIO21**
+- [x] **DPAD_DOWN**: disconnect from GPIO38 → reconnect to **GPIO22**
+- [x] **DPAD_LEFT**: disconnect from GPIO39 → reconnect to **GPIO23**
+- [x] **DPAD_RIGHT**: disconnect from GPIO26 → reconnect to **GPIO24**
+- [x] **DPAD_CENTER**: disconnect from GPIO41 → reconnect to **GPIO25**
 
 ### Group 9: Airplane Switch
 
-- [ ] **AIRPLANE**: disconnect from GPIO43 → reconnect to **GPIO26**
+- [x] **AIRPLANE**: disconnect from GPIO43 → reconnect to **GPIO26**
 
 ### Group 10: SA818 Radio (consolidate to right side)
 
-- [ ] **SA818_PTT**: disconnect from GPIO32 → reconnect to **GPIO33**
-- [ ] **SA818_PD**: disconnect from GPIO33 → reconnect to **GPIO34**
-- [ ] **SA818_HL**: disconnect from GPIO34 → reconnect to **GPIO35**
-- [ ] **SA818_TX**: disconnect from GPIO31 → reconnect to **GPIO36**
-- [ ] **SA818_RX**: disconnect from GPIO30 → reconnect to **GPIO37**
-- [ ] **SA818_SQ**: disconnect from GPIO36 → reconnect to **GPIO38**
-- [ ] **SA818_ID**: disconnect from GPIO35 → reconnect to **GPIO39**
+- [x] **SA818_PTT**: disconnect from GPIO32 → reconnect to **GPIO33**
+- [x] **SA818_PD**: disconnect from GPIO33 → reconnect to **GPIO34**
+- [x] **SA818_HL**: disconnect from GPIO34 → reconnect to **GPIO35**
+- [x] **SA818_TX**: disconnect from GPIO31 → reconnect to **GPIO36**
+- [x] **SA818_RX**: disconnect from GPIO30 → reconnect to **GPIO37**
+- [x] **SA818_SQ**: disconnect from GPIO36 → reconnect to **GPIO38**
+- [x] **SA818_ID**: disconnect from GPIO35 → reconnect to **GPIO39**
 
 **Warning:** SA818 signals are currently tangled (e.g., GPIO35 currently has SA818_ID but GPIO35's new signal is SA818_HL). Disconnect ALL seven SA818 labels first, then reconnect them all. Don't do them one at a time or you'll create conflicts.
 
 ### Group 11: PWR LED (move from upper-right to bottom)
 
-- [ ] **PWR_R**: disconnect from GPIO44 → reconnect to **GPIO30**
-- [ ] **PWR_G**: disconnect from GPIO45 → reconnect to **GPIO31**
-- [ ] **PWR_B**: disconnect from GPIO46 → reconnect to **GPIO32**
+- [x] **PWR_R**: disconnect from GPIO44 → reconnect to **GPIO30**
+- [x] **PWR_G**: disconnect from GPIO45 → reconnect to **GPIO31**
+- [x] **PWR_B**: disconnect from GPIO46 → reconnect to **GPIO32**
 
 ---
 
 ## Post-Rewiring Verification
 
-- [ ] Run **ERC** — should be clean (no unconnected pins, no missing connections)
-- [ ] Verify no GPIO has two signals (check for duplicate connections)
-- [ ] Verify GPIO19 has DISP_DC (not NC)
-- [ ] Verify GPIO20 has CAM_XCLK (new label)
-- [ ] Verify GPIO42 has SAO2_GPIO2 (was NC)
-- [ ] Verify GPIO47 is NC (was LED_DATA)
-- [ ] Count: 47 GPIOs assigned + 1 spare (GPIO47) = 48 total
+- [x] Run **ERC** — should be clean (no unconnected pins, no missing connections)
+- [x] Verify no GPIO has two signals (check for duplicate connections)
+- [x] Verify GPIO19 has DISP_DC (not NC)
+- [x] Verify GPIO20 has CAM_XCLK (new label)
+- [x] Verify GPIO42 has SAO2_GPIO2 (was NC)
+- [x] Verify GPIO47 is NC (was LED_DATA)
+- [x] Count: 47 GPIOs assigned + 1 spare (GPIO47) = 48 total
 
 ## Quick Reference: Final GPIO Assignment
 
