@@ -1213,14 +1213,14 @@ Most modules wire the backlight LED directly to VCC. To add PWM dimming, we swit
 
 | Function | GPIO | Notes |
 |----------|------|-------|
-| SPI SCK | GPIO2 | Shared SPI clock |
-| SPI TX (MOSI) | GPIO3 | Shared SPI data out |
-| SPI RX (MISO) | GPIO4 | Shared SPI data in (optional for display, needed for SD) |
+| SPI SCK | GPIO6 | Shared SPI clock (SPI0 F0) |
+| SPI TX (MOSI) | GPIO7 | Shared SPI data out (SPI0 F0) |
+| SPI RX (MISO) | GPIO4 | Shared SPI data in (SPI0 F0) |
 | DISP_CS | GPIO5 | Display chip select |
-| DISP_DC | GPIO6 | Data/Command select |
-| DISP_RST | GPIO7 | Display reset |
-| DISP_BL | GPIO22 | Backlight PWM |
-| SD_CS | GPIO23 | SD card chip select |
+| DISP_DC | GPIO19 | Data/Command select |
+| DISP_RST | GPIO43 | Display reset |
+| DISP_BL | GPIO29 | Backlight PWM |
+| SD_CS | GPIO46 | SD card chip select |
 
 **Total: 6-7 dedicated GPIOs** (plus SPI bus which may be shared with other peripherals)
 
@@ -1491,34 +1491,27 @@ Position the camera for the "take a picture" use case:
 
 ### GPIO Pin Assignment
 
-47 of 48 GPIOs are allocated (GPIO42 is spare). Camera RST/PWDN are tied with resistors to free pins for SAO.
+47 of 48 GPIOs are allocated (GPIO47 spare). Camera RST/PWDN are tied with resistors to free pins for SAO. GPIOs are organized by physical side of the QFN-80 package to minimize trace crossings. See `docs/engineers-notebook/gpio-optimization.md` for rationale.
 
-**I2C Bus (Shared):**
-
-| GPIO | Function | Notes |
-|------|----------|-------|
-| 0 | I2C0_SDA | Camera SCCB, LC709203, SAO1, SAO2 |
-| 1 | I2C0_SCL | Camera SCCB, LC709203, SAO1, SAO2 |
-
-**SPI Bus (Display + SD):**
+**Top Side — Audio + LED (pins 61-64, face carrier headers):**
 
 | GPIO | Function | Notes |
 |------|----------|-------|
-| 2 | SPI0_SCK | Clock |
-| 3 | SPI0_TX | MOSI to display and SD |
-| 4 | SPI0_RX | MISO from SD (display doesn't need) |
+| 0 | LED_DATA | WS2812B chain (PIO), routes to ear base |
+| 1 | I2S_LRCK | Word select to PCM5102A (PIO) |
+| 2 | I2S_DIN | Data to PCM5102A (PIO) |
+| 3 | I2S_BCK | Bit clock to PCM5102A (PIO) |
 
-**Display Control:**
+**Left Side — Display SPI (pins 1-4, face display center):**
 
 | GPIO | Function | Notes |
 |------|----------|-------|
+| 4 | SPI0_RX | MISO from SD |
 | 5 | DISP_CS | Display chip select (directly driven) |
-| 6 | DISP_DC | Data/Command select |
-| 7 | DISP_RST | Display reset |
-| 22 | DISP_BL | Backlight PWM (via 2N7002) |
-| 23 | SD_CS | SD card chip select |
+| 6 | SPI0_SCK | Clock |
+| 7 | SPI0_TX | MOSI to display and SD |
 
-**Camera DVP (PIO0):**
+**Left Side — Camera DVP (pins 6-20, face display/camera):**
 
 | GPIO | Function | Notes |
 |------|----------|-------|
@@ -1533,64 +1526,59 @@ Position the camera for the "take a picture" use case:
 | 16 | CAM_PCLK | Pixel clock input (PIO) |
 | 17 | CAM_VSYNC | Frame sync |
 | 18 | CAM_HREF | Line valid |
-| 19 | CAM_XCLK | Master clock output (PWM ~20MHz) |
+| 19 | DISP_DC | Data/Command select (toggles every SPI txn) |
+| 20 | CAM_XCLK | Master clock output (PWM ~20MHz) |
 
 Note: CAM_RST tied HIGH via 10kΩ, CAM_PWDN tied LOW via 10kΩ (not GPIO controlled).
 
-**SAO Connectors:**
+**Bottom Side — Controls + SAO1 (pins 21-28, face bottom edge):**
 
 | GPIO | Function | Notes |
 |------|----------|-------|
-| 20 | SAO1_GPIO1 | SAO connector 1, pin 5 |
-| 21 | SAO1_GPIO2 | SAO connector 1, pin 6 |
-| 27 | SAO2_GPIO1 | SAO connector 2, pin 5 |
-| 28 | SAO2_GPIO2 | SAO connector 2, pin 6 |
+| 21 | DPAD_UP | Active low, internal pullup |
+| 22 | DPAD_DOWN | Active low, internal pullup |
+| 23 | DPAD_LEFT | Active low, internal pullup |
+| 24 | DPAD_RIGHT | Active low, internal pullup |
+| 25 | DPAD_CENTER | Active low, internal pullup |
+| 26 | AIRPLANE | Slide switch, active low |
+| 27 | SAO1_GPIO1 | SAO connector 1, pin 5 (left edge) |
+| 28 | SAO1_GPIO2 | SAO connector 1, pin 6 (left edge) |
 
-SAO I2C shared on GPIO0/1. VCC=3.3V, GND from power rails.
-
-**Audio Interface:**
+**Bottom Side — Display Misc + PWR LED (pins 37-40):**
 
 | GPIO | Function | Notes |
 |------|----------|-------|
-| 24 | I2S_BCK | Bit clock to PCM5102A |
-| 25 | I2S_LRCK | Word select (L/R clock) |
-| 29 | I2S_DIN | Data to PCM5102A |
+| 29 | DISP_BL | Backlight PWM (via 2N7002) |
+| 30 | PWR_R | PWR LED red channel (PWM) |
+| 31 | PWR_G | PWR LED green channel (PWM) |
+| 32 | PWR_B | PWR LED blue channel (PWM) |
+
+**Right Side — SA818 Interface (pins 42-48, face carrier headers):**
+
+| GPIO | Function | Notes |
+|------|----------|-------|
+| 33 | SA818_PTT | Push-to-talk (active low) |
+| 34 | SA818_PD | Power down / TPS22919 enable |
+| 35 | SA818_HL | High/Low power select |
+| 36 | SA818_TX | UART1_TX → SA818 RXD |
+| 37 | SA818_RX | UART1_RX ← SA818 TXD |
+| 38 | SA818_SQ | Squelch detect input |
+| 39 | SA818_ID | Band ID from carrier |
+
+**Right Side — ADC + SAO2 + I2C (pins 49-57):**
+
+| GPIO | Function | Notes |
+|------|----------|-------|
 | 40 | RX_AUDIO | ADC input from SA818 SPK (ADC0) |
+| 41 | SAO2_GPIO1 | SAO connector 2, pin 5 (right edge) |
+| 42 | SAO2_GPIO2 | SAO connector 2, pin 6 (right edge) |
+| 43 | DISP_RST | Display reset (infrequent toggle) |
+| 44 | I2C0_SDA | Camera SCCB, LC709203, SAO1, SAO2 |
+| 45 | I2C0_SCL | Camera SCCB, LC709203, SAO1, SAO2 |
+| 46 | SD_CS | SD card chip select |
+| 47 | (spare) | Unallocated |
 
-**Note:** RP2350B ADC channels are on GPIO40-47 (not GPIO26-29 like RP2040).
-
-**SA818 Interface:**
-
-| GPIO | Function | Notes |
-|------|----------|-------|
-| 30 | SA818_RX | UART1_RX ← SA818 TXD |
-| 31 | SA818_TX | UART1_TX → SA818 RXD |
-| 32 | SA818_PTT | Push-to-talk (active low) |
-| 33 | SA818_PD | Power down / TPS22919 enable |
-| 34 | SA818_HL | High/Low power select |
-| 35 | SA818_ID | Band ID from carrier |
-| 36 | SA818_SQ | Squelch detect input |
-
-**User Controls:**
-
-| GPIO | Function | Notes |
-|------|----------|-------|
-| 26 | DPAD_RIGHT | Active low, internal pullup (moved from GPIO40 for ADC) |
-| 37 | DPAD_UP | Active low, internal pullup |
-| 38 | DPAD_DOWN | Active low, internal pullup |
-| 39 | DPAD_LEFT | Active low, internal pullup |
-| 41 | DPAD_CENTER | Active low, internal pullup |
-| 42 | (spare) | Unallocated |
-| 43 | AIRPLANE | Active low, internal pullup |
-
-**LEDs:**
-
-| GPIO | Function | Notes |
-|------|----------|-------|
-| 44 | PWR_R | PWR LED red channel (PWM) |
-| 45 | PWR_G | PWR LED green channel (PWM) |
-| 46 | PWR_B | PWR LED blue channel (PWM) |
-| 47 | LED_DATA | WS2812B chain (PIO) |
+**Note:** RP2350B ADC channels are on GPIO40-47 (not GPIO26-29 like RP2040). SAO I2C shared on GPIO44/45. VCC=3.3V, GND from power rails.
 
 ### GPIO Assignment Summary
 
@@ -1664,11 +1652,11 @@ The I2C bus on GPIO0 (SDA) and GPIO1 (SCL) is shared by multiple devices:
 
 | GPIO | PWM Slice | Function |
 |------|-----------|----------|
-| 19 | — | CAM_XCLK (~20MHz) |
-| 22 | — | DISP_BL (1-10kHz) |
-| 44 | — | PWR_R |
-| 45 | — | PWR_G |
-| 46 | — | PWR_B |
+| 20 | PWM2A | CAM_XCLK (~20MHz) |
+| 29 | PWM6B | DISP_BL (1-10kHz) |
+| 30 | PWM7A | PWR_R |
+| 31 | PWM7B | PWR_G |
+| 32 | PWM8A | PWR_B |
 
 ### Crystal Oscillator
 
@@ -2160,16 +2148,16 @@ The LC709203 fuel gauge provides accurate state-of-charge readings via I2C.
 
 | Function | GPIO | Notes |
 |----------|------|-------|
-| DPAD_UP | GPIO37 | Active low, internal pullup |
-| DPAD_DOWN | GPIO38 | Active low, internal pullup |
-| DPAD_LEFT | GPIO39 | Active low, internal pullup |
-| DPAD_RIGHT | GPIO26 | Active low, internal pullup (moved from GPIO40 for ADC) |
-| DPAD_CENTER | GPIO41 | Active low, internal pullup (doubles as photo capture) |
-| AIRPLANE | GPIO43 | Active low, internal pullup |
-| PWR_R | GPIO44 | PWR LED red channel (PWM) |
-| PWR_G | GPIO45 | PWR LED green channel (PWM) |
-| PWR_B | GPIO46 | PWR LED blue channel (PWM) |
-| LED_DATA | GPIO47 | WS2812B blinky chain (26 LEDs: ears + border) |
+| DPAD_UP | GPIO21 | Active low, internal pullup |
+| DPAD_DOWN | GPIO22 | Active low, internal pullup |
+| DPAD_LEFT | GPIO23 | Active low, internal pullup |
+| DPAD_RIGHT | GPIO24 | Active low, internal pullup |
+| DPAD_CENTER | GPIO25 | Active low, internal pullup (doubles as photo capture) |
+| AIRPLANE | GPIO26 | Active low, internal pullup |
+| PWR_R | GPIO30 | PWR LED red channel (PWM) |
+| PWR_G | GPIO31 | PWR LED green channel (PWM) |
+| PWR_B | GPIO32 | PWR LED blue channel (PWM) |
+| LED_DATA | GPIO0 | WS2812B blinky chain (26 LEDs: ears + border) |
 
 **Total: 10 GPIOs** for user controls (6 switches + 4 LED control)
 

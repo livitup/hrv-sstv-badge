@@ -16,6 +16,10 @@ This directory contains design decisions, trade-off analyses, and educational ba
 
 - **[rda1846-vs-sa818-analysis.md](rda1846-vs-sa818-analysis.md)** — Detailed comparison of using the bare RDA1846S transceiver IC vs the SA818 module (which contains the RDA1846S internally). Covers engineering effort, cost, SSTV audio compatibility, assembly, sourcing risk, and carrier board implications. **Decision: Stay with SA818.**
 
+### PCB Layout Optimization
+
+- **[gpio-optimization.md](gpio-optimization.md)** — Complete GPIO reassignment to minimize trace crossings. Maps each peripheral group to one physical side of the QFN-80 package: display+camera on left, controls on bottom, SA818 on right, audio on top. Includes RP2350B pin layout diagram, peripheral mux verification, carrier header matching, and I2S pin-order matching to PCM5102A. Reduced trace crossings from ~8-12 to 1.
+
 ### Educational Background
 
 - **[audio-concepts-explained.md](audio-concepts-explained.md)** — Beginner-friendly explanation of filtering, bias, DC blocking, anti-aliasing, and other audio concepts used in the badge's RX/TX circuits
@@ -30,4 +34,4 @@ This directory contains design decisions, trade-off analyses, and educational ba
 
 ---
 
-*Last updated: 2026-03-22*
+*Last updated: 2026-03-31*

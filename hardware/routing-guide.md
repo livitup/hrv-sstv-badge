@@ -259,7 +259,7 @@ GPIO47 → D2(L0) → D3(L1) → D4(L2) → D5(L3) → D6(L4)  ← Left ear, up
 
 ### PWR LED (D1 — APFA3010)
 
-GPIO44/45/46 through R14/R15/R16 to D1 cathodes. D1 anode to +3V3. Place near bottom edge per pcb-design.md. Standard routing.
+GPIO30/31/32 through R14/R15/R16 to D1 cathodes. D1 anode to +3V3. Place near bottom edge per pcb-design.md. Standard routing.
 
 ---
 

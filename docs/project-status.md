@@ -108,8 +108,8 @@ This document tracks the design and implementation status for all badge subsyste
 ### Display Interface
 - [x] ILI9341 2.4" module selected (320×240), standalone SD socket (J10)
 - [x] Backlight circuit designed (2N7002 MOSFET, PWM control)
-- [x] Assign RP2350 SPI pins for display (GPIO2-4: SCK, MOSI, MISO)
-- [x] Assign GPIO pins (GPIO5-7: CS/DC/RST, GPIO22: BL, GPIO23: SD_CS)
+- [x] Assign RP2350 SPI pins for display (GPIO4,6,7: MISO, SCK, MOSI)
+- [x] Assign GPIO pins (GPIO5: CS, GPIO19: DC, GPIO43: RST, GPIO29: BL, GPIO46: SD_CS)
 - [x] **KiCad: Display module complete** (14-pin connector, SPI bus, backlight MOSFET circuit)
 - [ ] Source specific ILI9341 2.4" module (verify pinout, SD slot)
 - [ ] Verify backlight circuit polarity for chosen module
@@ -134,9 +134,9 @@ This document tracks the design and implementation status for all badge subsyste
 - [x] D-pad circuit designed (5× tactile switches, active-low with pullups; center doubles as photo capture)
 - [x] Airplane mode switch circuit designed (slide SPDT)
 - [x] PWR LED circuit designed (RGB common-anode APFA3010LSEEZGKQBKC with current-limit resistors)
-- [x] Assign GPIO pins for D-pad, airplane (GPIO37-43)
-- [x] Assign GPIO pins for PWR LED (GPIO44-46: R, G, B)
-- [x] Assign GPIO pin for LED_DATA (GPIO47)
+- [x] Assign GPIO pins for D-pad, airplane (GPIO21-26)
+- [x] Assign GPIO pins for PWR LED (GPIO30-32: R, G, B)
+- [x] Assign GPIO pin for LED_DATA (GPIO0)
 - [x] **KiCad: User Controls complete** (6× switches — D-pad center doubles as capture, PWR LED with resistors, all global labels)
 - [ ] Source tactile switches (6×6mm for D-pad)
 - [ ] Source slide switch for airplane mode
@@ -198,8 +198,8 @@ This document tracks the design and implementation status for all badge subsyste
 
 ### SAO Connectors
 - [x] 2× SAO connectors specified (I2C + 2 GPIO each)
-- [x] GPIO assignments: SAO1 (GPIO20-21), SAO2 (GPIO27-28)
-- [x] Shared I2C bus (GPIO0-1)
+- [x] GPIO assignments: SAO1 (GPIO27-28, left edge), SAO2 (GPIO41-42, right edge)
+- [x] Shared I2C bus (GPIO44-45)
 - [x] **KiCad: SAO connectors complete** (2× 2x3 headers with I2C and GPIO labels)
 - [ ] Verify SAO 2×3 header footprint in KiCad
 

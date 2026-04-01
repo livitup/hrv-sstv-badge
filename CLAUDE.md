@@ -250,67 +250,64 @@ defcon-sstv-badge/
 
 ## Key Hardware Interfaces
 ```c
-// GPIO assignments (RP2350B) - 48/48 allocated
-// I2C shared bus
-#define I2C_SDA          0    // Camera, fuel gauge, SAO×2
-#define I2C_SCL          1
+// GPIO assignments (RP2350B) — optimized for PCB routing
+// 47/48 allocated (GPIO47 spare)
+// Organized by physical side of QFN-80 package
 
-// SPI display + SD
-#define SPI_SCK          2
-#define SPI_MOSI         3
-#define SPI_MISO         4
-#define DISP_CS          5
-#define DISP_DC          6
-#define DISP_RST         7
+// TOP SIDE — Audio + LED (pins 61-64, face carrier headers)
+#define LED_DATA         0    // PIO, WS2812B chain (26 LEDs)
+#define I2S_LRCK         1    // PIO, PCM5102A word select
+#define I2S_DIN          2    // PIO, PCM5102A data
+#define I2S_BCK          3    // PIO, PCM5102A bit clock
 
-// Camera DVP (GPIO8-19)
+// LEFT SIDE — Display SPI (pins 1-4)
+#define SPI_MISO         4    // SPI0 RX
+#define DISP_CS          5    // GPIO
+#define SPI_SCK          6    // SPI0 SCK
+#define SPI_MOSI         7    // SPI0 TX
+
+// LEFT SIDE — Camera DVP (pins 6-20)
 #define CAM_D0           8    // D0-D7 consecutive for PIO
 #define CAM_PCLK         16
 #define CAM_VSYNC        17
 #define CAM_HREF         18
-#define CAM_XCLK         19   // PWM ~20MHz
+#define DISP_DC          19   // Display data/command
+#define CAM_XCLK         20   // PWM ~20MHz
 
-// SAO connectors
-#define SAO1_GPIO1       20
-#define SAO1_GPIO2       21
-#define SAO2_GPIO1       27
-#define SAO2_GPIO2       28
+// BOTTOM SIDE — Controls + SAO1 (pins 21-28)
+#define DPAD_UP          21
+#define DPAD_DOWN        22
+#define DPAD_LEFT        23
+#define DPAD_RIGHT       24
+#define DPAD_CENTER      25
+#define AIRPLANE         26
+#define SAO1_GPIO1       27   // SAO1 on left edge
+#define SAO1_GPIO2       28   // SAO1 on left edge
 
-// Display misc
-#define DISP_BL          22   // PWM backlight
-#define SD_CS            23
+// BOTTOM SIDE — Display misc + PWR LED (pins 37-40)
+#define DISP_BL          29   // PWM backlight
+#define PWR_R            30   // PWM
+#define PWR_G            31   // PWM
+#define PWR_B            32   // PWM
 
-// Audio (I2S for TX)
-#define I2S_BCK          24
-#define I2S_LRCK         25
-#define I2S_DIN          29
+// RIGHT SIDE — SA818 Radio (pins 42-48)
+#define SA818_PTT        33
+#define SA818_PD         34   // Also TPS22919 enable
+#define SA818_HL         35
+#define SA818_TX         36   // UART1 TX → SA818 RXD
+#define SA818_RX         37   // UART1 RX ← SA818 TXD
+#define SA818_SQ         38
+#define SA818_ID         39
 
-// User controls (active-low switches)
-#define DPAD_UP          37
-#define DPAD_DOWN        38
-#define DPAD_LEFT        39
-#define DPAD_RIGHT       26   // Moved from GPIO40 (GPIO40 needed for ADC)
-#define DPAD_CENTER      41
-// GPIO42 SPARE (was PHOTO — removed, D-pad center doubles as capture)
-#define AIRPLANE         43
-
-// SA818 (GPIO30-36)
-#define SA818_RX         30
-#define SA818_TX         31
-#define SA818_PTT        32
-#define SA818_PD         33   // Also TPS22919 enable
-#define SA818_HL         34
-#define SA818_ID         35
-#define SA818_SQ         36
-
-// ADC input (RP2350B: ADC channels are GPIO40-47, NOT GPIO26-29 like RP2040)
+// RIGHT SIDE — ADC + SAO2 + I2C (pins 49-57)
 #define RX_AUDIO         40   // ADC0 - RX audio from SA818
-
-// LEDs (GPIO44-47)
-#define PWR_R            44
-#define PWR_G            45
-#define PWR_B            46
-#define LED_DATA         47   // WS2812B chain (26 LEDs)
+#define SAO2_GPIO1       41   // SAO2 on right edge
+#define SAO2_GPIO2       42   // SAO2 on right edge
+#define DISP_RST         43   // Display reset (infrequent)
+#define I2C_SDA          44   // I2C0 - Camera, fuel gauge, SAO×2
+#define I2C_SCL          45   // I2C0
+#define SD_CS            46   // SD card chip select
+// GPIO47 SPARE
 ```
 
 See `docs/electrical-design.md` for complete GPIO assignment details.
