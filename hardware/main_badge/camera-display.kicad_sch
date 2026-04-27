@@ -2923,13 +2923,13 @@
 	)
 	(symbol
 		(lib_id "Transistor_FET:2N7002")
-		(at 187.96 45.72 90)
+		(at 187.96 45.72 270)
+		(mirror x)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "73ad301f-80a4-49e5-9503-946b01d1f75c")
 		(property "Reference" "Q1"
 			(at 187.96 36.83 90)
@@ -2948,7 +2948,7 @@
 			)
 		)
 		(property "Footprint" "Package_TO_SOT_SMD:SOT-23"
-			(at 189.865 40.64 0)
+			(at 186.055 40.64 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2959,7 +2959,7 @@
 			)
 		)
 		(property "Datasheet" "https://www.onsemi.com/pub/Collateral/NDS7002A-D.PDF"
-			(at 191.77 40.64 0)
+			(at 184.15 40.64 0)
 			(effects
 				(font
 					(size 1.27 1.27)
