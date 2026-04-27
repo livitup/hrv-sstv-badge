@@ -272,7 +272,7 @@ defcon-sstv-badge/
 #define CAM_VSYNC        17
 #define CAM_HREF         18
 #define DISP_DC          19   // Display data/command
-#define CAM_XCLK         20   // PWM ~20MHz
+#define DISP_RST         20   // Display reset
 
 // BOTTOM SIDE — Controls + SAO1 (pins 21-28)
 #define DPAD_UP          21
@@ -280,7 +280,7 @@ defcon-sstv-badge/
 #define DPAD_LEFT        23
 #define DPAD_RIGHT       24
 #define DPAD_CENTER      25
-#define AIRPLANE         26
+#define SD_CS            26   // SD card chip select
 #define SAO1_GPIO1       27   // SAO1 on left edge
 #define SAO1_GPIO2       28   // SAO1 on left edge
 
@@ -303,10 +303,10 @@ defcon-sstv-badge/
 #define RX_AUDIO         40   // ADC0 - RX audio from SA818
 #define SAO2_GPIO1       41   // SAO2 on right edge
 #define SAO2_GPIO2       42   // SAO2 on right edge
-#define DISP_RST         43   // Display reset (infrequent)
+#define AIRPLANE         43   // Airplane mode slide switch
 #define I2C_SDA          44   // I2C0 - Camera, fuel gauge, SAO×2
 #define I2C_SCL          45   // I2C0
-#define SD_CS            46   // SD card chip select
+// GPIO46 SPARE
 // GPIO47 SPARE
 ```
 

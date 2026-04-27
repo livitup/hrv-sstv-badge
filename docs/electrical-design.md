@@ -1218,9 +1218,9 @@ Most modules wire the backlight LED directly to VCC. To add PWM dimming, we swit
 | SPI RX (MISO) | GPIO4 | Shared SPI data in (SPI0 F0) |
 | DISP_CS | GPIO5 | Display chip select |
 | DISP_DC | GPIO19 | Data/Command select |
-| DISP_RST | GPIO43 | Display reset |
+| DISP_RST | GPIO20 | Display reset |
 | DISP_BL | GPIO29 | Backlight PWM |
-| SD_CS | GPIO46 | SD card chip select |
+| SD_CS | GPIO26 | SD card chip select |
 
 **Total: 6-7 dedicated GPIOs** (plus SPI bus which may be shared with other peripherals)
 
@@ -1527,7 +1527,7 @@ Position the camera for the "take a picture" use case:
 | 17 | CAM_VSYNC | Frame sync |
 | 18 | CAM_HREF | Line valid |
 | 19 | DISP_DC | Data/Command select (toggles every SPI txn) |
-| 20 | CAM_XCLK | Master clock output (PWM ~20MHz) |
+| 20 | DISP_RST | Display reset (infrequent toggle) |
 
 Note: CAM_RST tied HIGH via 10kΩ, CAM_PWDN tied LOW via 10kΩ (not GPIO controlled).
 
@@ -1540,7 +1540,7 @@ Note: CAM_RST tied HIGH via 10kΩ, CAM_PWDN tied LOW via 10kΩ (not GPIO control
 | 23 | DPAD_LEFT | Active low, internal pullup |
 | 24 | DPAD_RIGHT | Active low, internal pullup |
 | 25 | DPAD_CENTER | Active low, internal pullup |
-| 26 | AIRPLANE | Slide switch, active low |
+| 26 | SD_CS | SD card chip select |
 | 27 | SAO1_GPIO1 | SAO connector 1, pin 5 (left edge) |
 | 28 | SAO1_GPIO2 | SAO connector 1, pin 6 (left edge) |
 
@@ -1572,10 +1572,10 @@ Note: CAM_RST tied HIGH via 10kΩ, CAM_PWDN tied LOW via 10kΩ (not GPIO control
 | 40 | RX_AUDIO | ADC input from SA818 SPK (ADC0) |
 | 41 | SAO2_GPIO1 | SAO connector 2, pin 5 (right edge) |
 | 42 | SAO2_GPIO2 | SAO connector 2, pin 6 (right edge) |
-| 43 | DISP_RST | Display reset (infrequent toggle) |
+| 43 | AIRPLANE | Airplane mode slide switch |
 | 44 | I2C0_SDA | Camera SCCB, LC709203, SAO1, SAO2 |
 | 45 | I2C0_SCL | Camera SCCB, LC709203, SAO1, SAO2 |
-| 46 | SD_CS | SD card chip select |
+| 46 | (spare) | Unallocated |
 | 47 | (spare) | Unallocated |
 
 **Note:** RP2350B ADC channels are on GPIO40-47 (not GPIO26-29 like RP2040). SAO I2C shared on GPIO44/45. VCC=3.3V, GND from power rails.
@@ -1652,7 +1652,7 @@ The I2C bus on GPIO0 (SDA) and GPIO1 (SCL) is shared by multiple devices:
 
 | GPIO | PWM Slice | Function |
 |------|-----------|----------|
-| 20 | PWM2A | CAM_XCLK (~20MHz) |
+| 20 | — | (DISP_RST, not PWM) |
 | 29 | PWM6B | DISP_BL (1-10kHz) |
 | 30 | PWM7A | PWR_R |
 | 31 | PWM7B | PWR_G |

@@ -4,6 +4,8 @@ Complete pin-to-net mapping for U1 as routed on the main badge PCB.
 GPIOs are organized by physical side to minimize trace crossings.
 See `docs/engineers-notebook/gpio-optimization.md` for rationale.
 
+**Note:** The pin numbers in this document come from the KiCad symbol, which uses a different numbering scheme than the RP2350B datasheet. This is cosmetic — KiCad's symbol and footprint are internally consistent, so all nets route to the correct physical pads. Just don't cross-reference these pin numbers directly against the datasheet.
+
 ## Left Side (pins 1-20, top to bottom) — Display + Camera
 
 | Pin | GPIO | Net | Function |
@@ -27,7 +29,7 @@ See `docs/engineers-notebook/gpio-optimization.md` for rationale.
 | 17 | 17 | CAM_VSYNC | Camera vertical sync |
 | 18 | 18 | CAM_HREF | Camera horizontal reference |
 | 19 | 19 | DISP_DC | Display data/command select |
-| 20 | 20 | CAM_XCLK | Camera master clock (~20MHz PWM) |
+| 20 | 20 | DISP_RST | Display reset |
 
 ## Bottom Side (pins 21-40, left to right) — Controls + PWR LED
 
@@ -39,7 +41,7 @@ See `docs/engineers-notebook/gpio-optimization.md` for rationale.
 | 24 | — | +3V3 | IOVDD |
 | 25 | 24 | DPAD_RIGHT | D-pad right (active low) |
 | 26 | 25 | DPAD_CENTER | D-pad center / photo capture (active low) |
-| 27 | 26 | AIRPLANE | Airplane mode slide switch |
+| 27 | 26 | SD_CS | SD card chip select |
 | 28 | 27 | SAO1_GPIO1 | SAO connector 1, GPIO 1 (left edge) |
 | 29 | — | +3V3 | IOVDD |
 | 30 | — | XIN | 12 MHz crystal input |
@@ -71,10 +73,10 @@ See `docs/engineers-notebook/gpio-optimization.md` for rationale.
 | 51 | — | DVDD | Internal regulator |
 | 52 | 41 | SAO2_GPIO1 | SAO connector 2, GPIO 1 (right edge) |
 | 53 | 42 | SAO2_GPIO2 | SAO connector 2, GPIO 2 (right edge) |
-| 54 | 43 | DISP_RST | Display reset |
+| 54 | 43 | AIRPLANE | Airplane mode slide switch |
 | 55 | 44 | I2C_SDA | I2C data (camera, fuel gauge, SAO) |
 | 56 | 45 | I2C_SCL | I2C clock (camera, fuel gauge, SAO) |
-| 57 | 46 | SD_CS | SD card chip select |
+| 57 | 46 | — | Spare (unallocated) |
 | 58 | 47 | — | Spare (unallocated) |
 | 59 | — | ADC_AVDD | ADC analog power |
 | 60 | — | +3V3 | IOVDD |

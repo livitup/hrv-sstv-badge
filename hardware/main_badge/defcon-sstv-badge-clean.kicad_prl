@@ -49,7 +49,7 @@
       "conflict_shadows",
       "shapes"
     ],
-    "visible_layers": "ffffffff_ffffffff_fffffff7_ffffffaf",
+    "visible_layers": "ffffffff_ffffffff_ffffffff_f7ffffaf",
     "zone_display_mode": 0
   },
   "git": {
@@ -58,7 +58,7 @@
     "ssh_key": ""
   },
   "meta": {
-    "filename": "defcon-sstv-badge.kicad_prl",
+    "filename": "defcon-sstv-badge-clean.kicad_prl",
     "version": 5
   },
   "net_inspector_panel": {
