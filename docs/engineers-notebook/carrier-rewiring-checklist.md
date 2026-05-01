@@ -200,6 +200,45 @@ grep -A 1 'pad "[1-8]" thru_hole' hardware/sa818-u-carrier/sa818-u-carrier.kicad
 
 ---
 
+## Related Fix: UHF Carrier Band-ID Resistor
+
+While verifying the rewiring, the UHF carrier was found to have **no R18 resistor at all** on the SA818_ID line (J20 pin 7). The previous documentation said "R18 DNP" but the schematic has no R18 instance.
+
+Without R18, J20 pin 7 floats. Combined with the main badge's likely internal pull-down on GPIO39, **the UHF carrier reads identically to the VHF carrier** (both LOW), defeating the band-detection scheme.
+
+### Fix
+
+Add a **10kΩ pull-up resistor to SA818_VCC** on the UHF carrier, designated **R18** (matching the VHF carrier's designator for consistency).
+
+| Carrier | R18 value | R18 connections | ID pin reads |
+|---------|-----------|-----------------|--------------|
+| VHF | 0Ω | J15 pin 7 ↔ GND | LOW |
+| UHF | **10kΩ** | **J20 pin 7 ↔ SA818_VCC** | **HIGH** |
+
+### Schematic edit steps (UHF carrier only)
+
+1. Place a Resistor symbol (`Device:R`) near J20 pin 7.
+2. **Set Reference manually to `R18`** (KiCad will auto-suggest R1; double-click the symbol → change Reference to `R18`). Don't run "Annotate Schematic" after this — it will try to renumber.
+3. Set Value to `10k`.
+4. Set Footprint to `Resistor_SMD:R_0402_1005Metric` (matches the VHF carrier's R18).
+5. Wire R18 pin 1 to J20 pin 7 (the SA818_ID line).
+6. Wire R18 pin 2 to **SA818_VCC** (the same net that connects to J18 pin 1 and U10 pad 8). The simplest route: tap into the existing VCC trace near U10 or C56/C57.
+7. Save, run ERC, push F8 to PCB, route the new traces (short, simple — both endpoints are local to the carrier's right side).
+
+### Caveat about timing
+
+SA818_VCC is gated by the main badge's TPS22919 load switch. The ID pin is only valid **after** firmware drives SA818_PD HIGH and the SA818_VCC rail comes up. This is fine — the standard boot sequence is:
+
+1. Power on RP2350B
+2. Drive SA818_PD HIGH → TPS22919 enables → SA818_VCC = 3.3V
+3. Wait ~1ms for rail to stabilize
+4. Read SA818_ID GPIO → distinguishes VHF (LOW) from UHF (HIGH)
+5. Initialize SA818 over UART
+
+Document this requirement in the firmware design when that work begins.
+
+---
+
 ## Why This Needs Doing
 
 The main badge J7 and J8 schematic pin assignments deviate from the originally documented intent and from the carriers' current pin assignments. Probable cause: at some point during main badge layout, the connectors got physically rotated 180° on the PCB for routing/mechanical reasons, and during that rework the signals were reassigned to different schematic pins to keep traces short. The carriers were never updated to follow.
@@ -214,16 +253,17 @@ ERC and DRC don't catch this because each KiCad project (main badge, VHF carrier
 
 ## Status Tracking
 
-- [ ] VHF carrier — schematic edits (J14, J15)
+- [x] VHF carrier — schematic edits (J14, J15)
 - [ ] VHF carrier — PCB re-route
 - [ ] VHF carrier — DRC clean
-- [ ] UHF carrier — schematic edits (J18, J20)
+- [x] UHF carrier — schematic edits (J18, J20)
+- [ ] UHF carrier — add R18 = 10kΩ pull-up to SA818_VCC (band-ID fix)
 - [ ] UHF carrier — PCB re-route
 - [ ] UHF carrier — DRC clean
-- [ ] Cross-project net validation pass
-- [ ] CLAUDE.md updated to reflect locked pinout
-- [ ] routing-guide.md updated
-- [ ] electrical-design.md updated (if it has J7/J8 pinout)
+- [x] Cross-project net validation pass (verified by net trace 2026-05-01)
+- [x] CLAUDE.md updated to reflect locked pinout
+- [x] routing-guide.md updated
+- [x] electrical-design.md updated
 
 ---
 
