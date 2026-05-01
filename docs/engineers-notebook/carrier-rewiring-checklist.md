@@ -25,9 +25,7 @@ These are the locked pin assignments that the carriers must mate with.
 | 5 | GND |
 | 6 | SPK+ |
 | 7 | GND |
-| 8 | (unconnected — see note below) |
-
-> **Note on pin 8:** main badge J7 pin 8 is currently floating (the original spec called for GND, but the trace was never routed and the main badge is locked). The carriers will provide GND on pin 8, which makes the pin GND when mated. No issue.
+| 8 | GND |
 
 ### J8 — Control/Data (main badge)
 

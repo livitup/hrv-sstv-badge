@@ -891,7 +891,7 @@ The 4-point mounting (J1, J2 at bottom + J3, J4 at top corners) prevents wobble 
 | 5 | GND | Ground |
 | 6 | SPK+ | RX audio output from SA818 |
 | 7 | GND | Ground |
-| 8 | NC / GND | Main badge: floating (NC). Carrier: GND. Connection is GND when mated. |
+| 8 | GND | Ground |
 
 **J2 (Right, 1x8) — Control and Data:**
 *(KiCad: J15 on VHF carrier, J20 on UHF carrier; main board socket J8)*
