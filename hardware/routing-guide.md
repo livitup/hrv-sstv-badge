@@ -324,8 +324,10 @@ These set the mechanical interface with the carrier board. Place precisely:
 
 All four headers are **female sockets on the main badge front side**, receiving male pins from the carrier.
 
-**J7 pinout (power/audio):** VCC, GND, MIC+, GND, SPK+, GND, GND, GND
-**J8 pinout (control/data):** PTT, PD, HL, SQ, TX, RX, ID, GND
+**J7 pinout (power/audio), pins 1→8:** SA818_VCC, GND, GND, MIC+, GND, SPK+, GND, NC
+**J8 pinout (control/data), pins 1→8:** SA818_RX, SA818_TX, SA818_PTT, SA818_PD, SA818_HL, SA818_SQ, SA818_ID, GND
+
+> **Note:** these are the **locked** main-badge pin assignments (PCB routing complete). The carriers must be wired to match — see [carrier-rewiring-checklist.md](../docs/engineers-notebook/carrier-rewiring-checklist.md). J7 pin 8 is currently unconnected on the main badge (was originally spec'd as GND); the carrier provides GND on its pin 8 so the connection is GND when mated.
 
 ---
 

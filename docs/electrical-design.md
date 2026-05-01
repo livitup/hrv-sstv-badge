@@ -886,26 +886,28 @@ The 4-point mounting (J1, J2 at bottom + J3, J4 at top corners) prevents wobble 
 |-----|--------|-------|
 | 1 | VCC | From TPS22919 on main board |
 | 2 | GND | Ground |
-| 3 | MIC+ | TX audio input to SA818 |
-| 4 | GND | Ground |
-| 5 | SPK+ | RX audio output from SA818 |
-| 6 | GND | Ground |
+| 3 | GND | Ground |
+| 4 | MIC+ | TX audio input to SA818 |
+| 5 | GND | Ground |
+| 6 | SPK+ | RX audio output from SA818 |
 | 7 | GND | Ground |
-| 8 | GND | Ground |
+| 8 | NC / GND | Main badge: floating (NC). Carrier: GND. Connection is GND when mated. |
 
 **J2 (Right, 1x8) — Control and Data:**
 *(KiCad: J15 on VHF carrier, J20 on UHF carrier; main board socket J8)*
 
 | Pin | Signal | Notes |
 |-----|--------|-------|
-| 1 | PTT | Push-to-talk (active low) |
-| 2 | PD | Power down (active low) |
-| 3 | HL | High/low power select |
-| 4 | SQ | Squelch detect |
-| 5 | TXD | UART TX (MCU → SA818) |
-| 6 | RXD | UART RX (SA818 → MCU) |
+| 1 | RXD (UART) | UART RX from SA818 TXD (main badge net: SA818_RX) |
+| 2 | TXD (UART) | UART TX to SA818 RXD (main badge net: SA818_TX) |
+| 3 | PTT | Push-to-talk (active low) |
+| 4 | PD | Power down (active low; also enables TPS22919 load switch) |
+| 5 | HL | High/low power select |
+| 6 | SQ | Squelch detect |
 | 7 | ID | Band detect (GND=VHF, float=UHF) |
 | 8 | GND | Ground |
+
+> **Locked pinout note:** these pin assignments reflect the **current state of the main badge schematic and PCB** (PCB routing complete, design locked). The earlier carrier schematics use a different pin order — see [carrier-rewiring-checklist.md](engineers-notebook/carrier-rewiring-checklist.md) for the rewiring work needed to bring the carriers in line.
 
 **J3, J4 (Top corners, 1x3 each) — Mechanical:**
 
