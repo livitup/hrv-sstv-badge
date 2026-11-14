@@ -49,7 +49,7 @@ This document tracks the design and implementation status for all badge subsyste
 - [x] CC resistors for sink identification (5.1kΩ)
 - [x] **KiCad: USB-C schematic complete** (connector, CC resistors, ESD protection, D+/D- to MCU)
 - [ ] Verify USB4105-GF-A footprint in KiCad
-- [ ] Test USB data connection with RP2350 bootloader
+- [ ] Test USB data connection with RP2350 bootloader, including while the radio is transmitting (D+/D− are not routed as a matched pair)
 - [ ] Test charging with various USB sources
 
 ### Power System
@@ -223,7 +223,8 @@ This document tracks the design and implementation status for all badge subsyste
 - [x] DRC clean-up — 0 unconnected, 0 schematic-parity issues; only the excluded silkscreen items remain
 - [x] **Design review fixes (2026-11-13)** — see "Main Badge Review" below
 - [ ] Open questions from the reviews: fuel gauge supply (VSYS vs cell) and thermistor sharing, radio supply drop and TPS22919 rating vs TX current, crystal series resistor, band-ID scheme, SD card pull-ups, VBUS capacitance, camera XCLK — see `engineers-notebook/main-badge-review-2026-11.md`
-- [ ] Not done: third DVDD cap at U1 pin 32 (no room), USB D+/D− length matching, test points
+- [ ] Not done: third DVDD cap at U1 pin 32 (no room), test points
+- [x] USB D+/D− length mismatch (about 215 mm vs 170 mm) reviewed and **accepted** 2026-11-14 — not significant at Full Speed; see `engineers-notebook/main-badge-review-2026-11.md` section 6
 - [ ] Evaluate if main board can be 2-layer with RF removed
 - [ ] Integration test: carrier + main board
 

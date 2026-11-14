@@ -127,6 +127,8 @@ Route these first — they have the tightest constraints and set the placement o
 
 USB is Full Speed (12 Mbps) so impedance control is nice-to-have, not mandatory. Keep the traces short and matched and you'll be fine.
 
+> **As built (accepted deviation, 2026-11-14):** the routed board does not meet the length-matching rule above. Connector to MCU pin, D+ is about 215 mm and D− about 170 mm (about 45 mm apart), and the two lines take separate paths rather than running as a pair. This was reviewed and accepted: at Full Speed a bit lasts about 83 ns and 45 mm is roughly 0.3 ns of skew. No meander was added, because lengthening the shorter line gains nothing. If USB errors appear on the prototype — especially while transmitting — the fix is to re-route both lines together as a pair. See `docs/engineers-notebook/main-badge-review-2026-11.md`, section 6.
+
 ### Priority 5: Camera DVP Bus (GPIO8-19 → J4)
 
 | Rule | Spec |

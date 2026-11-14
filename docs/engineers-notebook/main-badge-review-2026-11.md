@@ -146,4 +146,31 @@ Flash, USB (CC resistors, ESD, series resistors), SAO, Tag-Connect, SD card SPI 
 
 ---
 
+## 6. Accepted deviations
+
+### USB D+ and D− are not length-matched (accepted 2026-11-14)
+
+`hardware/routing-guide.md` asks for D+ and D− within ±2 mm and routed as a pair. The board as routed has neither:
+
+| Line | Length, connector to MCU pin | Vias |
+|---|---|---|
+| D+ | about 215 mm | 5 |
+| D− | about 170 mm | 8 |
+
+**Why this was accepted rather than fixed**
+
+- The RP2350's USB is Full Speed (12 Mbps). One bit lasts about 83 ns; 45 mm of mismatch is roughly 0.3 ns of skew, a fraction of a percent of a bit. Tight matching is a High Speed (480 Mbps) requirement, and this chip does not do High Speed. The routing guide itself says impedance control is "not critical at Full Speed".
+- Adding a 45 mm meander to D− would satisfy the ±2 mm rule on paper by making the shorter line longer, on a crowded board, for no electrical gain.
+- The change with real value would be re-routing both lines together as a side-by-side pair, which rejects noise better. That means clearing a corridor of roughly 90 mm from the USB connector to the MCU through finished routing — a large, risky job. Earlier single-trace attempts only brought D+ from 209 mm to 176 mm.
+
+**The risk that remains**
+
+The two lines run separately, so they do not reject common-mode noise as well as a pair would. The situation to watch is USB traffic while the 1 W radio is transmitting.
+
+**What would reopen this**
+
+USB enumeration failures or data errors on the first prototype, particularly during transmit. The response then is the pair re-route, not a meander.
+
+---
+
 *Written 2026-11-14.*
