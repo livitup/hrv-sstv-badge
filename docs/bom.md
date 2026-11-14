@@ -1,6 +1,6 @@
 # DEFCON SSTV Badge — Bill of Materials
 
-**Version:** 3.6
+**Version:** 3.7
 **Last Updated:** 2026-11-13
 **Source:** KiCad schematic export, verified against `docs/electrical-design.md`
 
@@ -199,7 +199,7 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 
 | Ref | Qty | Value | Package | Assembly | Notes |
 |-----|-----|-------|---------|----------|-------|
-| D1 | 1 | APFA3010 | PLCC-4 (3.0×1.0mm) | Fab | Kingbright RGB LED, **common-anode** |
+| D1 | 1 | AAA3528LSEEZGKQBKS | PLCC-4 (3.5×2.8mm, 1.9mm high) | Fab | Kingbright flat-top RGB LED, **common-anode** (pin 2). Battery status and TX/RX indicator |
 | R14 | 1 | 220Ω | 0603 | Fab | Red cathode current limit |
 | R15, R16 | 2 | 100Ω | 0603 | Fab | Green/Blue cathode current limit |
 
@@ -475,6 +475,7 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 | 3.4 | 2026-11 | **Schematic review fixes**: Q1 → AO3401A (backlight high-side), L1 → 2.2µH. **LED supply rail added**: U11 TPS63000, L9, C79–C83, R23, R24 (4.0V VLED for all 26 WS2812B). |
 | 3.5 | 2026-11 | **Battery connector J1** changed from through-hole vertical JST-PH (user-soldered) to SMD side-entry S2B-PH-SM4-TB (fab-assembled), so its pins no longer come through under the display. |
 | 3.6 | 2026-11 | **Small review items**: VBUS capacitance cut to about 7.9µF (C_USB1 10µF→1µF, C10 10µF→2.2µF); SD card socket J10 turned to face the board edge (card flush with the edge) and SD card pull-ups R25–R28 (10kΩ) added; six test pads TP1–TP6 added; BOOTSEL resistor R19 moved closer to the flash chip-select line. |
+| 3.7 | 2026-11 | **PWR LED D1** changed from the right-angle APFA3010 to the flat-top AAA3528LSEEZGKQBKS (same LED chips, so R14–R16 are unchanged) and moved next to SAO connector J6. It now also indicates TX/RX. |
 
 ---
 

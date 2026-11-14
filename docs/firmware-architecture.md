@@ -504,6 +504,35 @@ int power_set_display_brightness(uint8_t brightness);
 int power_shutdown_sequence(void);
 ```
 
+### Status LED (PWR LED, D1)
+
+One RGB LED, driven directly from GPIO30–32 by PWM, independent of the WS2812B chain. It is common-anode, so a channel is on when its GPIO is low; set the pins' output inversion once at start-up (see `engineers-notebook/firmware-notes.md`) and use normal logic everywhere else.
+
+It carries two kinds of information, in this priority order:
+
+| Priority | Condition | LED |
+|----------|-----------|-----|
+| 1 | Battery critical (<10%) | Blinking red |
+| 2 | Transmitting (PTT asserted) | Magenta, steady |
+| 3 | Receiving (squelch open or SSTV decode in progress) | Blue, steady |
+| 4 | Otherwise | Battery colour: green >50%, yellow 20–50%, red 10–20% |
+
+```c
+typedef enum {
+    STATUS_LED_BATTERY,     // Show battery colour (default)
+    STATUS_LED_RX,          // Blue
+    STATUS_LED_TX,          // Magenta
+    STATUS_LED_CRITICAL     // Blinking red, overrides the others
+} status_led_mode_t;
+
+int status_led_init(void);
+int status_led_set_radio_state(bool transmitting, bool receiving);
+int status_led_set_battery(uint8_t percentage);
+void status_led_update(void);   // Call periodically; resolves priority and drives PWM
+```
+
+Radio state comes from Core 1 (PTT and squelch), battery level from the fuel gauge on Core 0. `status_led_update()` runs on Core 0. Colour definitions live in one table so they can be changed without touching the logic. See `electrical-design.md`, "Status LED (PWR)", for the colour values.
+
 ---
 
 ## 🔧 System Configuration

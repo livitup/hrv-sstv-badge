@@ -259,9 +259,9 @@ GPIO47 → D2(L0) → D3(L1) → D4(L2) → D5(L3) → D6(L4)  ← Left ear, up
 - 3.3V power to WS2812B chain needs decent trace width (0.3mm+) — 26 LEDs × ~12mA = ~310mA idle, peaks higher
 - Consider a second 3.3V power injection point halfway through the chain (at D12, border start) to prevent voltage drop
 
-### PWR LED (D1 — APFA3010)
+### PWR LED (D1 — AAA3528LSEEZGKQBKS, next to J6)
 
-GPIO30/31/32 through R14/R15/R16 to D1 cathodes. D1 anode to +3V3. Place near bottom edge per pcb-design.md. Standard routing.
+GPIO30/31/32 through R14/R15/R16 to D1 cathodes. D1 anode to +3V3. As built, D1 sits just left of SAO connector J6 (not at the bottom edge as first planned); each of the three traces changes layer once on the way there.
 
 ---
 

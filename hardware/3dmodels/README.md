@@ -41,7 +41,7 @@ Where neither KiCad nor an open source has the exact part, the footprint points 
 | Part | Stand-in model | How close |
 |---|---|---|
 | J10, Molex 104031-0811 microSD socket | Hirose DM3D-SF microSD socket, turned 180° | Body within about 0.1 mm in length and width, 1.55 mm high against 1.42 mm; contact positions match |
-| D1, Kingbright APFA3010 right-angle RGB LED | XINGLIGHT 1204 side-view LED, stretched to the footprint's depth | Shows a side-emitting LED in the right place; not the true shape |
+| D1, Kingbright AAA3528 flat-top RGB LED | Würth 3.2 × 2.8 mm PLCC-4 RGB LED, stretched 9% in length | Same package style; slightly smaller original |
 | L1, L9, 3×3 mm power inductor | APV ANR3015 | Same size class |
 | L3–L8 on the carriers, 0603 wirewound | Generic 0603 inductor | Same size |
 

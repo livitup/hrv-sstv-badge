@@ -2112,7 +2112,13 @@ A traditional RGB LED provides battery status indication, separate from the WS28
 
 **PWR LED Circuit (Common Anode RGB):**
 
-**Part:** Kingbright APFA3010LSEEZGKQBKC (PLCC-4, 3.0×1.0mm)
+**Part:** Kingbright AAA3528LSEEZGKQBKS (PLCC-4, 3.5×2.8mm, 1.9mm high, flat top with the LED window in the middle)
+
+**Pinout (from the datasheet drawings):** pin 1 red cathode, pin 2 common anode, pin 3 green cathode, pin 4 blue cathode.
+
+**Location:** on the front, just left of SAO connector J6, at about (103.5, 50.75) mm.
+
+The part was changed on 2026-11-14 from the right-angle APFA3010LSEEZGKQBKC. The two parts use the same LED chips (same forward voltages), so R14–R16 are unchanged.
 
 ```
                          +3.3V
@@ -2157,7 +2163,18 @@ A traditional RGB LED provides battery status indication, separate from the WS28
 
 The LC709203 fuel gauge provides accurate state-of-charge readings via I2C.
 
-**Note:** TX/RX status is indicated by the blinky animations (ear lightning + border effects), so no separate TX/RX status LED is needed.
+**Radio activity on the same LED (added 2026-11-14):** the PWR LED also shows transmit and receive. Radio activity takes over the LED while it lasts, then the battery colour returns.
+
+| Radio state | Color | R | G | B | Notes |
+|-------------|-------|---|---|---|-------|
+| Idle | Battery colour (table above) | — | — | — | Steady, dim |
+| Receiving (squelch open or SSTV decode in progress) | Blue | 0 | 0 | 255 | Steady |
+| Transmitting (PTT asserted) | Magenta | 255 | 0 | 255 | Steady, full brightness |
+| Critical battery (<10%) | Blinking red | 255 | 0 | 0 | Overrides radio colours, so a nearly flat battery is never hidden |
+
+Blue and magenta were chosen because neither is a battery colour (green, yellow, red). The colours are firmware-only and can be changed without touching the hardware.
+
+The blinky animations (ear lightning + border effects) still show TX/RX as well. The PWR LED gives the same information when the animations are dimmed, in battery-saver mode, or if the WS2812B chain has a fault. This replaces the earlier position that no separate TX/RX indicator was needed.
 
 **GPIO Summary for Status + Blinky:**
 
@@ -2261,7 +2278,7 @@ The LC709203 fuel gauge provides accurate state-of-charge readings via I2C.
 |-----|-------|---------|----------|-------|
 | SW_UP, SW_DOWN, SW_LEFT, SW_RIGHT, SW_CENTER | Tactile 6×6mm | Through-hole | User | D-pad switches (center doubles as photo capture) |
 | SW_AIRPLANE | Slide switch SPDT | Through-hole | User | Airplane mode |
-| LED_PWR | APFA3010LSEEZGKQBKC | PLCC-4 | Fab | Kingbright RGB, common-anode |
+| LED_PWR (D1) | AAA3528LSEEZGKQBKS | PLCC-4 3.5×2.8mm | Fab | Kingbright RGB, common-anode |
 | R_PWR_R | 220Ω | 0603 | Fab | PWR LED red cathode current limit |
 | R_PWR_G | 100Ω | 0603 | Fab | PWR LED green cathode current limit |
 | R_PWR_B | 100Ω | 0603 | Fab | PWR LED blue cathode current limit |

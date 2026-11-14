@@ -186,7 +186,7 @@ LED border sits OUTSIDE module footprint
     │   │  AREA  │                   └────────┘   │
     │   └────────┘                                │
     │                                             │
-    │  [USB-C]              [BOOTSEL] [PWR LED]   │ ← Bottom edge connectors
+    │  [USB-C]              [BOOTSEL]             │ ← Bottom edge connectors (PWR LED is now beside SAO connector J6)
     └─────────────────────────────────────────────┘
 ```
 

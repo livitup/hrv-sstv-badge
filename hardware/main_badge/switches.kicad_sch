@@ -8007,7 +8007,7 @@
 				)
 			)
 		)
-		(property "Value" "APFA3010"
+		(property "Value" "AAA3528LSEEZGKQBKS"
 			(at 67.31 127 0)
 			(effects
 				(font
@@ -8015,7 +8015,7 @@
 				)
 			)
 		)
-		(property "Footprint" "LED_SMD:LED_Kingbright_APFA3010_3x1.5mm_Horizontal"
+		(property "Footprint" "LED_SMD:LED_Kingbright_AAA3528ESGCT"
 			(at 67.31 125.73 0)
 			(effects
 				(font
@@ -8024,7 +8024,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "http://www.kingbrightusa.com/images/catalog/SPEC/APFA3010LSEEZGKQBKC.pdf"
+		(property "Datasheet" "https://www.kingbrightusa.com/images/catalog/SPEC/AAA3528LSEEZGKQBKS.pdf"
 			(at 67.31 149.86 0)
 			(effects
 				(font
@@ -8033,7 +8033,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "LED RGB, Common Anode, SMD, 3.0x1.5mm, Horizontal"
+		(property "Description" "RGB LED, common anode, 3.5x2.8mm PLCC-4, pin 1 red, 2 anode, 3 green, 4 blue"
 			(at 67.31 138.43 0)
 			(effects
 				(font

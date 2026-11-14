@@ -59,7 +59,7 @@ These check assumptions that are built into the PCB. If one turns out wrong, the
 ### Display, camera and controls
 
 - [ ] **Backlight control.** GPIO29 low turns the backlight on, high turns it off, and PWM dims it smoothly. The backlight is expected to be on during reset.
-- [ ] **Power LED.** Each of red, green and blue lights from its own GPIO. This also confirms the APFA3010 pad numbering if that has not been settled from the datasheet drawing.
+- [ ] **Power LED.** Each of red, green and blue lights from its own GPIO (driven low = on), confirming the AAA3528 pin order and orientation. Check brightness balance between the three colours, and that the LED is dark, not faintly glowing, while the MCU is held in reset.
 - [ ] **SD card.** Card initialises and reads/writes reliably (CS, MISO, DAT1 and DAT2 all have 10 kΩ pull-ups). Try several card brands.
 - [ ] **SD card access.** A card can be inserted and removed at the right-hand board edge with the badge assembled, and its outer end sits flush with the edge.
 - [ ] **Subsystem tests.** Run the procedures in `electrical-design.md`, "Testing Notes" (power, audio, display, camera, user controls, integrated system).

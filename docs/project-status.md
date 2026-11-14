@@ -142,14 +142,14 @@ This document tracks the design and implementation status for all badge subsyste
 ### User Controls
 - [x] D-pad circuit designed (5× tactile switches, active-low with pullups; center doubles as photo capture)
 - [x] Airplane mode switch circuit designed (slide SPDT)
-- [x] PWR LED circuit designed (RGB common-anode APFA3010LSEEZGKQBKC with current-limit resistors)
+- [x] PWR LED circuit designed (RGB common-anode with current-limit resistors; part changed 2026-11-14 to the flat-top Kingbright AAA3528LSEEZGKQBKS, moved next to SAO connector J6, and given a second job as TX/RX indicator)
 - [x] Assign GPIO pins for D-pad (GPIO21-25) and airplane switch (GPIO43)
 - [x] Assign GPIO pins for PWR LED (GPIO30-32: R, G, B)
 - [x] Assign GPIO pin for LED_DATA (GPIO0)
 - [x] **KiCad: User Controls complete** (6× switches — D-pad center doubles as capture, PWR LED with resistors, all global labels)
 - [ ] Source tactile switches (6×6mm for D-pad)
 - [ ] Source slide switch for airplane mode
-- [ ] Source RGB LED (Kingbright APFA3010LSEEZGKQBKC common-anode)
+- [ ] Source RGB LED (Kingbright AAA3528LSEEZGKQBKS common-anode)
 - [ ] Implement PWM control for PWR LED
 - [ ] Implement battery status color mapping from LC709203 readings
 - [ ] Implement software debounce in firmware
@@ -254,7 +254,7 @@ Every sheet was checked against the part datasheets. Fixed in schematic and PCB:
 - **Backlight** — Q1 is now an AO3401A P-channel high-side switch, because the 14-pin ILI9341 module's LED pin must be driven high. PWM is inverted (GPIO low = on).
 - **L1** — 1µH → 2.2µH (TPS63001 datasheet value).
 
-Not verifiable on paper: camera module pinout against J4, battery connector polarity, APFA3010 pad numbering. Check these with parts in hand.
+Not verifiable on paper: camera module pinout against J4, battery connector polarity. Check these with parts in hand. (The power LED's pad numbering was an open item for the old APFA3010 part; the replacement AAA3528 part's pinout was read from its datasheet drawings.)
 
 **Follow-up the same day:** the review also found the WS2812B LEDs out of their supply range at 3.3V. They now run from a dedicated 4.0V rail (U11, TPS63000).
 

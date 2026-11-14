@@ -8,9 +8,25 @@ Each note says where it comes from. `docs/firmware-architecture.md` remains the 
 
 ## Constraints the firmware must respect
 
+### Active-low outputs: invert once at start-up
+
+Two outputs on this board are active-low: the backlight (GPIO29) and the three PWR LED channels (GPIO30–32). Rather than inverting every value in code, set the RP2350's output-inversion override once during initialisation:
+
+```c
+// After assigning each pin to PWM
+gpio_set_outover(DISP_BL, GPIO_OVERRIDE_INVERT);
+gpio_set_outover(PWR_R,   GPIO_OVERRIDE_INVERT);
+gpio_set_outover(PWR_G,   GPIO_OVERRIDE_INVERT);
+gpio_set_outover(PWR_B,   GPIO_OVERRIDE_INVERT);
+```
+
+From then on the rest of the firmware uses normal logic: a PWM duty of 100% means fully on. (`pwm_set_output_polarity()` does the same job at the PWM slice level.) Confirm the call names against the Pico SDK version in use.
+
+Until that code runs — in reset and early boot — the pins are inputs with a weak pull-down, so the backlight is on and the PWR LED channels see a few microamps. Check on the prototype that the PWR LED is not visibly glowing in reset.
+
 ### Backlight PWM is inverted
 
-GPIO29 **low** turns the backlight on. Q1 is a P-channel high-side switch (AO3401A), so brightness is the fraction of the time the pin is low.
+GPIO29 **low** turns the backlight on. Q1 is a P-channel high-side switch (AO3401A), so brightness is the fraction of the time the pin is low. Use the output-inversion setting above and this stops mattering to the rest of the code.
 
 - The gate has no pull-up. While the RP2350 is in reset, and until firmware configures GPIO29, the pin's default pull-down holds the gate low and the backlight is **on**. Drive the pin high early in start-up if a dark boot is wanted.
 - Source: schematic review, 2026-11-14 (`main-badge-review-2026-11.md`, section 4).
@@ -57,6 +73,14 @@ The UHF carrier's ID pull-up goes to the switched radio supply. Read GPIO39 only
 ---
 
 ## Already designed — do not re-decide
+
+### The PWR LED also shows transmit and receive (decided 2026-11-14)
+
+D1 was originally battery status only, with TX/RX shown by the WS2812B animations alone. The owner decided it should show radio activity too. The plan, in priority order: blinking red for a critical battery, magenta while transmitting, blue while receiving, otherwise the battery colour.
+
+- Blue and magenta were picked because they are not battery colours. They are a starting point and are firmware-only.
+- This supersedes the note in `electrical-design.md` that no separate TX/RX indicator was needed. The reasons for keeping D1 off the WS2812B chain (`electrical-design-decisions.md`) apply even more now: the radio state stays visible when the animations are dimmed or the chain has a fault.
+- Details: `firmware-architecture.md`, "Status LED (PWR LED, D1)".
 
 ### The display is not always on
 

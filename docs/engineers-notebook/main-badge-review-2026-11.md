@@ -142,7 +142,7 @@ Flash, USB (CC resistors, ESD, series resistors), SAO, Tag-Connect, SD card SPI 
 | SD card pull-ups | DAT1, DAT2, MISO and CS had none. CS and MISO added afterwards; see section 8. |
 | VBUS capacitance | About 25 µF, above the 10 µF USB inrush limit. Reduced to about 7.9 µF afterwards; see section 8. |
 | Camera XCLK | See section 2. |
-| Parts not verifiable on paper | Camera module pinout against J4; battery connector polarity; APFA3010 pad numbering. |
+| Parts not verifiable on paper | Camera module pinout against J4; battery connector polarity; APFA3010 pad numbering (moot once D1 was changed; see section 9). |
 
 ---
 
@@ -249,6 +249,39 @@ J10 was turned 180° and moved 2.6 mm so the inserted card's outer end lands exa
 ### Battery location
 
 The owner's intended battery position is on the back, to the right of the 3.3 V regulator's inductor. The parts that looked like they bounded it (the border LEDs and their capacitors) are on the front. On the back, the largest part-free rectangle there is about 41 × 67 mm (x 47.3–88.3, y 44.7–112.1 mm), bounded by the inductor and a test pad on the left, a D-pad switch's pins on the right, the Tag-Connect pads above and the slide switch below. No through-hole pins come out inside it and the vias are tented. That is enough for the 50 × 35 mm pouch in the BOM; the real cell still has to be checked against it.
+
+---
+
+## 9. Power LED: new part, new place, second job (2026-11-14)
+
+### What changed
+
+- **Part:** D1 went from the Kingbright APFA3010 (right-angle, shines sideways along the board) to the Kingbright AAA3528LSEEZGKQBKS (3.5 × 2.8 mm flat-top package, LED window in the middle, shines straight out of the front).
+- **Place:** from the middle of the board below the MCU to just left of SAO connector J6.
+- **Job:** it now shows transmit and receive as well as battery level. The firmware plan is in `firmware-architecture.md`.
+
+### Why this part
+
+The owner asked for a small rectangular flat-top SMD. The AAA3528LSEEZGKQBKS was chosen because its part-number suffix names the same three LED chips as the old part, and its datasheet gives the same forward voltages (red 1.8 V, green and blue 2.65 V typical at 2 mA). R14–R16 keep their values, and the schematic symbol's pin functions are unchanged: pin 1 red, pin 2 common anode, pin 3 green, pin 4 blue.
+
+The pinout was read from the datasheet's package and tape drawings. KiCad's footprint for this Kingbright package numbers its pads in the same rotational order, so it was used as it is. This check mattered: the same mistake of trusting a library pairing is what miswired the border LEDs earlier in this review.
+
+### Why beside J6 and not J5
+
+Both SAO connectors were offered. The three LED GPIOs leave the MCU on the side nearer J6. A trial route to J6 needed about 115 mm of trace and six vias; any position near J5 needed over 200 mm and around twenty.
+
+Each trace changes layer once, because the front layer between the resistors and the LED is crossed by two other traces. Two vias per trace is the minimum the board allows.
+
+Older documents (`hardware/pcb-design.md`, `gpio-optimization.md`) planned this LED for the bottom edge beside USB and BOOTSEL. It was never routed there.
+
+### "Wired backwards": can it be made simpler?
+
+The LED is common-anode: the shared pin goes to 3.3 V and each colour lights when its GPIO is driven **low**. That inversion has been flagged several times as something for firmware to remember, so it was looked at for a hardware fix.
+
+- A hardware fix would mean a common-cathode LED instead (shared pin to ground, GPIO high = on). No common-cathode part in this package with a verified pinout was identified, and the gain is small.
+- The RP2350 can invert a pin's output in hardware with one register setting per pin (in the Pico SDK, `gpio_set_outover(pin, GPIO_OVERRIDE_INVERT)`). Set once at start-up, every later write is in normal logic: 1 = on, a PWM duty of 100% = full brightness.
+
+Decision: keep the common-anode part and do the inversion once in firmware set-up. The same one-line setting applies to the backlight pin, which is also active-low. Both are written up in `firmware-notes.md` as a set-up step rather than a thing to remember everywhere.
 
 ---
 

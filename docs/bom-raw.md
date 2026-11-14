@@ -27,7 +27,7 @@
 |------|------------|-----|
 | AO3401A | P-MOSFET SOT-23 | 1 |
 | PESD5V0S1BL | TVS Diode | 1 |
-| APFA3010 | RGB LED (common-anode) | 1 |
+| AAA3528LSEEZGKQBKS | RGB LED, 3.5×2.8mm flat-top (common-anode) | 1 |
 | WS2812B (5050) | Addressable LED | 10 |
 | WS2812B-2020 | Addressable LED | 16 |
 
