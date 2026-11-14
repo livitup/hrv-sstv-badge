@@ -1,6 +1,6 @@
 # Carrier Connector Rewiring Checklist
 
-**Status:** Pending — both carriers need this work before fabrication.
+**Status:** Complete (2026-11-13) — both carriers match the main badge in schematic and PCB. The tables below are kept as the record of what changed.
 
 Both SA818 carrier boards (VHF and UHF) currently have J14/J18 (Power/Audio) and J15/J20 (Control/Data) pin assignments that **do not match** the main badge J7/J8 pin assignments. When a carrier is plugged into the main badge, every signal except VCC, GND, and ID lands on the wrong pin.
 
@@ -254,12 +254,21 @@ ERC and DRC don't catch this because each KiCad project (main badge, VHF carrier
 ## Status Tracking
 
 - [x] VHF carrier — schematic edits (J14, J15)
-- [ ] VHF carrier — PCB re-route
-- [ ] VHF carrier — DRC clean
+- [x] VHF carrier — PCB re-route
+- [x] VHF carrier — DRC clean (0 unconnected, 0 parity issues)
 - [x] UHF carrier — schematic edits (J18, J20)
-- [ ] UHF carrier — add R18 = 10kΩ pull-up to SA818_VCC (band-ID fix)
-- [ ] UHF carrier — PCB re-route
-- [ ] UHF carrier — DRC clean
+- [x] UHF carrier — add R18 = 10kΩ pull-up to SA818_VCC (band-ID fix)
+- [x] UHF carrier — PCB re-route
+- [x] UHF carrier — DRC clean (0 unconnected, 0 parity issues)
+- [x] Both carriers — headers moved to the back (B.Cu), hole positions checked against main badge J7/J8/J11/J12
+
+### Physical mirroring bug found and fixed (2026-11-13)
+
+The net-level check above could not catch a **physical** error: on the UHF carrier PCB the four headers had been flipped to the back as a group, which mirrored them about the board centre. J18 (Power/Audio) ended up at x = 168 and J20 (Control/Data) at x = 112 — swapped relative to the main badge sockets, so VCC would have landed on the SA818_RX line. The netlist was correct, so ERC, DRC and the net trace all passed.
+
+Fix: the UHF PCB was rebuilt from the corrected VHF layout. On both carriers, Power/Audio pin 1 is at `(112, 87)` and Control/Data pin 1 at `(168, 87)`, matching main badge J7 pin 1 at `(32, 37)` and J8 pin 1 at `(88, 37)` (carrier = main badge + (80, 50)).
+
+**Lesson:** when moving headers to the other side, flip them one at a time and confirm each pin-1 hole coordinate afterwards. A cross-board check has to compare hole positions, not just nets.
 - [x] Cross-project net validation pass (verified by net trace 2026-05-01)
 - [x] CLAUDE.md updated to reflect locked pinout
 - [x] routing-guide.md updated
@@ -267,4 +276,4 @@ ERC and DRC don't catch this because each KiCad project (main badge, VHF carrier
 
 ---
 
-*Last updated: 2026-05-01*
+*Last updated: 2026-11-13*

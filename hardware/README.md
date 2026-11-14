@@ -52,11 +52,11 @@ hardware/
 - **No RF on main badge** — all RF routing is on the carrier board
 - **Carrier is front-mounted** — overlays the top portion of the main badge, top edges flush
 - **4-point mounting** — 2× 1×8 signal headers + 2× 1×3 mechanical headers (GND for RF shielding)
-- **Band auto-detect** — carrier ID resistor (0Ω = VHF, DNP = UHF) read by firmware on startup
+- **Band auto-detect** — carrier ID resistor (0Ω to GND = VHF, 10kΩ pull-up = UHF) read by firmware on startup
 
 ## KiCad Version
 
-This project uses **KiCad 8**. Custom symbols and footprints are included in the repository.
+This project uses **KiCad 9**. Custom symbols and footprints are included in the repository.
 
 ## Schematic Status
 
@@ -66,8 +66,8 @@ All schematic sheets are complete and ERC clean:
 
 ## PCB Layout Status
 
-- **Carrier boards**: Complete (VHF and UHF)
-- **Main badge**: Board outline complete (TV shape with ears and feet), component placement and routing in progress
+- **Carrier boards**: Complete (VHF and UHF), including the harmonic low-pass filter; headers mount on the back
+- **Main badge**: Routing complete
 
 ## Related Documentation
 

@@ -113,16 +113,16 @@ This system encourages proper amateur radio operation. It is not intended as abs
 
 ## Project Status
 
-**Current Phase: PCB Layout**
+**Current Phase: PCB layout complete — pre-fabrication checks**
 
 | Milestone | Status |
 |-----------|--------|
 | System architecture and block diagram | Complete |
 | Schematic design (all sheets) | Complete, ERC clean |
 | KiCad schematic entry | Complete (all sheets) |
-| SA818 carrier board PCBs (VHF + UHF) | Complete |
+| SA818 carrier board PCBs (VHF + UHF) | Complete, including harmonic low-pass filters |
 | Bill of materials and sourcing | Complete |
-| Main badge PCB layout | In progress |
+| Main badge PCB layout | Complete (routed) |
 | Firmware development | Not started |
 | Prototype assembly and testing | Pending PCB fabrication |
 

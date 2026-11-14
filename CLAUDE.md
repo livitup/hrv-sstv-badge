@@ -42,6 +42,8 @@ See `docs/electrical-design.md` for complete power system documentation.
 - SA818, SMA connector, and antenna ALL on carrier — no RF on main badge
 - 4-point mounting: 2x 1x8 signal headers (bottom) + 2x 1x3 mechanical headers (top corners)
 - Each carrier includes a matched stubby antenna (VHF or UHF)
+- Each carrier has a discrete 7-pole Chebyshev harmonic low-pass filter between the SA818 ANT pin and the SMA (Part 97 compliance)
+- Carrier headers mount on the BACK of the carrier; hole positions = main badge socket positions + (80, 50) mm
 - User swaps entire carrier assembly to change bands
 
 **Carrier variants:**
@@ -139,9 +141,11 @@ See `docs/electrical-design.md` for complete user controls circuit design.
 ## RF Design Notes
 
 - **All RF is on the carrier board** — main badge has no RF routing
-- Carrier has 50Ω microstrip trace from SA818 to right-angle SMA
+- Carrier RF path: SA818 ANT pad → 7-pole LPF → edge-mount SMA, straight line on F.Cu, 0.8mm trace
+- LPF values — VHF (fc 155 MHz): 22pF/68nH/39pF/82nH/39pF/68nH/22pF; UHF: 6.8pF/22nH/12pF/24nH/12pF/22nH/6.8pF, reduced from the ideal fc 470 MHz values to allow for layout parasitics (starting values, tuned on prototypes)
 - SMA at top edge, antenna points UP (slight backward tilt for comfort)
-- Ground via stitching around RF trace on carrier
+- Unbroken B.Cu ground under the filter, two ground vias per shunt cap, via fence both sides
+- See `hardware/sa818-v-carrier/LPF-INTEGRATION.md` and `hardware/sa818-u-carrier/LPF-INTEGRATION.md` for as-built layout
 - Main badge only needs female header sockets at top edge
 
 ## Software Architecture
@@ -214,7 +218,8 @@ defcon-sstv-badge/
 
 ## Current Development Status
 - **Hardware design**: Schematic complete, ERC clean
-- **KiCad**: All schematic sheets complete, carrier board PCBs complete, main badge PCB layout in progress
+- **KiCad**: All schematic sheets complete; main badge PCB routed and locked; both carrier PCBs complete with harmonic LPF (0 unconnected, 0 parity issues)
+- **Open before fab**: main badge U5 pad/pour clearance item; visual review of UHF carrier; LPF prototype tuning
 - **Documentation**: Comprehensive technical docs, power/RF design documented
 - **Project structure**: Professional repository setup
 - **Firmware development**: Not started
@@ -234,9 +239,10 @@ defcon-sstv-badge/
 | 3.3V regulator | AMS1117-3.3 (LDO) | TPS63001 (buck-boost) |
 | SA818 power | Through 3.3V rail | Direct from LiPo via TPS22919 |
 | SA818 mounting | "DIP socket" | Full-width carrier board, front-mounted overlay |
-| Band selection | DIP switch | Auto-detect via carrier ID pin |
+| Band selection | DIP switch | Auto-detect via carrier ID pin (VHF: 0Ω to GND; UHF: 10kΩ pull-up to SA818 VCC) |
 | RF routing | On main badge (not specified) | ALL RF on carrier — main badge has none |
-| SMA connector | On main badge | On carrier, right-angle, antenna points up |
+| SMA connector | On main badge | On carrier, edge-mount, antenna points up |
+| Harmonic filtering | None | Discrete 7-pole Chebyshev LPF on each carrier |
 | Antenna | User-supplied | Included with each carrier (band-matched) |
 | Audio codec | WM8960 (stereo, $3.50) | PCM5102A DAC + RP2350 ADC ($2.05) |
 | Display | 2.4" ST7789 (separate SD socket) | 2.4" ILI9341 TFT LCD |
@@ -251,7 +257,7 @@ defcon-sstv-badge/
 ## Key Hardware Interfaces
 ```c
 // GPIO assignments (RP2350B) — optimized for PCB routing
-// 47/48 allocated (GPIO47 spare)
+// 46/48 allocated (GPIO46, GPIO47 spare)
 // Organized by physical side of QFN-80 package
 
 // TOP SIDE — Audio + LED (pins 61-64, face carrier headers)
@@ -353,5 +359,5 @@ openocd -f interface/cmsis-dap.cfg -f target/rp2350.cfg
 - **Power system was redesigned** - original LDO approach had fatal flaws
 
 ---
-*Context file version: 2.1*
-*Last updated: 2026-03*
+*Context file version: 2.2*
+*Last updated: 2026-11*

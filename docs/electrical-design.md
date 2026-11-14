@@ -869,11 +869,11 @@ The carrier board is a full-width PCB that overlays the top portion of the main 
 
 | Element | Position from left edge | Purpose |
 |---------|------------------------|---------|
-| J3 (top-left) | 5-13mm | 1x3 mechanical, GND (KiCad: J16/J21) |
-| J1 (bottom-left) | 10-30mm | 1x8 signal (power + audio) (KiCad: J14/J18) |
-| SMA connector | ~55-65mm | Center-right (KiCad: J13/J19) |
-| J2 (bottom-right) | 90-110mm | 1x8 signal (control + data) (KiCad: J15/J20) |
-| J4 (top-right) | 107-115mm | 1x3 mechanical, GND (KiCad: J17/J22) |
+| J3 (top-left) | 7-12mm | 1x3 mechanical, GND (KiCad: J16/J22) |
+| J1 (bottom-left) | 32-50mm | 1x8 signal (power + audio) (KiCad: J14/J18) |
+| SMA connector | ~47mm | Left of center (KiCad: J13/J19) |
+| J2 (bottom-right) | 70-88mm | 1x8 signal (control + data) (KiCad: J15/J20) |
+| J4 (top-right) | 108-113mm | 1x3 mechanical, GND (KiCad: J17/J21) |
 
 The 4-point mounting (J1, J2 at bottom + J3, J4 at top corners) prevents wobble and keeps the carrier securely attached.
 
@@ -904,10 +904,10 @@ The 4-point mounting (J1, J2 at bottom + J3, J4 at top corners) prevents wobble 
 | 4 | PD | Power down (active low; also enables TPS22919 load switch) |
 | 5 | HL | High/low power select |
 | 6 | SQ | Squelch detect |
-| 7 | ID | Band detect (GND=VHF, float=UHF) |
+| 7 | ID | Band detect (GND=VHF, pulled up to SA818 VCC=UHF) |
 | 8 | GND | Ground |
 
-> **Locked pinout note:** these pin assignments reflect the **current state of the main badge schematic and PCB** (PCB routing complete, design locked). The earlier carrier schematics use a different pin order — see [carrier-rewiring-checklist.md](engineers-notebook/carrier-rewiring-checklist.md) for the rewiring work needed to bring the carriers in line.
+> **Locked pinout note:** these pin assignments reflect the main badge schematic and PCB (routing complete, design locked). Both carriers now match in schematic and PCB, with the headers mounted on the back of the carrier — see [carrier-rewiring-checklist.md](engineers-notebook/carrier-rewiring-checklist.md) for the history.
 
 **J3, J4 (Top corners, 1x3 each) — Mechanical:**
 
@@ -920,20 +920,29 @@ Instead of a DIP switch, the carrier includes a band ID resistor:
 | Module | ID Pin State | Implementation |
 |--------|--------------|----------------|
 | SA818-V (VHF) | LOW | 0Ω resistor to GND on carrier |
-| SA818-U (UHF) | Float | No resistor populated (DNP) |
-| No module | Float | MCU pulldown, detect via UART timeout |
+| SA818-U (UHF) | HIGH | 10kΩ pull-up (R18) to SA818 VCC on carrier |
+| No module | LOW | MCU internal pulldown; same reading as VHF, so detect via UART timeout |
 
 Firmware reads ID pin on startup and configures frequency limits accordingly.
+
+> **Firmware note:** the UHF pull-up is fed from SA818 VCC, which is switched by the TPS22919 load switch. The ID pin only reads HIGH while the carrier is powered, so enable SA818 power before sampling it.
 
 ### RF Section (On Carrier)
 
 All RF design is contained on the carrier board:
 
-**50Ω Trace:**
-- SA818 ANT pin to SMA connector
-- Keep as short as possible (~15-20mm)
-- 0.36mm (14 mil) width for 50Ω on standard 4-layer stackup
-- Or calculate for 2-layer if carrier is simpler
+**Harmonic Low-Pass Filter:**
+- Discrete 7-pole Chebyshev LPF (0.1 dB ripple, 50Ω) between the SA818 ANT pin and the SMA, for FCC Part 97 spurious-emission compliance
+- VHF: fc = 155 MHz — C58/C61 = 22pF, C59/C60 = 39pF, L3/L5 = 68nH, L4 = 82nH
+- UHF: C64/C67 = 6.8pF, C65/C66 = 12pF, L6/L8 = 22nH, L7 = 24nH (reduced from the ideal fc = 470 MHz values to leave room for layout parasitics)
+- 0402 C0G caps, Coilcraft 0603HP wirewound inductors, two DNP tuning footprints per filter
+- Values are calculated starting points, to be confirmed by prototype tuning
+- Rationale: [harmonic-filter-design.md](engineers-notebook/harmonic-filter-design.md); as-built layout: `hardware/sa818-v-carrier/LPF-INTEGRATION.md` and `hardware/sa818-u-carrier/LPF-INTEGRATION.md`
+
+**RF Trace:**
+- SA818 ANT pad → filter → SMA centre pin, in a straight line on F.Cu (~27mm end to end)
+- 0.8mm wide on the 2-layer 1.6mm carrier; segments are 5-10mm, far shorter than a wavelength, so a true 3mm 50Ω microstrip is not needed (and would not fit the 0402 pads)
+- Unbroken ground pour on B.Cu under the whole RF path
 
 **Ground Via Stitching:**
 ```
@@ -941,7 +950,7 @@ All RF design is contained on the carrier board:
          │
     ○  ○ ┃ ○  ○      ← Via fence on both sides
          ┃
-    ○  ○ ┃ ○  ○        0.3mm drill, 1mm spacing
+    ○  ○ ┃ ○  ○        0.3mm drill; as built: 4mm pitch (VHF), 2mm (UHF)
          ┃
     ○  ○ ┃ ○  ○
          ┃
@@ -951,8 +960,8 @@ All RF design is contained on the carrier board:
 ```
 
 **SMA Connector:**
-- Right-angle, PCB mount
-- Position at top edge, center-right
+- Edge-mount (Amphenol 132289 footprint)
+- Position at top edge, ~47mm from the left edge
 - Antenna points UP when badge is worn
 - Slight backward tilt (~10-15°) achieved during assembly by not fully seating top header pins
 
@@ -972,14 +981,15 @@ User receives a complete, band-matched RF assembly. No antenna selection confusi
 | Ref | Value | Package | Notes |
 |-----|-------|---------|-------|
 | U1 | SA818-V or SA818-U | Module | 2mm pitch castellated |
-| J_SMA | SMA right-angle | PCB mount | Female, 50Ω |
+| J_SMA | SMA edge-mount | PCB edge | Female, 50Ω |
 | C1 | 100nF | 0402/0603 | Decoupling |
 | C2 | 10µF | 0603/0805 | Bulk |
-| R_ID | 0Ω | 0402 | To GND (VHF); DNP on UHF (float = UHF) |
+| R_ID | 0Ω / 10kΩ | 0402 | VHF: 0Ω to GND. UHF: 10kΩ pull-up to SA818 VCC (KiCad: R18) |
+| LPF | 4× C, 3× L (+2 DNP) | 0402 / 0603 | Harmonic low-pass filter, band-specific values (see above) |
 | J1 | 1x8 male header | 0.1" pitch | Through-hole, pointing backward |
 | J2 | 1x8 male header | 0.1" pitch | Through-hole, pointing backward |
-| J3 | 1x3 male header | 0.1" pitch | Through-hole, all pins GND (KiCad: J16/J21) |
-| J4 | 1x3 male header | 0.1" pitch | Through-hole, all pins GND (KiCad: J17/J22) |
+| J3 | 1x3 male header | 0.1" pitch | Through-hole, all pins GND (KiCad: J16/J22) |
+| J4 | 1x3 male header | 0.1" pitch | Through-hole, all pins GND (KiCad: J17/J21) |
 | ANT | Stubby antenna | SMA male | VHF or UHF matched |
 
 **Per-carrier cost:** ~$15-20 (SA818 ~$10, SMA ~$1-2, antenna ~$3-5, PCB + passives ~$2)

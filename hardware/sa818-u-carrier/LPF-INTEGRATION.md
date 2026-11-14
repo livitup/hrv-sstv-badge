@@ -10,11 +10,11 @@ This document walks through adding a 7-pole Chebyshev low-pass filter to the SA8
 
 ## Status
 
-- [ ] Schematic edits
-- [ ] Footprint placement on PCB
-- [ ] Trace routing (microstrip)
-- [ ] Ground stitching and via fence
-- [ ] DRC clean
+- [x] Schematic edits
+- [x] Footprint placement on PCB
+- [x] Trace routing (0.8 mm RF path — see as-built notes)
+- [x] Ground stitching and via fence
+- [x] DRC clean
 - [ ] Prototype board ordered (5–10 units)
 - [ ] Prototype tuning measurements (NanoVNA)
 - [ ] BOM locked with specific part numbers
@@ -23,27 +23,47 @@ This document walks through adding a 7-pole Chebyshev low-pass filter to the SA8
 
 ---
 
-## Current State (Baseline)
+## Current State (As Built, 2026-11-13)
 
-**File:** `sa818-u-carrier.kicad_sch`, `sa818-u-carrier.kicad_pcb`
+**Files:** `sa818-u-carrier.kicad_sch`, `sa818-u-carrier.kicad_pcb`
 
-The current carrier has a direct connection between U10 (SA818U, ANT pin = pin 12) and J19 (SMA edge connector). No filter components on the RF path.
+The filter is in the schematic and laid out on the PCB. ERC is clean; DRC shows 0 unconnected items and 0 schematic-parity issues (the five SMA edge-clearance entries are intentional and excluded).
 
-- **U10 placement (PCB):** `(140, 70)` mm, rotated 180°
-- **J19 placement (PCB):** `(126.65, 52.57)` mm, rotated 90°
+- **U10 placement (PCB):** `(167, 70)` mm, rotated 180° — moved 27 mm right of its original position to make room for a straight filter
+- **U10 ANT pad (pad 12):** `(153.65, 61.175)`
+- **J19 placement (PCB):** `(126.65, 52.57)` mm, rotated 90° (edge-mount SMA, unchanged)
 - **Board outline:** rectangle from `(80, 50)` to `(200, 90)` — 120mm × 40mm
+- **Headers:** J18, J20, J22, J21 are on the **back** (B.Cu) so the pins point into the main badge. Hole positions match the main badge sockets (carrier x = main badge x + 80, y + 50): J18 pin 1 at `(112, 87)`, J20 pin 1 at `(168, 87)`, J22 pin 1 at `(87, 53)`, J21 pin 1 at `(193, 53)`
 
-Existing components on carrier:
-- C56: 100nF (0402) — VCC decoupling
-- C57: 10µF (0402) — VCC decoupling
-- R18: DNP (0402) — band-ID pulldown (UHF = open)
-- J18: 1×8 male header (Power/Audio signals)
+Other components on the carrier:
+- C56: 100nF (0402) and C57: 10µF (0603) — VCC decoupling, next to U10 VDD pad 8
+- R18: 10kΩ (0402) — band-ID pull-up to SA818 VCC, at `(143, 87)`
 - J19: SMA edge-mount
-- J20: 1×8 male header (Control/Data signals)
-- J21, J22: 1×3 male headers (mechanical/GND)
 - U10: SA818U module
 
-> **Note on connector numbering:** the UHF carrier connector designators differ from the VHF carrier. J19 on UHF is the SMA (vs. J13 on VHF). Memory notes describing "J18 SMA" reflect an earlier numbering plan that doesn't match the current schematic — verify against the actual `.kicad_sch` file before citing.
+---
+
+## Starting Values Revised for Parasitics (2026-11-13)
+
+The values originally calculated below (8.2 pF / 24 nH / 15 pF / 27 nH, fc = 470 MHz) put the cutoff only 4% above the top of the 420–450 MHz band. A first-order model of the as-built layout — trace lengths as 95Ω line sections, 0.5–1.1 nH per shunt cap for the part plus its two vias, inductor Q ≈ 55 — shows that margin is not enough:
+
+| Case | Loss at 435 MHz | Worst return loss 420–450 MHz | 2nd harmonic rejection |
+|------|-----------------|-------------------------------|------------------------|
+| Original values, ideal (no parasitics) | 0.0 dB | 18.9 dB | 51 dB |
+| Original values, as-built layout | 4.8 dB | 2.1 dB | 68 dB |
+| Original values, layout compacted to 1.5 mm gaps | 3.9 dB | 2.6 dB | 68 dB |
+| **Revised values, as-built layout** | ~0.9 dB | 20 dB | 51 dB |
+
+Compacting the layout recovers about 1 dB of a 5 dB problem, so the geometry was left identical to the VHF carrier and the **starting values were reduced** instead:
+
+| Designator | Original | **Now fitted** |
+|------------|----------|----------------|
+| C64, C67 | 8.2 pF | **6.8 pF** |
+| L6, L8 | 24 nH | **22 nH** |
+| C65, C66 | 15 pF | **12 pF** |
+| L7 | 27 nH | **24 nH** |
+
+All four are Murata GJM15 / Coilcraft 0603HP values already on the stocking list. The parasitic figures are estimates, not measurements — the prototype NanoVNA sweep still decides the final values. Keep 8.2, 10, 15 pF and 18, 24, 27 nH on hand for tuning. Where the tables further down this document still show the original values, the table above takes precedence.
 
 ---
 
@@ -103,6 +123,8 @@ Before editing KiCad, verify these parts exist on LCSC (for JLCPCB assembly) and
 
 ### Inductors — empirical comparison required (0603HP vs 0603DC vs Murata)
 
+> **Decision (2026-05-10):** the comparison below was skipped. Both carriers use the **Coilcraft 0603HP** series (L6/L8 = 24 nH, L7 = 27 nH on UHF) — it has the higher SRF at every value needed, and one series keeps the BOM and footprint simple. The tables are kept for reference.
+
 UHF is sensitive enough that the inductor choice should be made **empirically during the prototype tuning round**, not committed in advance. Stock candidates from multiple series and let the NanoVNA pick the winner.
 
 > **Why this matters at UHF and not at VHF:** at 470 MHz, we're closer to the inductor's SRF and Q starts to matter at multiple frequencies (fundamental, 2nd harmonic at 940 MHz, 3rd at 1.4 GHz). Different series have different Q-vs-frequency curves. The 0603DC has higher Q at low values at 900 MHz but lower SRF; the 0603HP has higher Q across the board at 1.7 GHz. See [harmonic filter design notebook](../../docs/engineers-notebook/harmonic-filter-design.md#0603hp-vs-0603dc-at-our-specific-values) for the full comparison table.
@@ -155,7 +177,7 @@ Build all four sets, NanoVNA-measure them, pick the winner from the data. **Do n
 
 ---
 
-## Step 2: Schematic Edits in KiCad
+## Step 2: Schematic Edits in KiCad (Done)
 
 Open `hardware/sa818-u-carrier/sa818-u-carrier.kicad_sch` in KiCad 9.
 
@@ -210,139 +232,67 @@ For C68 and C69 (DNP):
 
 ---
 
-## Step 3: Update PCB from Schematic
+## Steps 3–7: PCB Layout (As Built)
 
-In the KiCad PCB editor (`sa818-u-carrier.kicad_pcb`):
+> **Why this differs from the original plan.** The first draft of this document assumed the ANT pad was ~25 mm from the SMA and called for a 3 mm (50Ω) microstrip. On the real board the ANT pad sat directly below the SMA centre pin with under 4 mm of clear space, so U10 was moved 27 mm to the right and the filter laid out in a straight line between the two. A 3 mm trace cannot pass the 0402 pads, so the RF path is 0.8 mm wide; the runs are 5–10 mm, far shorter than a wavelength, and prototype tuning absorbs the small added inductance.
 
-1. **File → Update PCB from Schematic** (`F8`)
-2. Confirm the dialog. New components C64–C69, L6–L8 should appear in a corner of the board, ratsnested.
-3. Click **Update PCB**.
+### Placement (F.Cu)
 
----
+Shunt caps stand perpendicular to the RF line with their signal pad on the line; inductors lie along it. The line leaves the ANT pad at y = 61.175, steps up through the vertical L7 to y = 59.355, and turns up into the SMA centre pin at x = 126.65.
 
-## Step 4: PCB Placement
-
-The filter goes on **F.Cu**, between U10's ANT pin and J19's center pin.
-
-### 4a. Reference geometry
-
-- **U10 (SA818U) ANT pin** is on the left side of U10 footprint. With U10 at `(140, 70)` rotated 180°, the ANT pin is at approximately `(150.5, 71.4)` — confirm by clicking pin 12 on the U10 footprint and reading the coordinates in the status bar.
-- **J19 (SMA) pin 1** is at approximately `(126.65, 52.57)` — center pin of the SMA, on the top edge of the board.
-- Distance from U10 ANT to J19 pin 1: ~25mm. The UHF filter section is shorter than the VHF one (~12mm vs ~25mm), so there's even more room.
-
-### 4b. Suggested layout
+| Ref | X | Y | Orientation | Notes |
+|-----|-----|-----|-------------|-------|
+| C68 (DNP) | 146.8 | 60.695 | 90 | Input tweak cap, GND pad up |
+| C64 | 145.4 | 61.655 | 90 | GND pad down |
+| L6 | 142.2 | 61.175 | 0 | Horizontal |
+| C65 | 139.0 | 61.655 | 90 | GND pad down |
+| L7 | 136.1 | 60.265 | 270 | Vertical — perpendicular to L6/L8 |
+| C66 | 133.2 | 59.835 | 270 | GND pad down |
+| L8 | 130.0 | 59.355 | 0 | Horizontal |
+| C67 | 126.65 | 59.835 | 270 | GND pad down, at the corner below the SMA |
+| C69 (DNP) | 126.17 | 57.6 | 180 | Output tweak cap, GND pad left |
 
 ```
-                  J19 (SMA, top edge)
-                       │
-                       │  ← 50Ω microstrip
-                       │
-   ┌───────────────────┼────────────────────────────┐
-   │                   ▼                            │
-   │   [C69 DNP]   [C67]                           │
-   │       │         │                              │
-   │      ━━━L8━━━━━━┻━━ L7 ━━━━━━┻━━ L6 ━━━━━━┻━━━┓
-   │                   │              │              ┃
-   │                  [C66]          [C65]          [C64]
-   │                                                 ┃
-   │   [C68 DNP]                                     ┃
-   │                                                 ┃
-   └─────────────────────────────────────────────────┃─── U10 ANT pin
-                                                     │
-                                                  (50Ω microstrip)
+  x=126.65      130       133.2  136.1    139      142.2    145.4 146.8      153.65
+    SMA
+     │
+ GND[C69]┤                                                           GND
+     │                                                              [C68]
+     ├──────────[ L8 ]─────┬──────┐   y=59.355                        │
+   [C67]                 [C66]  [ L7 ]                                │
+    GND                   GND     └───────┬────────[ L6 ]──────┬──────┴──────── ANT pad
+                                        [C65]                [C64]     y=61.175
+                                         GND                  GND
 ```
 
-Place components in a roughly straight line between U10 ANT pin and J19. Components ordered: C64, L6, C65, L7, C66, L8, C67. Tweak caps C68 and C69 placed near the input and output respectively.
+- Populated parts are at least 2 mm apart body to body.
+- L6 and L8 are in line and 12 mm apart; L7 is perpendicular to both.
 
-### 4c. Detailed placement rules
+### Routing
 
-- **Inductor orientation:** L6 at 0°, L7 at 90°, L8 at 0° (perpendicular alternation). At UHF this matters even more than at VHF — adjacent parallel inductors at 470 MHz can couple enough to ruin the response.
-- **Cap-to-GND vias:** each shunt cap (C64, C65, C66, C67) gets **2 ground vias** within 0.3mm of the GND pad. UHF needs tighter ground via placement than VHF — even 0.5mm of trace from cap to via adds enough inductance to detune the filter.
-- **Spacing:** minimum 1.5mm between adjacent components — at UHF, mutual coupling between adjacent 0603 inductors is a real concern. If space allows, increase to 2mm.
-- **Stay clear:** keep the filter section ≥3mm away from C56, C57 (power decoupling) and ≥3mm from any digital signal traces (UART RX/TX, PTT, PD, HL, SQ, ID).
-- **Total filter length:** target ~12mm tip-to-tail. Compact = better at UHF.
+- **RF path:** 0.8 mm, F.Cu, four straight segments pad centre to pad centre. The only corner is on C67's pad.
+- **VCC:** 1.0 mm from J18 pin 1 along y = 81.5, narrowing to 0.6 mm past C57/C56 into U10 pad 8.
+- **PTT, PD, H/L:** F.Cu, straight down from U10's bottom-row pads to J20.
+- **RXD, TXD:** F.Cu, under the module, exiting between bottom-row pads 4 and 3.
+- **MIC, AF_OUT, SQ:** F.Cu to a via just below the module, then B.Cu along y = 82.5 / 84 / 85.3 to the header pins. These are the only B.Cu tracks, and all sit in the bottom strip of the board.
 
----
+### Ground
 
-## Step 5: Microstrip Routing
+- **B.Cu under the filter is an unbroken ground pour** — no tracks cross it.
+- **Cap ground vias:** two 0.6 mm / 0.3 mm vias per cap (including the DNP positions), joined to the GND pad by a short 0.6 mm stub.
+- **Via fence:** 22 vias in two rows on a 2 mm pitch: y = 57.3 (x = 129.5 … 145.5) and y = 64.3 (x = 124 … 147.5). The SMA's own ground pads close the left end of the top row.
 
-The signal path from U10 ANT through the filter to J19 is a 50Ω microstrip line.
+### UHF-specific caveats
 
-### 5a. Calculate microstrip width
+- **The layout reuses the VHF geometry.** The filter is about 20 mm end to end, not the ~12 mm originally targeted for UHF. The interconnect adds roughly 1–1.5 nH between elements against 24–27 nH inductors; expect to absorb that in prototype tuning. If the measured response can't be tuned in, a compacted UHF-only layout is the next step.
+- **Cap ground vias** sit about 0.24 mm from the pad edge, inside the 0.3 mm target.
+- **In the schematic** the filter is drawn in a row below the main circuit and joined to U10 pin 12 with a local label `ANT`, so the PCB net is named `/ANT`.
 
-Use **KiCad → Tools → PCB Calculator → Transmission Lines** with:
+### Checks to repeat after any layout change
 
-- **Type:** Microstrip Line
-- **Substrate:** εr = 4.3 (FR4), tan δ = 0.02
-- **H (substrate height):** 1.6mm (or whatever the carrier stackup specifies)
-- **T (copper thickness):** 0.035mm (1 oz)
-- **Z0 (target):** 50Ω
-
-For 1.6mm FR4 / 1 oz copper, the calculated trace width is approximately **3.0mm**. **This is the same as VHF** — microstrip impedance is frequency-independent for these dimensions.
-
-> Verify the carrier stackup before trusting this width. If the carrier is 2-layer 1.0mm or 0.8mm FR4, the trace width is significantly different. **At UHF, getting the microstrip width right matters more** — 5% off can shift filter response visibly.
-
-### 5b. Route the signal
-
-1. Set the active routing layer to **F.Cu**.
-2. Set trace width to the calculated 50Ω value (~3.0mm).
-3. Route from U10 pin 12 → C64 node → L6 → C65 node → L7 → C66 node → L8 → C67 node → J19 pin 1.
-4. Trace the signal as **a single straight line where possible**. Bends should be 45° or chamfered, never 90°. At UHF, even chamfered 45° corners introduce small reflections — keep the path as straight as possible.
-5. The trace tapers naturally as it enters and exits the filter section — the cap pads are smaller than the 3mm microstrip; KiCad will neck down automatically. **At UHF, the taper transition can affect return loss** — keep the necked-down section short.
-
-### 5c. Tweak cap nets
-
-C68 and C69 connect:
-- C68 pad 1: tied to the trace just after U10 ANT (between U10 and C64)
-- C68 pad 2: tied to GND
-- C69 pad 1: tied to the trace just before J19 (between C67 and J19)
-- C69 pad 2: tied to GND
-
-These are unpopulated — the 0402 footprint is just a place to add a cap if needed during tuning.
-
----
-
-## Step 6: Ground Plane and Via Stitching
-
-UHF is more aggressive about ground than VHF. Don't compromise here.
-
-### 6a. Solid ground under the filter
-
-Verify: on the layer immediately below F.Cu (which on this 2-layer carrier is **B.Cu**), the area under the filter section must be **a solid ground pour**, with no traces or other signals routed through it.
-
-If anything is routed on B.Cu under the filter, reroute it elsewhere. The ground plane must be unbroken. **Even a thin trace running underneath the filter can cause a noticeable bump in S11 at UHF.**
-
-### 6b. Via fence
-
-Add via stitching around the filter section. Vias every **~3mm** along the perimeter (tighter than the VHF ~5mm spacing because UHF wavelength is shorter and EM leakage is faster).
-
-In KiCad: **Place → Add Vias** with size 0.6mm OD / 0.3mm drill, on the GND net.
-
-### 6c. Cap ground vias
-
-For each shunt cap (C64, C65, C66, C67, and the DNP positions C68, C69):
-- Place 2 vias **within 0.3mm** of the cap's GND pad. (VHF spec was 0.5mm — UHF tightens this.)
-- Vias connect F.Cu (where the cap is) to B.Cu (ground plane).
-- If possible, connect the cap's GND pad directly to the via with no intermediate trace.
-
-### 6d. Optional: ground pour around the filter
-
-Add a small F.Cu ground pour ring around the filter section (with appropriate clearance to the 50Ω microstrip) and stitch it heavily to the B.Cu ground plane. This creates a quasi-shielded enclosure for the filter and improves stopband performance.
-
----
-
-## Step 7: DRC and Visual Inspection
-
-1. **Run DRC:** **Inspect → Design Rules Checker**. Resolve any errors.
-2. **Visual inspection:**
-   - Filter section is a clean straight line between U10 ANT and J19
-   - Ground plane is unbroken under the filter (check B.Cu visibility in KiCad)
-   - Adjacent inductors are perpendicular to each other
-   - Each shunt cap has 2 ground vias within 0.3mm
-   - Via fence (3mm spacing) surrounds the filter section
-   - No 90° trace bends in the RF path
-   - Filter section length ≤ 15mm
-3. **Check 3D view:** **View → 3D Viewer**. Verify components don't physically overlap or interfere.
+1. **Inspect → Design Rules Checker** with schematic parity ticked: 0 unconnected, 0 parity issues.
+2. Ground plane unbroken under the filter; adjacent inductors perpendicular; two ground vias per shunt cap.
+3. Header pin-1 holes still at the coordinates listed above — these are what make the carrier mate with the main badge.
 
 ---
 
@@ -440,10 +390,10 @@ These bite UHF builders regularly. Catch them early:
 
 When this work is complete, update:
 
-- [ ] `docs/bom.md` — add LPF section under SA818-U carrier
-- [ ] `docs/electrical-design.md` — describe filter design in carrier section
-- [ ] `docs/project-status.md` — flip carrier status to "in progress" then "complete"
-- [ ] `CLAUDE.md` — update SA818 carrier description if needed
+- [x] `docs/bom.md` — add LPF section under SA818-U carrier
+- [x] `docs/electrical-design.md` — describe filter design in carrier section
+- [x] `docs/project-status.md` — flip carrier status to "in progress" then "complete"
+- [x] `CLAUDE.md` — update SA818 carrier description if needed
 
 ---
 
@@ -459,4 +409,4 @@ When this work is complete, update:
 
 ---
 
-*Last updated: 2026-04-30*
+*Last updated: 2026-11-13*

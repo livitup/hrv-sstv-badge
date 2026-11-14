@@ -8,11 +8,11 @@ This document walks through adding a 7-pole Chebyshev low-pass filter to the SA8
 
 ## Status
 
-- [ ] Schematic edits
-- [ ] Footprint placement on PCB
-- [ ] Trace routing (microstrip)
-- [ ] Ground stitching and via fence
-- [ ] DRC clean
+- [x] Schematic edits
+- [x] Footprint placement on PCB
+- [x] Trace routing (0.8 mm RF path — see as-built notes)
+- [x] Ground stitching and via fence
+- [x] DRC clean
 - [ ] Prototype board ordered (5–10 units)
 - [ ] Prototype tuning measurements (NanoVNA)
 - [ ] BOM locked with specific part numbers
@@ -21,23 +21,22 @@ This document walks through adding a 7-pole Chebyshev low-pass filter to the SA8
 
 ---
 
-## Current State (Baseline)
+## Current State (As Built, 2026-11-13)
 
-**File:** `sa818-v-carrier.kicad_sch`, `sa818-v-carrier.kicad_pcb`
+**Files:** `sa818-v-carrier.kicad_sch`, `sa818-v-carrier.kicad_pcb`
 
-The current carrier has a direct connection between U9 (SA818V, ANT pin = pin 12) and J13 (SMA edge connector). No filter components on the RF path.
+The filter is in the schematic and laid out on the PCB. ERC is clean; DRC shows 0 unconnected items and 0 schematic-parity issues (the five SMA edge-clearance entries are intentional and excluded).
 
-- **U9 placement (PCB):** `(140, 70)` mm, rotated 180°
-- **J13 placement (PCB):** `(126.65, 52.57)` mm, rotated 90°
+- **U9 placement (PCB):** `(167, 70)` mm, rotated 180° — moved 27 mm right of its original position to make room for a straight filter
+- **U9 ANT pad (pad 12):** `(153.65, 61.175)`
+- **J13 placement (PCB):** `(126.65, 52.57)` mm, rotated 90° (edge-mount SMA, unchanged)
 - **Board outline:** rectangle from `(80, 50)` to `(200, 90)` — 120mm × 40mm
+- **Headers:** J14, J15, J16, J17 are on the **back** (B.Cu) so the pins point into the main badge. Hole positions match the main badge sockets (carrier x = main badge x + 80, y + 50): J14 pin 1 at `(112, 87)`, J15 pin 1 at `(168, 87)`, J16 pin 1 at `(87, 53)`, J17 pin 1 at `(193, 53)`
 
-Existing components on carrier:
-- C54: 100nF (0402) — VCC decoupling
-- C55: 10µF (0402) — VCC decoupling
-- R18: 0Ω (0402) — band-ID pulldown
+Other components on the carrier:
+- C54: 100nF (0402) and C55: 10µF (0603) — VCC decoupling, next to U9 VDD pad 8
+- R18: 0Ω (0402) — band-ID pulldown to GND, at `(143, 87)`
 - J13: SMA edge-mount
-- J14, J15: 1×8 male headers (signal)
-- J16, J17: 1×3 male headers (mechanical/GND)
 - U9: SA818V module
 
 ---
@@ -115,7 +114,7 @@ Before editing KiCad, verify these parts exist on LCSC (for JLCPCB assembly) and
 
 ---
 
-## Step 2: Schematic Edits in KiCad
+## Step 2: Schematic Edits in KiCad (Done)
 
 Open `hardware/sa818-v-carrier/sa818-v-carrier.kicad_sch` in KiCad 9.
 
@@ -170,130 +169,61 @@ For C62 and C63 (DNP):
 
 ---
 
-## Step 3: Update PCB from Schematic
+## Steps 3–7: PCB Layout (As Built)
 
-In the KiCad PCB editor (`sa818-v-carrier.kicad_pcb`):
+> **Why this differs from the original plan.** The first draft of this document assumed the ANT pad was ~25 mm from the SMA and called for a 3 mm (50Ω) microstrip. On the real board the ANT pad sat directly below the SMA centre pin with under 4 mm of clear space, so U9 was moved 27 mm to the right and the filter laid out in a straight line between the two. A 3 mm trace cannot pass the 0402 pads, so the RF path is 0.8 mm wide; the runs are 5–10 mm, far shorter than a wavelength, and prototype tuning absorbs the small added inductance.
 
-1. **File → Update PCB from Schematic** (`F8`)
-2. Confirm the dialog. New components C58–C63, L3–L5 should appear in a corner of the board, ratsnested.
-3. Click **Update PCB**.
+### Placement (F.Cu)
 
----
+Shunt caps stand perpendicular to the RF line with their signal pad on the line; inductors lie along it. The line leaves the ANT pad at y = 61.175, steps up through the vertical L4 to y = 59.355, and turns up into the SMA centre pin at x = 126.65.
 
-## Step 4: PCB Placement
-
-The filter goes on **F.Cu**, between U9's ANT pin and J13's center pin.
-
-### 4a. Reference geometry
-
-- **U9 (SA818V) ANT pin** is on the left side of U9 footprint. With U9 at `(140, 70)` rotated 180°, the ANT pin is at approximately `(150.5, 71.4)` — confirm by clicking pin 12 on the U9 footprint and reading the coordinates in the status bar.
-- **J13 (SMA) pin 1** is at approximately `(126.65, 52.57)` — center pin of the SMA, on the top edge of the board.
-- Distance from U9 ANT to J13 pin 1: ~25mm. Plenty of room for a ~25mm filter section between them.
-
-### 4b. Suggested layout
+| Ref | X | Y | Orientation | Notes |
+|-----|-----|-----|-------------|-------|
+| C62 (DNP) | 146.8 | 60.695 | 90 | Input tweak cap, GND pad up |
+| C58 | 145.4 | 61.655 | 90 | GND pad down |
+| L3 | 142.2 | 61.175 | 0 | Horizontal |
+| C59 | 139.0 | 61.655 | 90 | GND pad down |
+| L4 | 136.1 | 60.265 | 270 | Vertical — perpendicular to L3/L5 |
+| C60 | 133.2 | 59.835 | 270 | GND pad down |
+| L5 | 130.0 | 59.355 | 0 | Horizontal |
+| C61 | 126.65 | 59.835 | 270 | GND pad down, at the corner below the SMA |
+| C63 (DNP) | 126.17 | 57.6 | 180 | Output tweak cap, GND pad left |
 
 ```
-                  J13 (SMA, top edge)
-                       │
-                       │  ← 50Ω microstrip
-                       │
-   ┌───────────────────┼────────────────────────────┐
-   │                   ▼                            │
-   │   [C63 DNP]   [C61]                           │
-   │       │         │                              │
-   │      ━━━L5━━━━━━┻━━ L4 ━━━━━━┻━━ L3 ━━━━━━┻━━━┓
-   │                   │              │              ┃
-   │                  [C60]          [C59]          [C58]
-   │                                                 ┃
-   │   [C62 DNP]                                     ┃
-   │                                                 ┃
-   └─────────────────────────────────────────────────┃─── U9 ANT pin
-                                                     │
-                                                  (50Ω microstrip)
+  x=126.65      130       133.2  136.1    139      142.2    145.4 146.8      153.65
+    SMA
+     │
+ GND[C63]┤                                                           GND
+     │                                                              [C62]
+     ├──────────[ L5 ]─────┬──────┐   y=59.355                        │
+   [C61]                 [C60]  [ L4 ]                                │
+    GND                   GND     └───────┬────────[ L3 ]──────┬──────┴──────── ANT pad
+                                        [C59]                [C58]     y=61.175
+                                         GND                  GND
 ```
 
-Place components in a roughly straight line between U9 ANT pin and J13. Components ordered: C58, L3, C59, L4, C60, L5, C61. Tweak caps C62 and C63 placed near the input and output respectively.
+- Populated parts are at least 2 mm apart body to body.
+- L3 and L5 are in line and 12 mm apart; L4 is perpendicular to both.
 
-### 4c. Detailed placement rules
+### Routing
 
-- **Inductor orientation:** L3 at 0°, L4 at 90°, L5 at 0° (perpendicular alternation). Or: L3 horizontal, L4 vertical, L5 horizontal. Avoid having all three inductors with windings parallel to each other.
-- **Cap-to-GND vias:** each shunt cap (C58, C59, C60, C61) gets **2 ground vias** within 0.5mm of the GND pad. No shared vias between caps.
-- **Spacing:** minimum 2mm between adjacent components (cap to inductor, inductor to inductor) to prevent mutual coupling.
-- **Stay clear:** keep the filter section ≥3mm away from C54, C55 (power decoupling) and ≥3mm from any digital signal traces (UART RX/TX, PTT, PD, HL, SQ, ID).
+- **RF path:** 0.8 mm, F.Cu, four straight segments pad centre to pad centre. The only corner is on C61's pad.
+- **VCC:** 1.0 mm from J14 pin 1 along y = 81.5, narrowing to 0.6 mm past C55/C54 into U9 pad 8.
+- **PTT, PD, H/L:** F.Cu, straight down from U9's bottom-row pads to J15.
+- **RXD, TXD:** F.Cu, under the module, exiting between bottom-row pads 4 and 3.
+- **MIC, AF_OUT, SQ:** F.Cu to a via just below the module, then B.Cu along y = 82.5 / 84 / 85.3 to the header pins. These are the only B.Cu tracks, and all sit in the bottom strip of the board.
 
----
+### Ground
 
-## Step 5: Microstrip Routing
+- **B.Cu under the filter is an unbroken ground pour** — no tracks cross it.
+- **Cap ground vias:** two 0.6 mm / 0.3 mm vias per cap (including the DNP positions), joined to the GND pad by a short 0.6 mm stub.
+- **Via fence:** 12 vias in two rows on a 4 mm pitch: y = 57.3 (x = 129.5 … 145.5) and y = 64.3 (x = 124 … 147.5). The SMA's own ground pads close the left end of the top row.
 
-The signal path from U9 ANT through the filter to J13 is a 50Ω microstrip line.
+### Checks to repeat after any layout change
 
-### 5a. Calculate microstrip width
-
-Use **KiCad → Tools → PCB Calculator → Transmission Lines** with:
-
-- **Type:** Microstrip Line
-- **Substrate:** εr = 4.3 (FR4), tan δ = 0.02
-- **H (substrate height):** 1.6mm (or whatever the carrier stackup specifies)
-- **T (copper thickness):** 0.035mm (1 oz)
-- **Z0 (target):** 50Ω
-
-For 1.6mm FR4 / 1 oz copper, the calculated trace width is approximately **3.0mm**.
-
-> Verify the carrier stackup before trusting this width. If the carrier is 2-layer 1.0mm or 0.8mm FR4, the trace width is significantly different.
-
-### 5b. Route the signal
-
-1. Set the active routing layer to **F.Cu**.
-2. Set trace width to the calculated 50Ω value (~3.0mm). Add this as a custom net class width if it's not already defined.
-3. Route from U9 pin 12 → C58 node → L3 → C59 node → L4 → C60 node → L5 → C61 node → J13 pin 1.
-4. Trace the signal as **a single straight line where possible**. Bends should be 45° or chamfered, never 90°.
-5. The trace tapers naturally as it enters and exits the filter section — the cap pads are smaller than the 3mm microstrip; KiCad will neck down automatically.
-
-### 5c. Tweak cap nets
-
-C62 and C63 connect:
-- C62 pad 1: tied to the trace just after U9 ANT (between U9 and C58)
-- C62 pad 2: tied to GND
-- C63 pad 1: tied to the trace just before J13 (between C61 and J13)
-- C63 pad 2: tied to GND
-
-These are unpopulated — the 0402 footprint is just a place to add a cap if needed during tuning.
-
----
-
-## Step 6: Ground Plane and Via Stitching
-
-### 6a. Solid ground under the filter
-
-Verify: on the layer immediately below F.Cu (which on this 2-layer carrier is **B.Cu**), the area under the filter section must be **a solid ground pour**, with no traces or other signals routed through it.
-
-If anything is routed on B.Cu under the filter, reroute it elsewhere. The ground plane must be unbroken.
-
-### 6b. Via fence
-
-Add via stitching around the filter section. Vias every ~5mm along the perimeter of the filter section, connecting F.Cu ground pour to B.Cu ground pour.
-
-In KiCad: **Place → Add Vias** with size 0.6mm OD / 0.3mm drill, on the GND net.
-
-### 6c. Cap ground vias
-
-For each shunt cap (C58, C59, C60, C61, and the DNP positions C62, C63):
-- Place 2 vias within 0.5mm of the cap's GND pad.
-- Vias connect F.Cu (where the cap is) to B.Cu (ground plane).
-
----
-
-## Step 7: DRC and Visual Inspection
-
-1. **Run DRC:** **Inspect → Design Rules Checker**. Resolve any errors.
-2. **Visual inspection:**
-   - Filter section is a clean straight line between U9 ANT and J13
-   - Ground plane is unbroken under the filter
-   - Adjacent inductors are perpendicular to each other
-   - Each shunt cap has 2 ground vias within 0.5mm
-   - Via fence surrounds the filter section
-   - No 90° trace bends in the RF path
-3. **Check 3D view:** **View → 3D Viewer**. Verify components don't physically overlap or interfere.
+1. **Inspect → Design Rules Checker** with schematic parity ticked: 0 unconnected, 0 parity issues.
+2. Ground plane unbroken under the filter; adjacent inductors perpendicular; two ground vias per shunt cap.
+3. Header pin-1 holes still at the coordinates listed above — these are what make the carrier mate with the main badge.
 
 ---
 
@@ -368,10 +298,10 @@ Reject boards that fall outside the locked design's distribution. Most failures 
 
 When this work is complete, update:
 
-- [ ] `docs/bom.md` — add LPF section under SA818-V carrier
-- [ ] `docs/electrical-design.md` — describe filter design in carrier section
-- [ ] `docs/project-status.md` — flip carrier status to "in progress" then "complete"
-- [ ] `CLAUDE.md` — update SA818 carrier description if needed
+- [x] `docs/bom.md` — add LPF section under SA818-V carrier
+- [x] `docs/electrical-design.md` — describe filter design in carrier section
+- [x] `docs/project-status.md` — flip carrier status to "in progress" then "complete"
+- [x] `CLAUDE.md` — update SA818 carrier description if needed
 
 ---
 
@@ -385,4 +315,4 @@ When this work is complete, update:
 
 ---
 
-*Last updated: 2026-04-30*
+*Last updated: 2026-11-13*

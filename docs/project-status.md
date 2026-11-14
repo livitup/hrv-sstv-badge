@@ -1,6 +1,6 @@
 # Project Status — DEFCON SSTV Badge
 
-**Last Updated:** 2026-03-22
+**Last Updated:** 2026-11-13
 
 This document tracks the design and implementation status for all badge subsystems.
 
@@ -34,8 +34,9 @@ This document tracks the design and implementation status for all badge subsyste
 | SAO Connectors | ✓ | ✓ | | |
 | SA818 Carrier (VHF) | ✓ | ✓ | | |
 | SA818 Carrier (UHF) | ✓ | ✓ | | |
+| Carrier harmonic LPF (VHF + UHF) | ✓ | ✓ | | |
 | SA818 Carrier PCBs | ✓ | ✓ | | |
-| Main Badge PCB | ✓ | In progress | | |
+| Main Badge PCB | ✓ | ✓ (routed) | | |
 
 ---
 
@@ -78,14 +79,18 @@ This document tracks the design and implementation status for all badge subsyste
 ### RF / Carrier Board
 - [x] Carrier board architecture designed (full-width overlay, front-mounted)
 - [x] 4-point mounting defined (2× 1x8 signal + 2× 1x3 mechanical)
-- [x] Header pinouts defined (J14/J18: Power/Audio, J15/J20: Control/Data)
-- [x] Band auto-detection via ID resistor (R18: 0Ω=VHF, DNP=UHF)
+- [x] Header pinouts defined (J14/J18: Power/Audio, J15/J20: Control/Data) and matched to the locked main badge J7/J8
+- [x] Band auto-detection via ID resistor (R18: 0Ω to GND = VHF, 10kΩ pull-up to SA818 VCC = UHF)
 - [x] RF section on carrier only (main board has no RF)
 - [x] Mechanical headers (J16/J17, J21/J22) connected to GND for RF shielding
-- [x] **KiCad: VHF carrier schematic complete** (U9 SA818V, J13-J17, C54-C55, R18)
-- [x] **KiCad: UHF carrier schematic complete** (U10 SA818U, J18-J22, C56-C57, R18 DNP)
-- [x] **KiCad: VHF carrier PCB layout complete** (routed, DRC clean)
-- [x] **KiCad: UHF carrier PCB layout complete** (routed, DRC clean)
+- [x] **KiCad: VHF carrier schematic complete** (U9 SA818V, J13-J17, C54-C55, R18, LPF C58-C63 + L3-L5)
+- [x] **KiCad: UHF carrier schematic complete** (U10 SA818U, J18-J22, C56-C57, R18 10kΩ, LPF C64-C69 + L6-L8)
+- [x] **Harmonic LPF designed** (7-pole Chebyshev, discrete; see `engineers-notebook/harmonic-filter-design.md`)
+- [x] **KiCad: VHF carrier PCB layout complete** (LPF laid out, headers on back; 0 unconnected, 0 parity issues)
+- [x] **KiCad: UHF carrier PCB layout complete** (same layout as VHF; mirrored-header bug fixed; 0 unconnected, 0 parity issues)
+- [ ] Visual review of the UHF carrier PCB in KiCad (it was generated from the VHF layout)
+- [ ] Confirm the SA818 underside has no exposed copper where RXD/TXD/MIC run beneath it
+- [ ] Prototype tuning of both LPFs (NanoVNA), then lock BOM values
 - [ ] Verify SA818 2mm pitch footprint dimensions
 - [ ] Source appropriate stubby antennas (VHF and UHF)
 - [ ] Prototype carrier and validate RF performance independently
@@ -95,7 +100,7 @@ This document tracks the design and implementation status for all badge subsyste
 - [x] RP2350 ADC circuit designed (RX path with bias network)
 - [x] TX attenuator/filter component values specified
 - [x] RX anti-alias filter and DC blocking designed
-- [x] Assign RP2350 GPIO pins for I2S (GPIO24, 25, 29: BCK, LRCK, DIN)
+- [x] Assign RP2350 GPIO pins for I2S (GPIO3: BCK, GPIO1: LRCK, GPIO2: DIN)
 - [x] Assign RP2350 ADC GPIO pin for RX audio (GPIO40: ADC0)
 - [x] **KiCad: PCM5102A DAC complete** (I2S, power, charge pump caps)
 - [x] **KiCad: TX output filter complete** (R5/R6 attenuator, C24 LPF, C25 DC block → MIC+/MIC-)
@@ -109,7 +114,7 @@ This document tracks the design and implementation status for all badge subsyste
 - [x] ILI9341 2.4" module selected (320×240), standalone SD socket (J10)
 - [x] Backlight circuit designed (2N7002 MOSFET, PWM control)
 - [x] Assign RP2350 SPI pins for display (GPIO4,6,7: MISO, SCK, MOSI)
-- [x] Assign GPIO pins (GPIO5: CS, GPIO19: DC, GPIO43: RST, GPIO29: BL, GPIO46: SD_CS)
+- [x] Assign GPIO pins (GPIO5: CS, GPIO19: DC, GPIO20: RST, GPIO29: BL, GPIO26: SD_CS)
 - [x] **KiCad: Display module complete** (14-pin connector, SPI bus, backlight MOSFET circuit)
 - [ ] Source specific ILI9341 2.4" module (verify pinout, SD slot)
 - [ ] Verify backlight circuit polarity for chosen module
@@ -119,9 +124,9 @@ This document tracks the design and implementation status for all badge subsyste
 
 ### Camera Interface
 - [x] OV2640 DVP interface designed (8-bit parallel + control)
-- [x] Assign RP2350B GPIO pins for DVP (GPIO8-19: D0-D7, PCLK, VSYNC, HREF, XCLK)
+- [x] Assign RP2350B GPIO pins for DVP (GPIO8-18: D0-D7, PCLK, VSYNC, HREF; no XCLK net on the board — J4 has no XCLK pin)
 - [x] CAM_RST and CAM_PWDN: tied with resistors (not GPIO) to free pins for SAO
-- [x] XCLK generation: 20MHz via PWM
+- [ ] Confirm the chosen OV2640 module has its own oscillator (the main badge does not drive XCLK)
 - [x] **KiCad: Camera module complete** (2x9 connector matching OV2640 module, DVP data/control, I2C, RST/PWDN resistors)
 - [ ] Source OV2640 DVP module with 2.54mm pin header
 - [ ] Verify module pinout matches design
@@ -134,7 +139,7 @@ This document tracks the design and implementation status for all badge subsyste
 - [x] D-pad circuit designed (5× tactile switches, active-low with pullups; center doubles as photo capture)
 - [x] Airplane mode switch circuit designed (slide SPDT)
 - [x] PWR LED circuit designed (RGB common-anode APFA3010LSEEZGKQBKC with current-limit resistors)
-- [x] Assign GPIO pins for D-pad, airplane (GPIO21-26)
+- [x] Assign GPIO pins for D-pad (GPIO21-25) and airplane switch (GPIO43)
 - [x] Assign GPIO pins for PWR LED (GPIO30-32: R, G, B)
 - [x] Assign GPIO pin for LED_DATA (GPIO0)
 - [x] **KiCad: User Controls complete** (6× switches — D-pad center doubles as capture, PWR LED with resistors, all global labels)
@@ -148,7 +153,7 @@ This document tracks the design and implementation status for all badge subsyste
 
 ### MCU
 - [x] Select MCU variant: **RP2350B (QFN-80)** — 48 GPIOs required
-- [x] Complete GPIO pin assignment for all subsystems (48/48 allocated)
+- [x] Complete GPIO pin assignment for all subsystems (46/48 allocated; GPIO46, GPIO47 spare)
 - [x] Crystal oscillator: 12MHz, 3215 package, 15pF load caps
 - [x] External flash: W25Q128 16MB QSPI
 - [x] Decoupling capacitors specified (6× 100nF + 2× 10µF)
@@ -210,9 +215,9 @@ This document tracks the design and implementation status for all badge subsyste
 - [x] **KiCad schematic complete** (all sheets: Power, Audio, Display/Camera, User Controls, MCU, Connectors)
 - [x] **KiCad: Board outline created** (edge cuts with rabbit ear antennas and ball tips)
 - [x] **KiCad: Component placement nearly complete** (MCU, power, audio, display, camera sections placed; power ICs on back side)
-- [ ] Trace routing (main board)
-- [ ] Ground pour
-- [ ] DRC clean-up
+- [x] Trace routing (main board) — complete, design locked
+- [x] Ground pour
+- [ ] DRC clean-up — 2026-11-13 run shows 4 clearance errors between U5 pads 12-15 (GND) and the +3V3 pour on the PWR layer (0.3755mm vs 0.5mm), and those four pads have no matching schematic pin; review before fab
 - [ ] Evaluate if main board can be 2-layer with RF removed
 - [ ] Integration test: carrier + main board
 
@@ -220,10 +225,10 @@ This document tracks the design and implementation status for all badge subsyste
 
 ## Next Steps (Priority Order)
 
-1. **Main board routing** — Complete trace routing, ground pour, and DRC on main badge PCB
-2. **Source long-lead components** — SA818, display, camera modules
-3. **Generate carrier Gerbers** — VHF and UHF carriers are DRC clean and ready
-4. **Prototype ordering** — JLCPCB or similar (carriers can go first)
+1. **Pre-fab review** — resolve the main badge U5 clearance item; look over the UHF carrier PCB in KiCad
+2. **Source long-lead components** — SA818, display, camera modules, LPF tuning values (Murata GJM15 caps, Coilcraft 0603HP inductors)
+3. **Generate Gerbers** — main badge and both carriers
+4. **Prototype ordering** — JLCPCB or similar (carriers can go first); tune the LPFs on the prototypes
 5. **Breadboard prototype** — Validate circuits before main board PCB fab
 6. **Firmware development** — Can start in parallel with hardware
 
@@ -237,9 +242,9 @@ This document tracks the design and implementation status for all badge subsyste
 | BOM finalized | ✓ | Done |
 | PCB outline designed | ✓ | Done |
 | KiCad schematic | ✓ | **Complete** — ERC clean (Main board + VHF/UHF carriers) |
-| Carrier PCB layout | ✓ | **Complete** — Both VHF and UHF carriers routed, DRC clean |
-| Main badge PCB layout | | **In progress** — Component placement nearly complete, routing next |
-| Gerbers generated | | Not started (carriers ready soon) |
+| Carrier PCB layout | ✓ | **Complete** — Both carriers routed with harmonic LPF; 0 unconnected, 0 parity issues |
+| Main badge PCB layout | ✓ | **Complete** — Routed and locked; one U5 clearance item to review |
+| Gerbers generated | | Not started |
 | Prototype ordered | | Not started |
 | First power-on | | Not started |
 | Firmware MVP | | Not started |

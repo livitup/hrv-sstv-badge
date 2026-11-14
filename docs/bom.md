@@ -1,7 +1,7 @@
 # DEFCON SSTV Badge — Bill of Materials
 
-**Version:** 3.2
-**Last Updated:** 2026-03-22
+**Version:** 3.3
+**Last Updated:** 2026-11-13
 **Source:** KiCad schematic export, verified against `docs/electrical-design.md`
 
 This is the consolidated BOM for the DEFCON SSTV badge. Components are organized by subsystem and assembly method.
@@ -248,21 +248,26 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 
 ## SA818 Carrier Boards
 
-*Assembled separately — one per frequency band. Two variants with identical PCB, different module and resistor population.*
+*Assembled separately — one per frequency band. Two variants with the same PCB layout; they differ in the module, the band-ID resistor, and the harmonic low-pass filter values. LPF values are calculated starting points and may change after prototype tuning — see `docs/engineers-notebook/harmonic-filter-design.md`.*
 
 ### SA818-V Carrier (VHF, 134-174 MHz)
 
 | Ref | Qty | Value | Package | Assembly | Notes |
 |-----|-----|-------|---------|----------|-------|
 | U9 | 1 | SA818V | Module (2mm pitch) | Fab | VHF transceiver |
-| J13 | 1 | SMA right-angle | PCB mount | Fab | Female, 50Ω, to ANT |
-| J14 | 1 | 1×8 male header | 2.54mm | User | Power/Audio |
-| J15 | 1 | 1×8 male header | 2.54mm | User | Control/Data |
+| J13 | 1 | SMA edge-mount | Amphenol 132289 footprint | Fab | Female, 50Ω, LPF output |
+| J14 | 1 | 1×8 male header | 2.54mm | User | Power/Audio (mounted on back) |
+| J15 | 1 | 1×8 male header | 2.54mm | User | Control/Data (mounted on back) |
 | J16 | 1 | 1×3 male header | 2.54mm | User | Mechanical (GND) |
 | J17 | 1 | 1×3 male header | 2.54mm | User | Mechanical (GND) |
 | C54 | 1 | 100nF | 0402 | Fab | Decoupling |
 | C55 | 1 | 10µF | 0603 | Fab | Bulk capacitor |
 | R18 | 1 | 0Ω | 0402 | Fab | Band ID → GND (VHF) |
+| C58, C61 | 2 | 22pF C0G ±2% | 0402 | Fab | Harmonic LPF shunt (Murata GJM15) |
+| C59, C60 | 2 | 39pF C0G ±2% | 0402 | Fab | Harmonic LPF shunt (Murata GJM15) |
+| C62, C63 | — | DNP | 0402 | — | LPF tuning footprints (unpopulated) |
+| L3, L5 | 2 | 68nH | 0603 wirewound | Fab | Harmonic LPF series (Coilcraft 0603HP) |
+| L4 | 1 | 82nH | 0603 wirewound | Fab | Harmonic LPF series (Coilcraft 0603HP) |
 | ANT | 1 | VHF stubby antenna | SMA male | Included | 144 MHz band |
 
 ### SA818-U Carrier (UHF, 400-480 MHz)
@@ -270,43 +275,48 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 | Ref | Qty | Value | Package | Assembly | Notes |
 |-----|-----|-------|---------|----------|-------|
 | U10 | 1 | SA818U | Module (2mm pitch) | Fab | UHF transceiver |
-| J19 | 1 | SMA right-angle | PCB mount | Fab | Female, 50Ω, to ANT |
-| J18 | 1 | 1×8 male header | 2.54mm | User | Power/Audio |
-| J20 | 1 | 1×8 male header | 2.54mm | User | Control/Data |
+| J19 | 1 | SMA edge-mount | Amphenol 132289 footprint | Fab | Female, 50Ω, LPF output |
+| J18 | 1 | 1×8 male header | 2.54mm | User | Power/Audio (mounted on back) |
+| J20 | 1 | 1×8 male header | 2.54mm | User | Control/Data (mounted on back) |
 | J21 | 1 | 1×3 male header | 2.54mm | User | Mechanical (GND) |
 | J22 | 1 | 1×3 male header | 2.54mm | User | Mechanical (GND) |
 | C56 | 1 | 100nF | 0402 | Fab | Decoupling |
 | C57 | 1 | 10µF | 0603 | Fab | Bulk capacitor |
-| — | — | DNP | — | — | R18 equivalent - Band ID floating (UHF) |
+| R18 | 1 | 10kΩ | 0402 | Fab | Band ID pull-up to SA818 VCC (UHF) |
+| C64, C67 | 2 | 6.8pF C0G ±2% | 0402 | Fab | Harmonic LPF shunt (Murata GJM15) |
+| C65, C66 | 2 | 12pF C0G ±2% | 0402 | Fab | Harmonic LPF shunt (Murata GJM15) |
+| C68, C69 | — | DNP | 0402 | — | LPF tuning footprints (unpopulated) |
+| L6, L8 | 2 | 22nH | 0603 wirewound | Fab | Harmonic LPF series (Coilcraft 0603HP) |
+| L7 | 1 | 24nH | 0603 wirewound | Fab | Harmonic LPF series (Coilcraft 0603HP) |
 | ANT | 1 | UHF stubby antenna | SMA male | Included | 430 MHz band |
 
 ### Carrier Header Pinouts
 
-**J14 (Power/Audio):**
+**J14 / J18 (Power/Audio) — mates with main badge J7:**
 | Pin | Signal | Description |
 |-----|--------|-------------|
 | 1 | SA818_VCC | Power from main board load switch |
 | 2 | GND | Ground |
-| 3 | MIC+ | TX audio input |
-| 4 | GND | Ground |
-| 5 | SPK+ | RX audio output |
-| 6 | GND | Ground |
+| 3 | GND | Ground |
+| 4 | MIC+ | TX audio input |
+| 5 | GND | Ground |
+| 6 | SPK+ | RX audio output |
 | 7 | GND | Ground |
 | 8 | GND | Ground |
 
-**J15 (Control/Data):**
+**J15 / J20 (Control/Data) — mates with main badge J8:**
 | Pin | Signal | Description |
 |-----|--------|-------------|
-| 1 | SA818_PTT | Push-to-talk (active low) |
-| 2 | SA818_PD | Power down (active low) |
-| 3 | SA818_HL | High/Low power select |
-| 4 | SA818_SQ | Squelch output |
-| 5 | SA818_TX | UART TX (MCU→SA818) |
-| 6 | SA818_RX | UART RX (SA818→MCU) |
-| 7 | SA818_ID | Band ID (GND=VHF, float=UHF) |
+| 1 | SA818_RX | UART RX (SA818 TXD→MCU) |
+| 2 | SA818_TX | UART TX (MCU→SA818 RXD) |
+| 3 | SA818_PTT | Push-to-talk (active low) |
+| 4 | SA818_PD | Power down (active low) |
+| 5 | SA818_HL | High/Low power select |
+| 6 | SA818_SQ | Squelch output |
+| 7 | SA818_ID | Band ID (GND=VHF, pulled up to SA818 VCC=UHF) |
 | 8 | GND | Ground |
 
-**J16, J17 (Mechanical):** All pins → GND (extra ground connections for RF)
+**J16, J17 / J21, J22 (Mechanical):** All pins → GND (extra ground connections for RF)
 
 **Subtotal (per carrier):** ~$17.00
 *(SA818 ~$10, SMA ~$2, antenna ~$4, PCB+parts ~$1)*
@@ -320,6 +330,7 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 | Value | Qty | Package | Use |
 |-------|-----|---------|-----|
 | 0Ω | 1 | 0402 | VHF carrier band ID (R18) |
+| 10kΩ | 1 | 0402 | UHF carrier band ID pull-up (R18) |
 | 100Ω | 2 | 0603 | PWR LED G/B (R15, R16) |
 | 220Ω | 1 | 0603 | PWR LED R (R14) |
 | 470Ω | 1 | 0603 | TX attenuator (R6) |
@@ -341,7 +352,11 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 
 | Value | Qty | Package | Use |
 |-------|-----|---------|-----|
+| 6.8pF | 2 | 0402 C0G | UHF carrier LPF (C64, C67) |
 | 15pF | 2 | 0402 | Crystal load (C_Y1, C_Y2) |
+| 12pF | 2 | 0402 C0G | UHF carrier LPF (C65, C66) |
+| 22pF | 2 | 0402 C0G | VHF carrier LPF (C58, C61) |
+| 39pF | 2 | 0402 C0G | VHF carrier LPF (C59, C60) |
 | 4.7nF | 1 | 0603 | RX anti-alias (C27) |
 | 10nF | 1 | 0603 | TX filter (C24) |
 | 100nF | 38 | 0402/0603 | Decoupling: MCU (C3-C7, C9), LEDs (C28-C53), ICs, carriers (C54, C56) |
@@ -354,6 +369,10 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 
 | Value | Qty | Package | Use |
 |-------|-----|---------|-----|
+| 22nH | 2 | 0603 wirewound | UHF carrier LPF (L6, L8) |
+| 24nH | 1 | 0603 wirewound | UHF carrier LPF (L7) |
+| 68nH | 2 | 0603 wirewound | VHF carrier LPF (L3, L5) |
+| 82nH | 1 | 0603 wirewound | VHF carrier LPF (L4) |
 | 1µH | 1 | 3×3mm | TPS63001 buck-boost (L1) |
 | 3.3µH | 1 | 3×3mm | RP2350 internal regulator (L2) |
 

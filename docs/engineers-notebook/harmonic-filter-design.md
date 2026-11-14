@@ -225,7 +225,7 @@ The filter performance lives or dies by layout. These rules are based on standar
 
 ### 50Ω microstrip in/out
 
-- Calculate trace width for the chosen PCB stackup. For 1.6mm FR4 (εr ≈ 4.3), 1 oz copper, microstrip on outer layer over solid ground: ~3.0mm wide.
+- Calculate trace width for the chosen PCB stackup. For 1.6mm FR4 (εr ≈ 4.3), 1 oz copper, microstrip on outer layer over solid ground: ~3.0mm wide. **As built, both carriers use a 0.8mm RF trace instead:** a 3mm trace cannot pass between 0402 pads, and the segments are only 5-10mm long, far shorter than a wavelength, so the mismatch is small and is absorbed in prototype tuning. See the as-built notes in each carrier's `LPF-INTEGRATION.md`.
 - Use a microstrip calculator (KiCad has one built in: PCB Calculator → Transmission Lines).
 - Trace width should taper smoothly into the filter section.
 
@@ -354,3 +354,9 @@ Implementation steps and KiCad-specific procedures: see the per-board integratio
 ---
 
 *Last updated: 2026-04-30*
+
+---
+
+## Addendum (2026-11-13): UHF starting values reduced
+
+A first-order model of the as-built carrier layout (trace sections, cap/via inductance, inductor loss) showed the calculated UHF values (8.2 pF / 24 nH / 15 pF / 27 nH, fc = 470 MHz) losing about 5 dB in the 420–450 MHz band once layout parasitics are included; the 4% margin above the band edge is too thin. The UHF carrier is now fitted with **6.8 pF / 22 nH / 12 pF / 24 nH** as starting values (modelled: ~0.9 dB loss, 20 dB return loss, 51 dB 2nd-harmonic rejection). The VHF values model fine as built (~0.9 dB loss, 27 dB return loss, 52 dB) and are unchanged. Details and the comparison table are in `hardware/sa818-u-carrier/LPF-INTEGRATION.md`. These are model estimates; prototype measurements decide the final BOM.
