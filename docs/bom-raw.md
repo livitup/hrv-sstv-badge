@@ -24,7 +24,7 @@
 
 | Part | Value/Type | Qty |
 |------|------------|-----|
-| 2N7002 | N-MOSFET SOT-23 | 1 |
+| AO3401A | P-MOSFET SOT-23 | 1 |
 | PESD5V0S1BL | TVS Diode | 1 |
 | APFA3010 | RGB LED (common-anode) | 1 |
 | WS2812B (5050) | Addressable LED | 10 |
@@ -69,7 +69,7 @@
 
 | Value | Qty | Notes |
 |-------|-----|-------|
-| 1µH | 1 | TPS63001 buck-boost |
+| 2.2µH | 1 | TPS63001 buck-boost |
 | 3.3µH | 1 | RP2350 internal regulator |
 
 ## Crystal

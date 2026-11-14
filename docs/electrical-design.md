@@ -87,7 +87,7 @@ The SA818 runs directly from the LiPo battery (via load switch), not through the
 
 | Ref | Value | Package | Notes |
 |-----|-------|---------|-------|
-| L1 | 1µH | 3x3mm | Coilcraft XAL3030 or similar |
+| L1 | 2.2µH | 3x3mm | Coilcraft XAL3030 or similar (TPS63001 datasheet value) |
 | C_IN1 | 10µF | 0805 | X5R/X7R, 10V |
 | C_IN2 | 10µF | 0805 | X5R/X7R, 10V |
 | C_OUT1 | 10µF | 0805 | X5R/X7R, 10V |
@@ -1152,31 +1152,28 @@ No workflow requires simultaneous display update and SD access.
 
 ### Backlight PWM Circuit
 
-Most modules wire the backlight LED directly to VCC. To add PWM dimming, we switch the LED ground path:
+The 14-pin ILI9341 module that J3 is pinned for lights its backlight when the LED pin is driven **high** (tie it to 3.3 V for always-on). To add PWM dimming, a P-channel MOSFET switches 3.3 V onto that pin:
 
 ```
-    RP2350                                          Display Module
-    ┌───────┐                                       LED/BLK pin
-    │       │                                            │
-    │  GPIO ├────┐                                       │
-    │  (BL) │    │                                       │
-    │       │   [1kΩ] R_BL                               │
-    └───────┘    │                                       │
-                 └──┤ G                                  │
-                    │      ┌─────────────────────────────┘
-                    │ 2N7002
-                    ├ S    │ D
-                    │      │
-                   GND    GND
+                    +3V3
+                     │
+                     │ S
+    RP2350      ┌──┤ G   Q1 AO3401A (P-channel, SOT-23)
+    ┌───────┐   │    │ D
+    │  GPIO ├─[1kΩ]  └──────────────────────► Display module LED pin (J3 pin 8)
+    │  (BL) │  R11
+    └───────┘
 
-    PWM HIGH → MOSFET ON → Backlight ON
-    PWM LOW  → MOSFET OFF → Backlight OFF
-    PWM duty cycle controls brightness
+    PWM LOW  → MOSFET ON  → Backlight ON
+    PWM HIGH → MOSFET OFF → Backlight OFF
+    Brightness = fraction of the time the pin is LOW (inverted PWM)
 ```
 
 **PWM Frequency:** 1-10 kHz (higher = no visible flicker)
 
-**Note:** Some modules have the LED anode on the BLK pin (switch high side). Check your specific module. The 2N7002 circuit above assumes LED cathode on BLK pin (more common).
+**Reset behaviour:** the gate has no pull-up. While the RP2350 is in reset or before firmware configures GPIO29, the pin's default pull-down holds the gate low, so the backlight is on. Firmware turns it off by driving GPIO29 high.
+
+**Note:** An earlier revision used a 2N7002 switching the LED pin to ground. That assumed the LED pin was the backlight cathode, which is wrong for this module (found in the 2026-11-14 schematic review). A module whose pin is the cathode would need the old low-side circuit instead.
 
 ### Complete Display Schematic
 
@@ -1215,10 +1212,10 @@ Most modules wire the backlight LED directly to VCC. To add PWM dimming, we swit
     └───────┘    │                                     │             │
                  └──┤ G                                │             │
                     │      ┌───────────────────────────┤ LED (BLK)   │
-               2N7002│ D ←─┘                           │             │
+              AO3401A│ D ←─┘                           │             │
                     ├ S                                │             │
                     │                                  │             │
-                   GND                                 └─────────────┘
+                  +3V3                                 └─────────────┘
 ```
 
 ### GPIO Summary for Display
@@ -1241,7 +1238,7 @@ Most modules wire the backlight LED directly to VCC. To add PWM dimming, we swit
 | Ref | Value | Package | Assembly | Notes |
 |-----|-------|---------|----------|-------|
 | U_DISP | ILI9341 2.4" module | Breakout | User | 320×240, SPI, w/ SD slot |
-| Q_BL | 2N7002 | SOT-23 | Fab | Backlight MOSFET |
+| Q_BL (Q1) | AO3401A | SOT-23 | Fab | Backlight high-side P-MOSFET |
 | R_BL | 1kΩ | 0603 | User | Gate resistor |
 
 **Cost:** ~$8-12 for module + ~$0.10 for MOSFET/resistor
@@ -1561,7 +1558,7 @@ Note: CAM_RST tied HIGH via 10kΩ, CAM_PWDN tied LOW via 10kΩ (not GPIO control
 
 | GPIO | Function | Notes |
 |------|----------|-------|
-| 29 | DISP_BL | Backlight PWM (via 2N7002) |
+| 29 | DISP_BL | Backlight PWM (via AO3401A, low = on) |
 | 30 | PWR_R | PWR LED red channel (PWM) |
 | 31 | PWR_G | PWR LED green channel (PWM) |
 | 32 | PWR_B | PWR LED blue channel (PWM) |

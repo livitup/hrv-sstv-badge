@@ -12,6 +12,8 @@ This directory contains design decisions, trade-off analyses, and educational ba
 
 - **[electrical-design-decisions.md](electrical-design-decisions.md)** — Power system redesign rationale, buck-boost regulator selection, audio codec selection (PCM5102A vs WM8960), carrier board rationale, MCU variant selection (RP2350B), display/camera interface decisions, alternate part options
 
+- **[main-badge-review-2026-11.md](main-badge-review-2026-11.md)** — Decisions from the November 2026 review of both carriers, the routed main badge and the schematic-versus-datasheet check: carrier layout choices, camera clock requirement, charger wiring errors, RP2350 regulator rebuilt to the reference layout, layout hygiene rules, border LED pinout error, TX attenuator, backlight high-side switch, and the list of open questions.
+
 ### Trade-Off Analyses
 
 - **[rda1846-vs-sa818-analysis.md](rda1846-vs-sa818-analysis.md)** — Detailed comparison of using the bare RDA1846S transceiver IC vs the SA818 module (which contains the RDA1846S internally). Covers engineering effort, cost, SSTV audio compatibility, assembly, sourcing risk, and carrier board implications. **Decision: Stay with SA818.**
@@ -38,4 +40,4 @@ This directory contains design decisions, trade-off analyses, and educational ba
 
 ---
 
-*Last updated: 2026-04-30*
+*Last updated: 2026-11-14*

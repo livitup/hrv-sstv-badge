@@ -1077,16 +1077,6 @@
 	)
 	(wire
 		(pts
-			(xy 219.71 78.74) (xy 224.79 78.74)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "05553975-79c0-451d-afab-0e7268aff583")
-	)
-	(wire
-		(pts
 			(xy 186.69 68.58) (xy 186.69 120.65)
 		)
 		(stroke
@@ -1284,16 +1274,6 @@
 			(type default)
 		)
 		(uuid "4b6678f1-a44e-4022-b7de-05d53be5f6e4")
-	)
-	(wire
-		(pts
-			(xy 209.55 78.74) (xy 212.09 78.74)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "55f48301-38ec-445c-8ee8-4cb62bbdf055")
 	)
 	(wire
 		(pts
@@ -1644,16 +1624,6 @@
 			(type default)
 		)
 		(uuid "cdec3917-c5f3-4e8d-8e52-ee4eb423df07")
-	)
-	(wire
-		(pts
-			(xy 209.55 91.44) (xy 209.55 120.65)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "d09272d7-f6d5-443f-997a-3d87d7d4522b")
 	)
 	(wire
 		(pts
@@ -2744,7 +2714,7 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 215.9 78.74 90)
+		(at 217.17 87.63 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -2753,7 +2723,7 @@
 		(fields_autoplaced yes)
 		(uuid "72def896-9f36-4f61-99a6-4c7fcda895f6")
 		(property "Reference" "R6"
-			(at 215.9 72.39 90)
+			(at 220.98 86.36 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2761,7 +2731,7 @@
 			)
 		)
 		(property "Value" "470"
-			(at 215.9 74.93 90)
+			(at 220.98 88.9 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2769,7 +2739,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 215.9 80.518 90)
+			(at 215.392 87.63 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2778,7 +2748,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 215.9 78.74 0)
+			(at 217.17 87.63 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2787,7 +2757,7 @@
 			)
 		)
 		(property "Description" "Resistor"
-			(at 215.9 78.74 0)
+			(at 217.17 87.63 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2796,7 +2766,7 @@
 			)
 		)
 		(property "KLC_S4.2_DVDD" ""
-			(at 215.9 78.74 90)
+			(at 217.17 87.63 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2805,7 +2775,7 @@
 			)
 		)
 		(property "KLC_S4.2_VREG_LX" ""
-			(at 215.9 78.74 90)
+			(at 217.17 87.63 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3929,5 +3899,87 @@
 				)
 			)
 		)
+	)
+	(wire
+		(pts
+			(xy 209.55 78.74) (xy 217.17 78.74)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1ac65766-b193-4462-a6ad-168eb17d7d43")
+	)
+	(wire
+		(pts
+			(xy 217.17 78.74) (xy 224.79 78.74)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b9685903-c994-491d-bc42-2e41d06585ef")
+	)
+	(wire
+		(pts
+			(xy 217.17 78.74) (xy 217.17 83.82)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "51e14b2a-896b-44e6-b686-f5516c39afcc")
+	)
+	(wire
+		(pts
+			(xy 209.55 91.44) (xy 209.55 95.25)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "000b8c17-c8aa-4166-88ca-a57f41d2a02e")
+	)
+	(wire
+		(pts
+			(xy 209.55 95.25) (xy 209.55 120.65)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "02bc2ae7-b4ee-49be-ba71-37b56820165a")
+	)
+	(wire
+		(pts
+			(xy 217.17 91.44) (xy 217.17 95.25)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e6cc9250-e29e-4b2f-9d81-3c9c0e2217ba")
+	)
+	(wire
+		(pts
+			(xy 217.17 95.25) (xy 209.55 95.25)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a97dd82f-a77d-4dc7-920e-e05f0d3dce99")
+	)
+	(junction
+		(at 217.17 78.74)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "44a065a1-fa07-4737-a870-a929ead39d22")
+	)
+	(junction
+		(at 209.55 95.25)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "e995c13e-713c-4551-9196-c89489b9aa44")
 	)
 )

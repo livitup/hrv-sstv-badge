@@ -73,7 +73,7 @@ See `docs/electrical-design.md` for complete audio circuit design and component 
 
 - **Resolution**: 320×240 pixels, landscape orientation
 - **Interface**: SPI (up to 62.5 MHz)
-- **Backlight**: PWM dimming via GPIO + 2N7002 MOSFET
+- **Backlight**: PWM dimming via GPIO + AO3401A P-channel high-side switch (GPIO low = on)
 - **SD Card**: Standalone SD socket (J10) on main badge, shared SPI bus with display (separate CS pins)
 - **Touch**: None (D-pad navigation)
 
@@ -221,7 +221,8 @@ defcon-sstv-badge/
 - **Hardware design**: Schematic complete, ERC clean
 - **KiCad**: All schematic sheets complete; main badge PCB routed and locked; both carrier PCBs complete with harmonic LPF (0 unconnected, 0 parity issues)
 - **Main badge review (2026-11-13)**: charger wiring errors fixed (OUT→VSYS, IN→VBUS), radio supply path widened (2.0mm SA818_VCC path on the PWR layer), USB 27Ω and BOOTSEL 1kΩ resistors and extra decoupling added — see `docs/project-status.md`
-- **Open before fab**: visual review of the reworked main badge; open design questions (fuel gauge supply, load switch rating, WS2812B at 3.3V, crystal series resistor); LPF prototype tuning
+- **Schematic review (2026-11-14)**: border LED pinout (wrong symbol for the 2020 package), TX attenuator wiring, backlight switch polarity (now AO3401A high-side, GPIO low = on) and L1 value (2.2µH) fixed in schematic and PCB — see `docs/engineers-notebook/main-badge-review-2026-11.md`
+- **Open before fab**: visual review of the reworked main badge; open design questions (fuel gauge supply, radio supply drop / load switch rating, WS2812B supply voltage, crystal series resistor, band-ID scheme); LPF prototype tuning
 - **Documentation**: Comprehensive technical docs, power/RF design documented
 - **Project structure**: Professional repository setup
 - **Firmware development**: Not started

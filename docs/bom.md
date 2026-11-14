@@ -47,7 +47,7 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 | Ref | Qty | Value | Package | Assembly | Notes |
 |-----|-----|-------|---------|----------|-------|
 | U5 | 1 | TPS63001DRCR | QFN-10 (3×3mm) | Fab | Fixed 3.3V output |
-| L1 | 1 | 1µH | 3×3mm | Fab | Coilcraft XAL3030-102 or equiv |
+| L1 | 1 | 2.2µH | 3×3mm | Fab | Coilcraft XAL3030-222 or equiv (TPS63001 datasheet value) |
 | C_IN, C_OUT1 | 2 | 10µF | 0805 | Fab | X5R/X7R, 10V, input/output |
 
 *Note: PS/SYNC resistor intentionally omitted — forced PWM mode provides cleaner audio with minimal ripple. Power save mode would reduce idle current but risks noise coupling into SSTV audio path.*
@@ -148,7 +148,7 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 | Ref | Qty | Value | Package | Assembly | Notes |
 |-----|-----|-------|---------|----------|-------|
 | J3 | 1 | ILI9341 2.4" module | Breakout | Module | 320×240 SPI display |
-| Q1 | 1 | 2N7002 | SOT-23 | Fab | Backlight control MOSFET |
+| Q1 | 1 | AO3401A | SOT-23 | Fab | Backlight high-side switch (P-channel) |
 | R11 | 1 | 1kΩ | 0603 | User | Gate pull-down |
 
 **Subtotal:** ~$10.00
@@ -389,7 +389,7 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 | 24nH | 1 | 0603 wirewound | UHF carrier LPF (L7) |
 | 68nH | 2 | 0603 wirewound | VHF carrier LPF (L3, L5) |
 | 82nH | 1 | 0603 wirewound | VHF carrier LPF (L4) |
-| 1µH | 1 | 3×3mm | TPS63001 buck-boost (L1) |
+| 2.2µH | 1 | 3×3mm | TPS63001 buck-boost (L1) |
 | 3.3µH | 1 | 0806 (2016) | RP2350 internal regulator (L2), Abracon AOTA-B201610S3R3-101-T |
 
 ---

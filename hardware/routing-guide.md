@@ -270,7 +270,7 @@ GPIO30/31/32 through R14/R15/R16 to D1 cathodes. D1 anode to +3V3. Place near bo
 **This is the noisiest part of the board.** Keep it compact and away from analog audio.
 
 ```
-    C_IN (10µF)          L1 (1µH)           C_OUT1 (10µF)
+    C_IN (10µF)          L1 (2.2µH)         C_OUT1 (10µF)
     ┌────────┐          ┌──────┐           ┌────────┐
     │        │          │      │           │        │
 VBAT────┤        ├──VIN  SW├──┤      ├──VOUT──┤        ├── +3V3

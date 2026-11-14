@@ -1,6 +1,6 @@
 # Project Status — DEFCON SSTV Badge
 
-**Last Updated:** 2026-11-13
+**Last Updated:** 2026-11-14
 
 This document tracks the design and implementation status for all badge subsystems.
 
@@ -54,7 +54,7 @@ This document tracks the design and implementation status for all badge subsyste
 ### Power System
 - [x] TPS63001 buck-boost circuit designed (3.3V output)
 - [x] TPS22919 load switch circuit designed (SA818 power control)
-- [x] Inductor selected: 1µH (Coilcraft XAL3030 or equivalent)
+- [x] Inductor selected: 2.2µH (Coilcraft XAL3030 or equivalent; TPS63001 datasheet value)
 - [x] **KiCad: TPS63001 complete** (VSYS input, +3.3V output, inductor, caps)
 - [x] **KiCad: TPS22919 load switch complete** (VSYS input, SA818_VCC output, SA818_PD enable, output caps)
 - [ ] Verify TPS63001 QFN-10 footprint in KiCad
@@ -103,7 +103,7 @@ This document tracks the design and implementation status for all badge subsyste
 - [x] Assign RP2350 GPIO pins for I2S (GPIO3: BCK, GPIO1: LRCK, GPIO2: DIN)
 - [x] Assign RP2350 ADC GPIO pin for RX audio (GPIO40: ADC0)
 - [x] **KiCad: PCM5102A DAC complete** (I2S, power, charge pump caps)
-- [x] **KiCad: TX output filter complete** (R5/R6 attenuator, C24 LPF, C25 DC block → MIC+/MIC-)
+- [x] **KiCad: TX output filter complete** (R5/R6 100:1 divider, C24 LPF, C25 DC block → MIC+; R6 wiring corrected 2026-11-14)
 - [x] **KiCad: RX input filter complete** (C26 DC block, R7/R8/C27 anti-alias, R9/R10 bias → RX_AUDIO)
 - [ ] Verify PCM5102A TSSOP-20 footprint in KiCad
 - [ ] Test TX audio quality with oscilloscope
@@ -112,12 +112,12 @@ This document tracks the design and implementation status for all badge subsyste
 
 ### Display Interface
 - [x] ILI9341 2.4" module selected (320×240), standalone SD socket (J10)
-- [x] Backlight circuit designed (2N7002 MOSFET, PWM control)
+- [x] Backlight circuit designed (AO3401A P-channel high-side switch, PWM control, GPIO low = on)
 - [x] Assign RP2350 SPI pins for display (GPIO4,6,7: MISO, SCK, MOSI)
 - [x] Assign GPIO pins (GPIO5: CS, GPIO19: DC, GPIO20: RST, GPIO29: BL, GPIO26: SD_CS)
 - [x] **KiCad: Display module complete** (14-pin connector, SPI bus, backlight MOSFET circuit)
 - [ ] Source specific ILI9341 2.4" module (verify pinout, SD slot)
-- [ ] Verify backlight circuit polarity for chosen module
+- [ ] Confirm the chosen module's LED pin is active-high (the circuit assumes the common 14-pin ILI9341 module)
 - [ ] Test SPI communication at various clock speeds
 - [ ] Test SD card on shared SPI bus
 - [ ] Validate SSTV image display (all common modes)
@@ -159,7 +159,7 @@ This document tracks the design and implementation status for all badge subsyste
 - [x] Decoupling capacitors specified (6× 100nF + 2× 10µF)
 - [x] BOOTSEL button designed (on QSPI_SS, for UF2 bootloader)
 - [x] I2C pullups specified (4.7kΩ on SDA/SCL for shared bus)
-- [x] Internal voltage regulator: L2 (3.3µH) inductor, C_DVDD (1µF), power pin assignments
+- [x] Internal voltage regulator: L2 (3.3µH, Abracon AOTA-B201610S3R3-101-T), 4.7µF input/output caps, 33Ω + 4.7µF on VREG_AVDD (Raspberry Pi reference design)
 - [x] **KiCad: MCU power section entered** (VDD pins, decoupling caps, internal regulator)
 - [x] KiCad: Crystal oscillator circuit
 - [x] KiCad: QSPI flash circuit
@@ -190,7 +190,7 @@ This document tracks the design and implementation status for all badge subsyste
 - [x] Animation colors specified (amber, green, light blue, white, soft blue)
 - [x] PCB outline designed: 120×120mm body with diagonal rabbit ear antennas and semicircular ball tips
 - [x] LED placement defined: 5 per ear (WS2812B 5050), 16 border (WS2812B-2020 in 3x5x3x5 layout)
-- [x] **KiCad: WS2812B chain complete** (26 LEDs with 100nF bypass caps, LED_DATA input, organized by section)
+- [x] **KiCad: WS2812B chain complete** (26 LEDs with 100nF bypass caps, LED_DATA input, organized by section; border LEDs moved to the correct WS2812B-2020 symbol 2026-11-14)
 - [x] **KiCad: PCB outline created** (edge cuts with rabbit ear antennas and ball tips)
 - [x] **KiCad: All 26 LEDs placed** (10 ear LEDs on antennas, 16 border LEDs around display)
 - [ ] Implement PIO driver for 26-LED chain
@@ -219,7 +219,7 @@ This document tracks the design and implementation status for all badge subsyste
 - [x] Ground pour
 - [x] DRC clean-up — 0 unconnected, 0 schematic-parity issues; only the excluded silkscreen items remain
 - [x] **Design review fixes (2026-11-13)** — see "Main Badge Review" below
-- [ ] Open questions from the review: fuel gauge supply (VSYS vs cell), TPS22919 rating vs TX current, WS2812B on 3.3V, crystal series resistor
+- [ ] Open questions from the reviews: fuel gauge supply (VSYS vs cell) and thermistor sharing, radio supply drop and TPS22919 rating vs TX current, WS2812B supply voltage, crystal series resistor, band-ID scheme, SD card pull-ups, VBUS capacitance, camera XCLK — see `engineers-notebook/main-badge-review-2026-11.md`
 - [ ] Not done: third DVDD cap at U1 pin 32 (no room), USB D+/D− length matching, test points
 - [ ] Evaluate if main board can be 2-layer with RF removed
 - [ ] Integration test: carrier + main board
@@ -237,6 +237,17 @@ A full review of the routed board found two schematic errors that would have sto
 - **RP2350 regulator rebuilt to the Raspberry Pi reference layout (2026-11-14)**: Abracon polarity-marked inductor, 4.7µF input and output capacitors, 33Ω + 4.7µF filter on VREG_AVDD, switch-node trace run between the capacitor pads. The five back-layer signal tracks that crossed under the regulator (USB D+, SAO1_GPIO2, I2C SCL, I2C SDA, SD_CS) were rerouted around its north side, so the back layer under it now carries only the 1.1 V trunk, as in the reference: two vias at the output capacitor feed a 0.6 mm back-layer trace under the chip, and the capacitor grounds have two local vias. Remaining differences: the copper is drawn as tracks rather than small filled polygons, and this is a 4-layer board (ground plane directly under the regulator) where the reference is 2-layer. `defcon-sstv-badge.kicad_dru` allows the reference's 0.12 mm gaps for the three regulator nets only.
 - **Board-wide tidy (2026-11-14)**: every signal net one width, power stubs normalised, redundant ground links and via stubs removed, bent traces straightened, five long detours rerouted.
 - **Housekeeping**: stale zone fill refilled (U5 clearance errors), U5 thermal-via pads renumbered to match the symbol, stray net-less via removed, real 1.6mm stackup entered, eight fiducials added.
+
+### Schematic Review Against Datasheets (2026-11-14)
+
+Every sheet was checked against the part datasheets. Fixed in schematic and PCB:
+
+- **Border LEDs D12–D27 were miswired.** They used the 5050 WS2812B symbol on the 2020 footprint; the two packages number their pins differently. Now on the WS2812B-2020 symbol, and all 16 re-routed.
+- **TX attenuator** — R6 (470Ω) was in series instead of to ground; it is now the 100:1 divider the design calls for.
+- **Backlight** — Q1 is now an AO3401A P-channel high-side switch, because the 14-pin ILI9341 module's LED pin must be driven high. PWM is inverted (GPIO low = on).
+- **L1** — 1µH → 2.2µH (TPS63001 datasheet value).
+
+Not verifiable on paper: camera module pinout against J4, battery connector polarity, APFA3010 pad numbering. Check these with parts in hand.
 
 ---
 
