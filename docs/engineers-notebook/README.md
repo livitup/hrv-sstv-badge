@@ -14,6 +14,8 @@ This directory contains design decisions, trade-off analyses, and educational ba
 
 - **[main-badge-review-2026-11.md](main-badge-review-2026-11.md)** — Decisions from the November 2026 review of both carriers, the routed main badge and the schematic-versus-datasheet check: carrier layout choices, camera clock requirement, charger wiring errors, RP2350 regulator rebuilt to the reference layout, layout hygiene rules, border LED pinout error, TX attenuator, backlight high-side switch, and the list of open questions.
 
+- **[firmware-notes.md](firmware-notes.md)** — Hardware-driven constraints for the firmware (inverted backlight PWM, LED current cap, radio pin sequencing, fuel gauge mode, band-ID timing), what is already designed (display timeout), and open questions — including the TODO on what to do with the debug port.
+
 ### Trade-Off Analyses
 
 - **[led-supply-rail.md](led-supply-rail.md)** — Why the WS2812B LEDs have their own 4.0 V buck-boost rail: datasheet supply range, the 3.3 V data-level constraint that rules out 5 V, the four options compared (VSYS direct, boost, buck-boost, leave at 3.3 V), and the layout choices for distributing the rail. **Decision: TPS63000 buck-boost at 4.0 V.**
