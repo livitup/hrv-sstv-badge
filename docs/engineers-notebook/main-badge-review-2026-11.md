@@ -232,7 +232,7 @@ The list of smaller hardware items from the review was worked through in one pas
 
 ### Not done, with reasons
 
-**Third core-supply capacitor at U1 pin 32.** Still no room on either side of the board. Unchanged from the first review.
+**Third core-supply capacitor at U1 pin 32.** Tried again and still not possible without moving other traces. A 0402 does now fit on the back, about 1 mm from pin 32 beside the via that feeds it, and its supply pad connects. Its **ground** pad cannot be connected: the spot is fenced in on the back layer by the SWCLK, SWDIO, RUN and D-pad traces, and every position for a ground via within 3.5 mm is blocked on the front by the MCU's own pads and fan-out. The least-bad via position is blocked only by the crystal's XOUT trace, which was judged not worth disturbing. Pin 32's nearest capacitor therefore stays about 9.5 mm away along 0.2 mm traces; the other two core-supply pins each have a capacitor under the chip. If the prototype shows core-supply trouble, nudging XOUT about 0.3 mm to open that via is the fix to try.
 
 **Camera lines with long routes.** Left alone on the owner's instruction.
 

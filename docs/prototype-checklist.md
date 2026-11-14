@@ -62,6 +62,8 @@ These check assumptions that are built into the PCB. If one turns out wrong, the
 - [ ] **Power LED.** Each of red, green and blue lights from its own GPIO (driven low = on), confirming the AAA3528 pin order and orientation. Check brightness balance between the three colours, and that the LED is dark, not faintly glowing, while the MCU is held in reset.
 - [ ] **SD card.** Card initialises and reads/writes reliably (CS, MISO, DAT1 and DAT2 all have 10 kΩ pull-ups). Try several card brands.
 - [ ] **SD card access.** A card can be inserted and removed at the right-hand board edge with the badge assembled, and its outer end sits flush with the edge.
+- [ ] **Camera image integrity — mind the long routes.** The eleven camera lines were left as first routed: 118–166 mm long with 2–11 vias each, and the data lines differ in length by up to about 48 mm (the routing guide asked for ±5 mm). That is roughly 0.3 ns of skew, which should not matter at QVGA, but it has not been proven. Capture test patterns and look for wrong pixels, colour speckle or torn lines; repeat while the radio is transmitting. If images are corrupted, the fix is to re-lay the camera lines as a group, not to patch single traces.
+- [ ] **Core supply at pin 32.** One of the RP2350's three 1.1 V core-supply pins (pin 32) has no capacitor right beside it; there was no way to ground one. Scope the 1.1 V rail at C1 under load (camera capture, USB, both cores busy) and watch for resets or lock-ups. If there is trouble, see section 8 of `engineers-notebook/main-badge-review-2026-11.md` for the fix to try.
 - [ ] **Subsystem tests.** Run the procedures in `electrical-design.md`, "Testing Notes" (power, audio, display, camera, user controls, integrated system).
 
 ---
