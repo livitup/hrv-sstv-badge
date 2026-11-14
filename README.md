@@ -24,7 +24,7 @@ Perfect for ham radio operators, makers, and anyone interested in digital modes 
 ### Hardware Capabilities
 - **RP2350B Dual-Core MCU** - QFN-80, 48 GPIOs, dedicated cores for UI and signal processing
 - **SA818 VHF/UHF Transceiver** - 1W output on swappable carrier board (see below)
-- **OV2640 2MP Camera** - Parallel DVP interface with 15-20 FPS live viewfinder via PIO
+- **OV2640 2MP Camera** - Parallel DVP interface with 15-20 FPS live viewfinder via PIO (module must have its own on-board clock oscillator)
 - **2.4" ILI9341 TFT Display** - 320x240 landscape, SPI interface
 - **PCM5102A DAC + RP2350 ADC** - I2S DAC for TX audio, internal ADC for RX audio
 - **MicroSD Storage** - Standalone SD socket (J10), shared SPI bus with display

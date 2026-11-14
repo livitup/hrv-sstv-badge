@@ -93,14 +93,15 @@ See `docs/electrical-design.md` for complete display circuit design.
 - **Interface**: Parallel DVP (8-bit data) + SCCB (I2C) for control
 - **Resolution**: QVGA (320×240) for SSTV, higher available if needed
 - **Output**: RGB565 for viewfinder, JPEG for storage
-- **GPIOs**: 12 dedicated (D0-D7, PCLK, VSYNC, HREF, XCLK) + shared I2C
+- **GPIOs**: 11 dedicated (D0-D7, PCLK, VSYNC, HREF) + shared I2C
+- **Clock**: ⚠️ The module MUST have its own on-board oscillator. The badge has no XCLK net and J4 has no XCLK pin (main badge is locked). Modules that need external XCLK will not work.
 - **Viewfinder**: 15-20 FPS live preview via PIO capture + DMA
 
 **Why parallel DVP (not SPI)?** Live viewfinder requires fast capture. SPI camera modules are too slow (~1-2 FPS) for real-time preview.
 
 **Connector:** 2×9 (Conn_02x09) socket matches OV2640 module pinout.
 
-**Why RP2350B?** Camera uses 12 GPIOs, user controls use 10. Total system needs ~47 GPIOs, exceeding RP2350A's 30. RP2350B (QFN-80) provides 48 GPIOs with 1 spare.
+**Why RP2350B?** Camera uses 11 GPIOs, user controls use 10. Total system needs 46 GPIOs, exceeding RP2350A's 30. RP2350B (QFN-80) provides 48 GPIOs with 2 spare.
 
 See `docs/electrical-design.md` for complete camera circuit design.
 

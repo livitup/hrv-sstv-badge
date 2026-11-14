@@ -126,7 +126,7 @@ This document tracks the design and implementation status for all badge subsyste
 - [x] OV2640 DVP interface designed (8-bit parallel + control)
 - [x] Assign RP2350B GPIO pins for DVP (GPIO8-18: D0-D7, PCLK, VSYNC, HREF; no XCLK net on the board — J4 has no XCLK pin)
 - [x] CAM_RST and CAM_PWDN: tied with resistors (not GPIO) to free pins for SAO
-- [ ] Confirm the chosen OV2640 module has its own oscillator (the main badge does not drive XCLK)
+- [ ] **REQUIRED: source an OV2640 module with its own on-board oscillator** — the main badge does not drive XCLK and cannot be changed; test one sample (PCLK toggling with no clock fed in) before ordering in quantity
 - [x] **KiCad: Camera module complete** (2x9 connector matching OV2640 module, DVP data/control, I2C, RST/PWDN resistors)
 - [ ] Source OV2640 DVP module with 2.54mm pin header
 - [ ] Verify module pinout matches design

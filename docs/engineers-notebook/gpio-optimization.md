@@ -122,7 +122,7 @@ Every assignment was verified against the RP2350B GPIO function multiplexing tab
 | PIO (camera DVP) | 8-15  | F6/F7/F8         | Valid: all GPIOs support PIO    |
 | PIO (I2S)        | 1-3   | F6/F7/F8         | Valid: all GPIOs support PIO    |
 | PIO (WS2812B)    | 0     | F6/F7/F8         | Valid: all GPIOs support PIO    |
-| PWM (CAM_XCLK)   | 20    | F4 (PWM2A)       | Valid: all GPIOs support PWM    |
+| ~~PWM (CAM_XCLK)~~ | —   | —                | **Dropped**: GPIO20 is DISP_RST in the final board; no XCLK net exists, camera module must be self-clocked |
 | PWM (DISP_BL)    | 29    | F4 (PWM6B)       | Valid                           |
 | PWM (PWR LED)    | 30-32 | F4 (PWM7A/7B/8A) | Valid                           |
 

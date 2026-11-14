@@ -17,7 +17,7 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 | Battery System | ~$11.50 | MCP73871, LC709203F, 2000mAh LiPo |
 | Audio | ~$2.10 | PCM5102A DAC + filter passives |
 | Display | ~$10.00 | ILI9341 module + backlight circuit |
-| Camera | ~$6.00 | OV2640 DVP module + resistors |
+| Camera | ~$6.00 | OV2640 DVP module (must have on-board oscillator) + resistors |
 | User Controls | ~$1.30 | Switches, PWR LED, resistors |
 | Blinky LEDs | ~$2.28 | 10× WS2812B-5050 + 16× WS2812B-2020 + bypass caps |
 | MCU + Support | ~$3.90 | RP2350B, crystal, flash, regulator inductor, passives |
@@ -159,8 +159,11 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 
 | Ref | Qty | Value | Package | Assembly | Notes |
 |-----|-----|-------|---------|----------|-------|
-| J4 | 1 | OV2640 DVP module | Breakout | Module | 2×9 socket (PinSocket_2x09_P2.54mm_Vertical), parallel DVP |
+| J4 | 1 | OV2640 DVP module **with on-board clock oscillator** | Breakout | Module | 2×9 socket (PinSocket_2x09_P2.54mm_Vertical), parallel DVP. **Must be self-clocked — no XCLK from the badge** |
 | R12, R13 | 2 | 10kΩ | 0603 | Fab | RESET pullup / PWDN pulldown |
+
+> [!CAUTION]
+> **The OV2640 module MUST have its own on-board oscillator.** The main badge has no XCLK net and J4 has no XCLK pin, and the board is locked. A module that expects an external clock will never produce an image. Check for a crystal/oscillator on the module, check that its 2×9 header pinout matches J4 (no XCLK pin), and test one sample before buying in quantity. Full details: `docs/electrical-design.md` → Camera Interface.
 
 **Subtotal:** ~$6.00
 
@@ -395,7 +398,7 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 
 - **SA818 modules** — 2-4 weeks from China
 - **Custom PCBs** — 1-2 weeks from fab
-- **OV2640 camera modules** — 1-3 weeks
+- **OV2640 camera modules** — 1-3 weeks. **Must have an on-board clock oscillator; order one sample and test it first**
 - **ILI9341 display modules** — 1-3 weeks
 
 ### Kit Packaging Suggestions
@@ -435,6 +438,7 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 | 3.0 | 2026-02 | **Synchronized with KiCad schematic**: Updated all ref designators to match KiCad, added R4 (15k PROG3), added C21/C22 (2.2µF charge pump), added J10 (SD card), fixed TH1 as NTC, removed PS/SYNC resistor (intentional), added I2C pullup warning |
 | 3.1 | 2026-02 | **Added SA818 carrier boards**: VHF (U9, J13-J17, C54-C55, R18) and UHF (U10, J18-J22, C56-C57) schematics complete with header pinout tables, mechanical headers connected to GND |
 | 3.2 | 2026-03 | **LED split**: WS2812B-5050 for ears (D2-D11), WS2812B-2020 for display border (D12-D27). **Removed SW6** (12mm photo button) — D-pad center doubles as capture. Camera connector J4 updated to 2×9 socket. |
+| 3.3 | 2026-11 | **Carrier harmonic LPFs** added (VHF C58-C63/L3-L5, UHF C64-C69/L6-L8), UHF R18 = 10kΩ pull-up, SMA corrected to edge-mount, carrier header pinout corrected to the locked main badge order. **Camera module requirement**: OV2640 module must have its own on-board oscillator (badge supplies no XCLK). |
 
 ---
 

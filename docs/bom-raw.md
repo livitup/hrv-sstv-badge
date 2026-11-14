@@ -106,7 +106,7 @@
 | Type | Qty | Notes |
 |------|-----|-------|
 | ILI9341 2.4" TFT | 1 | 320x240 SPI display |
-| OV2640 DVP | 1 | Camera module |
+| OV2640 DVP | 1 | Camera module — **MUST have on-board clock oscillator** (badge supplies no XCLK; J4 has no XCLK pin) |
 | Stubby antenna | 1 | VHF or UHF matched |
 
 ## Battery

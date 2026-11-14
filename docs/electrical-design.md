@@ -1258,13 +1258,26 @@ The display is the main visual element — position it prominently for the "retr
 
 ## Camera Interface
 
+> # ⚠️ THE OV2640 MODULE MUST HAVE ITS OWN ON-BOARD CLOCK OSCILLATOR ⚠️
+>
+> **The main badge does NOT supply a camera clock.** There is no XCLK net anywhere on the board, the RP2350B has no GPIO assigned to it, and the J4 camera connector has no XCLK pin (pin 18 is not connected). The main badge PCB is routed and locked, so this cannot be added later.
+>
+> **An OV2640 module that expects an external XCLK will not work on this badge.** With no master clock the sensor produces no pixel clock and no image.
+>
+> **Before buying modules, confirm all three:**
+> 1. The module has a crystal or oscillator can on the PCB (typically 12 MHz or 24 MHz) and the listing or schematic says the sensor is clocked from it.
+> 2. The 2×9 header pinout matches the J4 table below **exactly** — in particular, there is **no XCLK pin** on the header.
+> 3. You have tested one sample: with power applied, RESET high and PWDN low (as the badge wires them) and no clock fed in, PCLK toggles on a scope.
+>
+> Buy and test one sample before ordering in quantity. Many common OV2640 breakouts expect the host to supply XCLK and are **not** compatible.
+
 ### Overview
 
 The camera captures images for SSTV transmission and provides live viewfinder preview.
 
 **Specifications:**
 - **Sensor:** OV2640 2MP CMOS
-- **Module:** Pre-assembled breakout with 2.54mm 2×9 pin header (user-solderable)
+- **Module:** Pre-assembled breakout with 2.54mm 2×9 pin header (user-solderable), **with its own on-board clock oscillator** (required — see callout above)
 - **Interface:** Parallel DVP (8-bit) + SCCB (I2C) for control
 - **Resolution:** QVGA (320×240) for SSTV, up to UXGA (1600×1200) if needed
 - **Output:** RGB565 or YUV422 (for viewfinder), JPEG (for storage)
@@ -1282,7 +1295,7 @@ The camera captures images for SSTV transmission and provides live viewfinder pr
 | VSYNC | Frame sync | → | GPIO | High during vertical blank |
 | HREF | Line valid | → | GPIO | High when pixel data valid |
 | PCLK | Pixel clock | → | GPIO | Clock from camera |
-| XCLK | Master clock | ← | GPIO (PWM) | ~20MHz clock to camera |
+| XCLK | Master clock | — | **Not connected** | Must be generated on the camera module by its own oscillator; the badge does not drive it |
 | D0-D7 | Pixel data | → | 8 GPIOs | 8-bit parallel data |
 | RESET | Reset | ← | GPIO | Active low (or tie to 3.3V via 10K) |
 | PWDN | Power down | ← | GPIO | Active high (or tie to GND) |
@@ -1318,34 +1331,22 @@ The RP2350's PIO (Programmable I/O) is ideal for DVP capture:
 
 This enables zero-copy capture with minimal CPU involvement.
 
-### XCLK Generation
+### XCLK (Master Clock) — Supplied by the Module, Not the Badge
 
-The camera needs a master clock input (XCLK), typically 20-24 MHz.
+The OV2640 sensor needs a master clock (XCLK), typically 12-24 MHz. **On this badge that clock must come from an oscillator on the camera module itself.**
 
-**Option A: PWM output**
-- Configure RP2350 PWM for 20MHz, 50% duty cycle
-- Simple, uses one GPIO
+Earlier revisions of this document described generating XCLK from an RP2350 PWM pin. The final schematic and PCB do not do that: GPIO19 is DISP_DC, GPIO20 is DISP_RST, no XCLK net exists, and J4 has no XCLK pin.
 
-**Option B: PIO clock output**
-- PIO can generate precise clocks
-- More flexible frequency control
-
-**Recommendation:** PWM is simpler and sufficient.
-
-```
-    RP2350 PWM GPIO ─────────────────────────────→ OV2640 XCLK
-
-    PWM config:
-    - System clock: 150MHz (typical)
-    - Divider: 7.5 → 20MHz output
-    - Duty: 50%
-```
+Consequences:
+- The module's oscillator frequency sets the sensor's input clock. Firmware cannot change it; frame rate and PCLK rate are adjusted only through the OV2640's own PLL and divider registers over SCCB.
+- Firmware must be configured for the module's oscillator frequency before programming the sensor's clock registers — a 12 MHz module and a 24 MHz module need different divider settings for the same frame rate.
+- A module without an oscillator cannot be rescued with a bodge wire to a spare GPIO in any tidy way: J4 has no pin for it.
 
 ### Camera Module Selection
 
 For user-solderable assembly, use an OV2640 module with 2.54mm pin headers.
 
-**Recommended:** Generic "OV2640 DVP module" with 2×9 pin header (Conn_02x09_Socket)
+**Required:** an "OV2640 DVP module" with a 2×9 pin header (Conn_02x09_Socket), an **on-board clock oscillator**, and a header pinout matching the J4 table below (no XCLK pin)
 
 ```
     ┌───────────────────────────────┐
@@ -1381,7 +1382,7 @@ For user-solderable assembly, use an OV2640 module with 2.54mm pin headers.
 | 15 | CAM_PCLK | 16 | CAM_D7 |
 | 17 | PWDN (10k pull-down to GND) | 18 | NC |
 
-**Search terms:** "OV2640 camera module DVP" or "OV2640 module for STM32/ESP32"
+**Search terms:** "OV2640 camera module DVP" plus "on-board oscillator" / "with crystal" / "no external clock". Check the board photo for a crystal or oscillator can and check the header pinout against the table above — do not rely on the listing title.
 
 **Price:** ~$5-8
 
@@ -1401,8 +1402,8 @@ For user-solderable assembly, use an OV2640 module with 2.54mm pin headers.
     │  I2C  ├─────────────────────────────────────────┤ SIOD (SDA)  │
     │  SDA  │              (shared bus)               │             │
     │       │                                         │             │
-    │  GPIO ├──────────────────────────(PWM 20MHz)────┤ XCLK        │
-    │(CAM_XCLK)                                       │             │
+    │       │        (not connected to the badge)     │ XCLK ◄── on-board
+    │       │                                         │   oscillator │
     │       │                                         │             │
     │  GPIO ├─────────────────────────────────────────┤ PCLK        │
     │(CAM_PCLK)                                       │             │
@@ -1440,9 +1441,9 @@ For user-solderable assembly, use an OV2640 module with 2.54mm pin headers.
 
 | Function | GPIO | Notes |
 |----------|------|-------|
-| I2C SCL | GPIO1 | SCCB clock (shared with SAO, fuel gauge) |
-| I2C SDA | GPIO0 | SCCB data (shared with SAO, fuel gauge) |
-| CAM_XCLK | GPIO19 | PWM output, ~20MHz |
+| I2C SCL | GPIO45 | SCCB clock (shared with SAO, fuel gauge) |
+| I2C SDA | GPIO44 | SCCB data (shared with SAO, fuel gauge) |
+| CAM_XCLK | — | **Not driven by the badge** — module must have its own oscillator |
 | CAM_PCLK | GPIO16 | Pixel clock input (PIO) |
 | CAM_VSYNC | GPIO17 | Frame sync input |
 | CAM_HREF | GPIO18 | Line valid input |
@@ -1450,7 +1451,7 @@ For user-solderable assembly, use an OV2640 module with 2.54mm pin headers.
 | CAM_RST | — | Tied HIGH via 10kΩ pullup (not GPIO controlled) |
 | CAM_PWDN | — | Tied LOW via 10kΩ pulldown (not GPIO controlled) |
 
-**Dedicated GPIOs: 10-12** (depending on whether RST/PWDN are GPIO-controlled)
+**Dedicated GPIOs: 11** (D0-D7, PCLK, VSYNC, HREF; RST and PWDN are tied with resistors, XCLK is not driven)
 
 ### Viewfinder Performance
 
@@ -1469,7 +1470,7 @@ For user-solderable assembly, use an OV2640 module with 2.54mm pin headers.
 
 | Ref | Value | Package | Assembly | Notes |
 |-----|-------|---------|----------|-------|
-| U_CAM | OV2640 DVP module | Breakout (2×9 header) | User | 2.54mm 2×9 pin header, ~$5-8 |
+| U_CAM | OV2640 DVP module **with on-board oscillator** | Breakout (2×9 header) | User | 2.54mm 2×9 pin header, no XCLK pin, ~$5-8. Modules needing external XCLK will not work |
 | R_CAM_RST | 10kΩ | 0603 | Fab | Reset pullup (optional if GPIO controlled) |
 | R_CAM_PWDN | 10kΩ | 0603 | Fab | PWDN pulldown (optional if GPIO controlled) |
 
@@ -1598,7 +1599,7 @@ Note: CAM_RST tied HIGH via 10kΩ, CAM_PWDN tied LOW via 10kΩ (not GPIO control
 GPIO 0-1:   I2C (shared bus)
 GPIO 2-4:   SPI (display + SD)
 GPIO 5-7:   Display control (CS, DC, RST)
-GPIO 8-19:  Camera DVP (D0-D7, PCLK, VSYNC, HREF, XCLK)
+GPIO 8-18:  Camera DVP (D0-D7, PCLK, VSYNC, HREF) — no XCLK, module self-clocked
 GPIO 20-21: SAO1 GPIOs
 GPIO 22-23: Display BL + SD_CS
 GPIO 24-25: Audio I2S (BCK, LRCK)
@@ -2617,7 +2618,7 @@ Test carrier independently before mating with main badge:
 ### Camera Verification
 
 1. **I2C/SCCB communication:** Read OV2640 chip ID registers (0x0A, 0x0B)
-2. **XCLK generation:** Verify 20MHz clock output with oscilloscope
+2. **Module clock:** With the module powered on the badge, confirm PCLK is toggling on a scope — this proves the module's on-board oscillator is clocking the sensor (the badge supplies no XCLK)
 3. **DVP signals:** Verify VSYNC, HREF, PCLK timing with scope
 4. **PIO capture:** Capture single frame to RAM, verify data integrity
 5. **Resolution test:** Configure for QVGA (320×240), verify frame size
