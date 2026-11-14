@@ -68,7 +68,8 @@ This document tracks the design and implementation status for all badge subsyste
 - [x] MCP73871 charger circuit designed (500mA charge current)
 - [x] LC709203F fuel gauge circuit designed (I2C interface)
 - [x] Thermistor shared between charger and fuel gauge
-- [x] JST-PH battery connector specified
+- [x] JST-PH battery connector specified — changed 2026-11-14 to SMD side-entry (S2B-PH-SM4-TB) so no pins come through under the display; see `engineers-notebook/main-badge-review-2026-11.md` section 7
+- [ ] Display free-end support socket: position waits on the display module's dimensions (see `prototype-checklist.md`)
 - [x] **KiCad: MCP73871 charger complete** (VBUS input, battery connector, PROG resistors, THERM)
 - [x] **KiCad: LC709203F fuel gauge complete** (VSYS power, shared thermistor, I2C bus, decoupling cap)
 - [ ] Verify MCP73871 QFN-20 footprint in KiCad

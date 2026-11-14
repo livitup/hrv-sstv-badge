@@ -19,6 +19,9 @@ These check assumptions that are built into the PCB. If one turns out wrong, the
 - [ ] **Battery connector polarity.** With the battery's JST-PH plug inserted in J1, battery positive lands on J1 pin 1 (the net that goes to the charger's battery pins). JST-PH polarity is not standardised between battery vendors — check the actual battery with a meter.
 - [ ] **SA818 underside.** The bottom of the SA818 module has no exposed copper or test pads where the RXD, TXD and MIC traces run beneath it on the carrier.
 - [ ] **SA818 footprint.** The module's castellated pads line up with the carrier footprint (2 mm pitch).
+- [ ] **Display support socket position.** Measure the chosen display module: the distance from the 14-pin header row to the pins on the opposite edge (usually a 4-pin SD header), and their position along that edge. A support socket for the display's free end can only be placed once this is known. Free copper-clear area on the board is x ≈ 74.5–81.5 mm, y ≈ 73–88 mm; outside it, traces would have to move.
+- [ ] **Back of the display module.** Note anything conductive on the module's back (SD card shell, header pins, exposed copper) and what it would sit over on the badge.
+- [ ] **Battery plug fit.** The battery's JST-PH plug mates with the side-entry connector J1 on the back, and the lead has slack when the pouch is in its final position.
 - [ ] **Regulator versus battery pouch.** The LED rail regulator (U11, L9) sits on the back at about x 10–22 mm, y 89–104 mm. Confirm the battery pouch can be mounted without resting on the inductor.
 
 ## Part 2 — On the first assembled prototypes

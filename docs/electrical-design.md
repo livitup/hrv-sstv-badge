@@ -492,9 +492,11 @@ The battery system provides portable power with USB charging and accurate state-
 
 | Ref | Value | Notes |
 |-----|-------|-------|
-| J_BAT | JST-PH 2-pin | Standard LiPo connector |
+| J_BAT (J1) | JST-PH 2-pin, SMD side-entry (S2B-PH-SM4-TB) | Standard LiPo connector |
 
 **Polarity:** Red (+) on pin 1, Black (-) on pin 2. Match common LiPo battery wiring.
+
+**Why surface-mount:** J1 sits on the back of the board inside the display area. A through-hole connector there put battery positive and ground pins, 2 mm apart, through to the front directly behind the display module. The SMD part leaves nothing on the front. It is side-entry: the plug lies flat against the back of the board and enters from the top-of-board side. See `engineers-notebook/main-badge-review-2026-11.md`, section 7.
 
 ### Thermistor Placement
 
@@ -2762,7 +2764,6 @@ Test carrier independently before mating with main badge:
 **User assembles at conference (main badge):**
 - Tactile switches and buttons
 - Slide switches (airplane mode, etc.)
-- Battery connector (JST-PH)
 - SAO headers
 - Audio filter components (0603 resistors and caps — R1-R6, C3-C6)
 - Optional: header sockets if not pre-installed

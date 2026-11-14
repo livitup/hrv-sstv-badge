@@ -173,4 +173,43 @@ USB enumeration failures or data errors on the first prototype, particularly dur
 
 ---
 
+## 7. Battery connector changed to surface-mount (2026-11-14)
+
+### The concern
+
+J1, the battery connector, was a through-hole vertical JST-PH on the back of the board at about (25.6, 78.6) mm — inside the display area. Its two pins, battery positive and ground, came through to the front 2 mm apart, directly behind the display module. If the back of the module is conductive there (an SD card shell, header pins, exposed copper) and touches both, the battery is shorted with nothing but its own protection circuit in the way.
+
+How likely that is depends on things the design does not control:
+
+- The display plugs into J3 along one edge only, so the module is cantilevered and its free end can be pressed toward the board.
+- The display module has not been selected, so what is on its back is unknown.
+- A socket normally holds the module several millimetres clear, but a builder could solder it lower.
+
+It was the only through-hole part under the display other than J3 itself, and the board's vias are tented, so J1 was the whole of the exposure.
+
+### Options considered
+
+1. **Surface-mount JST-PH in the same place — chosen.** Nothing comes through to the front. Small board change.
+2. **Move the through-hole connector outside the display area**, to the free strip on the back near the bottom edge. Roughly 30–40 mm of 0.8 mm battery trace to re-route past the charger and USB parts, a longer path for the radio's supply current, and the pins would then show on the front below the screen.
+3. **Leave it and insulate** — Kapton behind the display, leads trimmed flush, a spacer under the free end. No board change, but it depends on every builder doing it, on a kit where the user solders the through-hole parts.
+
+### What was built
+
+- J1 is now a JST S2B-PH-SM4-TB: surface-mount, side-entry, same JST-PH plug. It is in the same area of the back, with the plug entering from the top-of-board side and lying flat against the board.
+- Pin 1 is still battery positive, as before; the polarity check in `docs/prototype-checklist.md` still applies.
+- The battery trace runs between the connector's mounting tabs and its signal pads to reach pin 1. The I2C clock trace that used to pass between the old connector's two pins was re-laid on the back layer to go around the new connector instead of under it: straight down from its via near C38, then one diagonal past the connector's lower-left corner to its via beside the fuel gauge (three segments, 24.4 mm, where the old path was six segments and 25.5 mm). It no longer runs alongside the battery trace.
+- The two mounting tabs are soldered but not connected to any net.
+- J1 moves from the user-soldered list to fab assembly.
+
+### Trade-offs accepted
+
+- A surface-mount connector resists cable pulls less well than a through-hole one. The two mounting tabs carry that load.
+- Side-entry means the battery lead exits along the board toward the top. Leave slack so the plug is not levered sideways.
+
+### Still open: support for the display's free end
+
+A second socket near the display's right edge would stop the module being pressed down. There is room: a scan of all four layers shows a 1×4 socket fits without touching any copper at x ≈ 74.5–81.5 mm for a band of y between about 73 and 88 mm. The exact position has to come from the module — many 14-pin ILI9341 modules have a 4-pin SD header on the far edge that such a socket could mate with — so this waits on the module being chosen and measured.
+
+---
+
 *Written 2026-11-14.*

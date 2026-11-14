@@ -1,6 +1,6 @@
 # DEFCON SSTV Badge — Bill of Materials
 
-**Version:** 3.4
+**Version:** 3.5
 **Last Updated:** 2026-11-13
 **Source:** KiCad schematic export, verified against `docs/electrical-design.md`
 
@@ -131,7 +131,7 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 | Ref | Qty | Value | Package | Assembly | Notes |
 |-----|-----|-------|---------|----------|-------|
 | BAT1 | 1 | 2000mAh LiPo | Pouch ~50×35×8mm | User | JST-PH connector, 3.7V, with PCM |
-| J_BAT | 1 | JST-PH 2-pin | Through-hole | User | Battery connector |
+| J_BAT (J1) | 1 | JST S2B-PH-SM4-TB | SMD, side-entry | Fab | Battery connector, JST-PH 2-pin. Surface-mount so no pins come through under the display |
 
 **Subtotal:** ~$6.50
 
@@ -259,7 +259,7 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 
 | Ref | Qty | Value | Package | Assembly | Notes |
 |-----|-----|-------|---------|----------|-------|
-| J1 | 1 | JST-PH 2-pin | Through-hole | User | Battery connector |
+| J1 | 1 | JST S2B-PH-SM4-TB (JST-PH 2-pin) | SMD, side-entry | Fab | Battery connector, on the back; plug enters from the top-of-board side |
 | J5 | 1 | 2×3 header | 2.54mm | User | SAO connector 1 |
 | J6 | 1 | 2×3 header | 2.54mm | User | SAO connector 2 |
 | J7, J8 | 2 | 1×8 socket | 2.54mm | User | Carrier signal headers |
@@ -469,6 +469,7 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 | 3.2 | 2026-03 | **LED split**: WS2812B-5050 for ears (D2-D11), WS2812B-2020 for display border (D12-D27). **Removed SW6** (12mm photo button) — D-pad center doubles as capture. Camera connector J4 updated to 2×9 socket. |
 | 3.3 | 2026-11 | **Carrier harmonic LPFs** added (VHF C58-C63/L3-L5, UHF C64-C69/L6-L8), UHF R18 = 10kΩ pull-up, SMA corrected to edge-mount, carrier header pinout corrected to the locked main badge order. **Camera module requirement**: OV2640 module must have its own on-board oscillator (badge supplies no XCLK). **Main badge review fixes**: added R19 (1kΩ BOOTSEL), R20/R21 (27Ω USB), C70/C72 (DVDD), C73 (load switch input), C74/C75 (DAC supply pins), C76 (charger input). |
 | 3.4 | 2026-11 | **Schematic review fixes**: Q1 → AO3401A (backlight high-side), L1 → 2.2µH. **LED supply rail added**: U11 TPS63000, L9, C79–C83, R23, R24 (4.0V VLED for all 26 WS2812B). |
+| 3.5 | 2026-11 | **Battery connector J1** changed from through-hole vertical JST-PH (user-soldered) to SMD side-entry S2B-PH-SM4-TB (fab-assembled), so its pins no longer come through under the display. |
 
 ---
 

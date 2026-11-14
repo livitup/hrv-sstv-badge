@@ -87,7 +87,7 @@
 | Type | Qty | Notes |
 |------|-----|-------|
 | USB4105-GF-A | 1 | USB-C connector |
-| JST-PH 2-pin | 1 | Battery connector |
+| JST-PH 2-pin, SMD side-entry (S2B-PH-SM4-TB) | 1 | Battery connector |
 | 2x3 header (2.54mm) | 2 | SAO connectors |
 | 1x8 socket (2.54mm) | 2 | Carrier signal (main board) |
 | 1x3 socket (2.54mm) | 2 | Carrier mechanical (main board) |
