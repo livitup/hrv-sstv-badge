@@ -216,4 +216,15 @@
   (fp_line (start -1.5 1.5) (end -0.695 1.5) (layer F.SilkS) (width 0.127))
   (fp_line (start 0.695 -1.5) (end 1.5 -1.5) (layer F.SilkS) (width 0.127))
   (fp_line (start 0.695 1.5) (end 1.5 1.5) (layer F.SilkS) (width 0.127))
+	(model "${KICAD9_3DMODEL_DIR}/Package_SON.3dshapes/VSON-10-1EP_3x3mm_P0.5mm_EP1.65x2.4mm.step"
+		(offset
+			(xyz 0 0 0)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz 0 0 0)
+		)
+	)
 )

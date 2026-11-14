@@ -26,4 +26,15 @@
   (fp_line (start -1.805 -1.25) (end -1.805 1.25) (layer F.CrtYd) (width 0.05))
   (fp_circle (center -2.1 -0.802) (end -2.0 -0.802) (layer F.SilkS) (width 0.2))
   (fp_circle (center -2.1 -0.802) (end -2.0 -0.802) (layer F.Fab) (width 0.2))
+	(model "${KICAD9_3DMODEL_DIR}/Package_TO_SOT_SMD.3dshapes/SOT-363_SC-70-6.step"
+		(offset
+			(xyz 0 0 0)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz 0 0 0)
+		)
+	)
 )
