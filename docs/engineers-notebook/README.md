@@ -16,6 +16,8 @@ This directory contains design decisions, trade-off analyses, and educational ba
 
 ### Trade-Off Analyses
 
+- **[led-supply-rail.md](led-supply-rail.md)** — Why the WS2812B LEDs have their own 4.0 V buck-boost rail: datasheet supply range, the 3.3 V data-level constraint that rules out 5 V, the four options compared (VSYS direct, boost, buck-boost, leave at 3.3 V), and the layout choices for distributing the rail. **Decision: TPS63000 buck-boost at 4.0 V.**
+
 - **[rda1846-vs-sa818-analysis.md](rda1846-vs-sa818-analysis.md)** — Detailed comparison of using the bare RDA1846S transceiver IC vs the SA818 module (which contains the RDA1846S internally). Covers engineering effort, cost, SSTV audio compatibility, assembly, sourcing risk, and carrier board implications. **Decision: Stay with SA818.**
 
 - **[harmonic-filter-design.md](harmonic-filter-design.md)** — Why both SA818 carriers need a low-pass filter for FCC Part 97 compliance, why a discrete 7-pole Chebyshev was chosen over a single ceramic chip filter, calculated component values for VHF (fc=155 MHz) and UHF (fc=470 MHz), component selection rules, layout requirements, and validation strategy for tune-once production runs. **Decision: Add discrete LPF to both VHF and UHF carriers.**

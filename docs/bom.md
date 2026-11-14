@@ -1,6 +1,6 @@
 # DEFCON SSTV Badge — Bill of Materials
 
-**Version:** 3.3
+**Version:** 3.4
 **Last Updated:** 2026-11-13
 **Source:** KiCad schematic export, verified against `docs/electrical-design.md`
 
@@ -12,7 +12,7 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 
 | Category | Est. Cost | Notes |
 |----------|-----------|-------|
-| Power System | ~$4.00 | TPS63001 buck-boost, TPS22919 load switch |
+| Power System | ~$6.00 | TPS63001 buck-boost, TPS63000 LED rail, TPS22919 load switch |
 | USB-C Interface | ~$1.20 | Connector + ESD protection |
 | Battery System | ~$11.50 | MCP73871, LC709203F, 2000mAh LiPo |
 | Audio | ~$2.10 | PCM5102A DAC + filter passives |
@@ -22,9 +22,9 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 | Blinky LEDs | ~$2.28 | 10× WS2812B-5050 + 16× WS2812B-2020 + bypass caps |
 | MCU + Support | ~$3.90 | RP2350B, crystal, flash, regulator inductor, passives |
 | Connectors | ~$2.00 | SAO, carrier sockets, SD card, debug |
-| **Main Badge Total** | **~$64** | Without carrier |
+| **Main Badge Total** | **~$66** | Without carrier |
 | SA818 Carrier | ~$17.00 | SA818, SMA, antenna, headers |
-| **Complete Kit** | **~$81** | Main + one carrier |
+| **Complete Kit** | **~$83** | Main + one carrier |
 
 *PCB fabrication adds ~$3-5/board at quantity.*
 
@@ -53,6 +53,22 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 *Note: PS/SYNC resistor intentionally omitted — forced PWM mode provides cleaner audio with minimal ripple. Power save mode would reduce idle current but risks noise coupling into SSTV audio path.*
 
 **Subtotal:** ~$2.50
+
+### LED Supply Rail (TPS63000, 4.0V "VLED")
+
+| Ref | Qty | Value | Package | Assembly | Notes |
+|-----|-----|-------|---------|----------|-------|
+| U11 | 1 | TPS63000DRCR | VSON-10 (3×3mm) | Fab | Adjustable buck-boost, set to 4.0V for the WS2812B LEDs |
+| L9 | 1 | 2.2µH | 3×3mm | Fab | Same part as L1 |
+| C79, C81, C82 | 3 | 10µF | 0805 | Fab | X5R/X7R, 10V, input/output |
+| C80 | 1 | 100nF | 0402 | Fab | VINA decoupling |
+| R23 | 1 | 1MΩ 1% | 0603 | Fab | Feedback divider, upper |
+| R24 | 1 | 143kΩ 1% | 0603 | Fab | Feedback divider, lower (sets 4.0V) |
+| C83 | 1 | 2.2pF | 0402 | Fab | Feed-forward capacitor across R23 |
+
+*Note: PS/SYNC is grounded on U11 (power-save mode on), the opposite of U5 — LED ripple does not matter and light-load efficiency does.*
+
+**Subtotal:** ~$2.00 *(estimate)*
 
 ### Load Switch (TPS22919)
 
@@ -378,7 +394,7 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 | 4.7µF | 3 | 0402 | RP2350 regulator (C1, C77, C78) |
 | 4.7µF | 1 | 0603 | Charger input (C76) |
 | 2.2µF | 2 | 0603 | PCM5102A charge pump (C21, C22) |
-| 10µF | 14 | 0603/0805 | Bulk caps throughout, carriers (C55, C57) |
+| 10µF | 17 | 0603/0805 | Bulk caps throughout, LED rail (C79, C81, C82), carriers (C55, C57) |
 | 100µF | 1 | 1206 | Load switch bulk (C17) |
 
 ### Inductors
@@ -389,7 +405,7 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 | 24nH | 1 | 0603 wirewound | UHF carrier LPF (L7) |
 | 68nH | 2 | 0603 wirewound | VHF carrier LPF (L3, L5) |
 | 82nH | 1 | 0603 wirewound | VHF carrier LPF (L4) |
-| 2.2µH | 1 | 3×3mm | TPS63001 buck-boost (L1) |
+| 2.2µH | 2 | 3×3mm | TPS63001 buck-boost (L1), TPS63000 LED rail (L9) |
 | 3.3µH | 1 | 0806 (2016) | RP2350 internal regulator (L2), Abracon AOTA-B201610S3R3-101-T |
 
 ---
@@ -452,6 +468,7 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 | 3.1 | 2026-02 | **Added SA818 carrier boards**: VHF (U9, J13-J17, C54-C55, R18) and UHF (U10, J18-J22, C56-C57) schematics complete with header pinout tables, mechanical headers connected to GND |
 | 3.2 | 2026-03 | **LED split**: WS2812B-5050 for ears (D2-D11), WS2812B-2020 for display border (D12-D27). **Removed SW6** (12mm photo button) — D-pad center doubles as capture. Camera connector J4 updated to 2×9 socket. |
 | 3.3 | 2026-11 | **Carrier harmonic LPFs** added (VHF C58-C63/L3-L5, UHF C64-C69/L6-L8), UHF R18 = 10kΩ pull-up, SMA corrected to edge-mount, carrier header pinout corrected to the locked main badge order. **Camera module requirement**: OV2640 module must have its own on-board oscillator (badge supplies no XCLK). **Main badge review fixes**: added R19 (1kΩ BOOTSEL), R20/R21 (27Ω USB), C70/C72 (DVDD), C73 (load switch input), C74/C75 (DAC supply pins), C76 (charger input). |
+| 3.4 | 2026-11 | **Schematic review fixes**: Q1 → AO3401A (backlight high-side), L1 → 2.2µH. **LED supply rail added**: U11 TPS63000, L9, C79–C83, R23, R24 (4.0V VLED for all 26 WS2812B). |
 
 ---
 

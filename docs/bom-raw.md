@@ -13,6 +13,7 @@
 | RP2350B | QFN-80 MCU | 1 |
 | W25Q128JVS | 16MB QSPI Flash | 1 |
 | TPS63001DRCR | Buck-Boost Regulator | 1 |
+| TPS63000DRCR | Buck-Boost Regulator (LED rail, 4.0V) | 1 |
 | TPS22919DCKT | Load Switch | 1 |
 | MCP73871 | Battery Charger | 1 |
 | LC709203FQH-01TWG | Fuel Gauge | 1 |
@@ -34,13 +35,14 @@
 
 | Value | Qty | Notes |
 |-------|-----|-------|
+| 2.2pF | 1 | LED rail feed-forward |
 | 15pF | 2 | Crystal load caps |
 | 4.7nF | 1 | RX anti-alias filter |
 | 10nF | 1 | TX low-pass filter |
-| 100nF | 38 | Decoupling (MCU, LEDs, ICs, carrier) |
+| 100nF | 39 | Decoupling (MCU, LEDs, ICs, LED rail, carrier) |
 | 1µF | 2 | DVDD, RX DC block |
 | 2.2µF | 2 | DAC charge pump |
-| 10µF | 14 | Bulk caps throughout |
+| 10µF | 17 | Bulk caps throughout (3 on the LED rail) |
 | 100µF | 1 | Load switch output |
 
 ## Resistors
@@ -58,6 +60,8 @@
 | 10k | 3 | Pullups/pulldowns |
 | 15k | 1 | Pre-charge/term (PROG3) |
 | 47k | 3 | TX attenuator, RX bias |
+| 143k | 1 | LED rail feedback (lower) |
+| 1M | 1 | LED rail feedback (upper) |
 
 ## Thermistor
 
@@ -69,7 +73,7 @@
 
 | Value | Qty | Notes |
 |-------|-----|-------|
-| 2.2µH | 1 | TPS63001 buck-boost |
+| 2.2µH | 2 | TPS63001 buck-boost, TPS63000 LED rail |
 | 3.3µH | 1 | RP2350 internal regulator |
 
 ## Crystal

@@ -20,11 +20,14 @@ This is an open-source SSTV (Slow Scan Television) badge for DEFCON and the badg
 ```
 LiPo (3.0-4.2V) ──┬──► TPS63001 (buck-boost) ──► 3.3V Rail (RP2350, display, etc.)
                   │
+                  ├──► TPS63000 (buck-boost) ──► 4.0V VLED Rail (26× WS2812B)
+                  │
                   └──► TPS22919 (load switch) ──► SA818 (3.5-5.5V direct)
 ```
 
 **Components:**
 - **TPS63001**: Buck-boost regulator, 3.3V output, handles full LiPo voltage range
+- **TPS63000**: Second buck-boost (U11), 4.0V "VLED" rail for the WS2812B LEDs only — in spec for the LED supply (≥3.7V) while keeping 3.3V data valid (0.7 × VDD); firmware must cap total LED brightness (~0.8A available)
 - **TPS22919**: Load switch for SA818 power control (airplane mode, sleep)
 - **MCP73871**: Battery charging controller
 - **LC709203**: Battery fuel gauge
@@ -135,6 +138,7 @@ Note: D-pad center button doubles as photo capture when idle (no dedicated photo
   - Idle: Rainbow chase flowing around frame
   - TX: "Capacitor Discharge" — border charges up, ears ZAP, everything flashes WHITE
   - RX: "Filling Tank" — each ear pulse adds a row, border fills up over multiple pulses
+- Powered from the 4.0V VLED rail (not 3.3V); data line is 3.3V logic
 - Power budget: ~70mA idle, ~110mA active TX/RX
 
 See `docs/electrical-design.md` for complete user controls circuit design.
@@ -222,7 +226,8 @@ defcon-sstv-badge/
 - **KiCad**: All schematic sheets complete; main badge PCB routed and locked; both carrier PCBs complete with harmonic LPF (0 unconnected, 0 parity issues)
 - **Main badge review (2026-11-13)**: charger wiring errors fixed (OUT→VSYS, IN→VBUS), radio supply path widened (2.0mm SA818_VCC path on the PWR layer), USB 27Ω and BOOTSEL 1kΩ resistors and extra decoupling added — see `docs/project-status.md`
 - **Schematic review (2026-11-14)**: border LED pinout (wrong symbol for the 2020 package), TX attenuator wiring, backlight switch polarity (now AO3401A high-side, GPIO low = on) and L1 value (2.2µH) fixed in schematic and PCB — see `docs/engineers-notebook/main-badge-review-2026-11.md`
-- **Open before fab**: visual review of the reworked main badge; open design questions (fuel gauge supply, radio supply drop / load switch rating, WS2812B supply voltage, crystal series resistor, band-ID scheme); LPF prototype tuning
+- **LED supply rail (2026-11-14)**: WS2812Bs moved from 3.3V to a dedicated 4.0V rail (U11 TPS63000, VLED on the inner power layer) — see `docs/engineers-notebook/led-supply-rail.md`
+- **Open before fab**: visual review of the reworked main badge; open design questions (fuel gauge supply, radio supply drop / load switch rating, crystal series resistor, band-ID scheme); LPF prototype tuning
 - **Documentation**: Comprehensive technical docs, power/RF design documented
 - **Project structure**: Professional repository setup
 - **Firmware development**: Not started

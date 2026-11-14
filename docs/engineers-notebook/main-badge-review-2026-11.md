@@ -133,7 +133,7 @@ Flash, USB (CC resistors, ESD, series resistors), SAO, Tag-Connect, SD card SPI 
 
 | Question | What is known |
 |---|---|
-| WS2812B supply voltage | The 2020 datasheet specifies 3.7–5.3 V; the LEDs run from 3.3 V. Options are being evaluated. |
+| WS2812B supply voltage | The 2020 datasheet specifies 3.7–5.3 V; the LEDs ran from 3.3 V. **Resolved after this review** by a dedicated 4.0 V LED rail — see `led-supply-rail.md`. |
 | Radio supply drop | Charger battery switch is 200 mΩ typical, load switch 90 mΩ, and the TPS22919 is rated 1.5 A. The real SA818 transmit current decides whether this matters. |
 | Fuel gauge supply | U7 is on VSYS, which sits near 5 V with USB connected, so it reads the wrong voltage then. |
 | Fuel gauge thermistor | Shared with the charger; the gauge's own drive pin is unconnected. Firmware should use I2C temperature mode. |

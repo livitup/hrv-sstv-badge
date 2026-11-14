@@ -20,6 +20,7 @@ This document tracks the design and implementation status for all badge subsyste
 |-----------|--------|-------|---------|--------|
 | USB-C | ✓ | ✓ | | |
 | Power (TPS63001) | ✓ | ✓ | | |
+| LED supply rail (TPS63000, 4.0V) | ✓ | ✓ | | |
 | Load Switch (TPS22919) | ✓ | ✓ | | |
 | Battery Charger (MCP73871) | ✓ | ✓ | | |
 | Fuel Gauge (LC709203F) | ✓ | ✓ | | |
@@ -57,6 +58,8 @@ This document tracks the design and implementation status for all badge subsyste
 - [x] Inductor selected: 2.2µH (Coilcraft XAL3030 or equivalent; TPS63001 datasheet value)
 - [x] **KiCad: TPS63001 complete** (VSYS input, +3.3V output, inductor, caps)
 - [x] **KiCad: TPS22919 load switch complete** (VSYS input, SA818_VCC output, SA818_PD enable, output caps)
+- [x] **LED supply rail added (2026-11-14)**: U11 TPS63000 buck-boost at 4.0V (VLED) for all 26 WS2812B LEDs, distributed on the inner power layer; see `engineers-notebook/led-supply-rail.md`
+- [ ] Prototype check of the LED rail: output voltage, stability, voltage at the far ear tip, firmware brightness cap
 - [ ] Verify TPS63001 QFN-10 footprint in KiCad
 - [ ] Verify TPS22919 SOT-23-5 footprint in KiCad
 - [ ] Prototype and validate power system across full battery range
@@ -219,7 +222,7 @@ This document tracks the design and implementation status for all badge subsyste
 - [x] Ground pour
 - [x] DRC clean-up — 0 unconnected, 0 schematic-parity issues; only the excluded silkscreen items remain
 - [x] **Design review fixes (2026-11-13)** — see "Main Badge Review" below
-- [ ] Open questions from the reviews: fuel gauge supply (VSYS vs cell) and thermistor sharing, radio supply drop and TPS22919 rating vs TX current, WS2812B supply voltage, crystal series resistor, band-ID scheme, SD card pull-ups, VBUS capacitance, camera XCLK — see `engineers-notebook/main-badge-review-2026-11.md`
+- [ ] Open questions from the reviews: fuel gauge supply (VSYS vs cell) and thermistor sharing, radio supply drop and TPS22919 rating vs TX current, crystal series resistor, band-ID scheme, SD card pull-ups, VBUS capacitance, camera XCLK — see `engineers-notebook/main-badge-review-2026-11.md`
 - [ ] Not done: third DVDD cap at U1 pin 32 (no room), USB D+/D− length matching, test points
 - [ ] Evaluate if main board can be 2-layer with RF removed
 - [ ] Integration test: carrier + main board
@@ -249,6 +252,8 @@ Every sheet was checked against the part datasheets. Fixed in schematic and PCB:
 
 Not verifiable on paper: camera module pinout against J4, battery connector polarity, APFA3010 pad numbering. Check these with parts in hand.
 
+**Follow-up the same day:** the review also found the WS2812B LEDs out of their supply range at 3.3V. They now run from a dedicated 4.0V rail (U11, TPS63000).
+
 ---
 
 ## Next Steps (Priority Order)
@@ -271,7 +276,7 @@ Not verifiable on paper: camera module pinout against J4, battery connector pola
 | PCB outline designed | ✓ | Done |
 | KiCad schematic | ✓ | **Complete** — ERC clean (Main board + VHF/UHF carriers) |
 | Carrier PCB layout | ✓ | **Complete** — Both carriers routed with harmonic LPF; 0 unconnected, 0 parity issues |
-| Main badge PCB layout | ✓ | **Complete** — Routed; 2026-11 review fixes applied, DRC clean |
+| Main badge PCB layout | ✓ | **Complete** — Routed; 2026-11 review fixes and LED supply rail applied, DRC clean |
 | Gerbers generated | | Not started |
 | Prototype ordered | | Not started |
 | First power-on | | Not started |

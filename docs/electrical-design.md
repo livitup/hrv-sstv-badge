@@ -12,6 +12,8 @@ This document describes the electrical design of the DEFCON SSTV Badge, includin
 
 The SA818 runs directly from the LiPo battery (via load switch), not through the 3.3V regulator. This separates the 1.7A TX current spikes from the main digital rail.
 
+The 26 WS2812B LEDs have their own 4.0V rail (VLED) from a second buck-boost converter, U11 (TPS63000), fed from the same VSYS node as the 3.3V regulator and the load switch. It is not shown in the diagram below; see "LED Supply Rail".
+
 ```
                     ┌───────────────────┐
     USB-C 5V ──────►│   MCP73871        │
@@ -55,7 +57,7 @@ The SA818 runs directly from the LiPo battery (via load switch), not through the
 | Camera (active) | ~50mA | Only when capturing |
 | SD card (active) | ~50mA | Burst during write |
 | PCM5102A DAC | ~10mA | |
-| Misc (LEDs, etc.) | ~20mA | |
+| Misc (PWR LED, etc.) | ~20mA | The WS2812B LEDs are on the separate VLED rail, not this one |
 | **Total typical** | **~250mA** | |
 | **Peak** | **~400mA** | All subsystems active |
 
@@ -93,6 +95,65 @@ The SA818 runs directly from the LiPo battery (via load switch), not through the
 | C_OUT1 | 10µF | 0805 | X5R/X7R, 10V |
 | C_OUT2 | 10µF | 0805 | X5R/X7R, 10V |
 | R_PS | 1MΩ | 0402 | Power save threshold (optional) |
+
+## LED Supply Rail (VLED, TPS63000)
+
+### Purpose
+
+The 26 WS2812B LEDs run from their own 4.0 V rail, **VLED**, made by a second buck-boost converter (U11). They are no longer on the 3.3 V rail.
+
+- The WS2812B-2020 datasheet specifies a 3.7–5.3 V supply and the 5050 part 3.5–5.3 V. At 3.3 V both are out of spec, and blue is the first colour to suffer.
+- The LED data line is driven by a 3.3 V GPIO. The 5050 datasheet requires a data-high level of 0.7 × VDD, which is 2.8 V at a 4.0 V supply (met by 3.3 V logic with 0.5 V to spare) but 3.5 V at a 5 V supply (not met). 4.0 V is therefore high enough for the supply spec and low enough for the data spec.
+- A buck-boost holds 4.0 V whether VSYS is 3.0 V (battery nearly empty) or about 5 V (USB connected). A boost-only converter would pass 5 V through on USB.
+
+See `engineers-notebook/led-supply-rail.md` for the options that were compared.
+
+### Circuit
+
+```
+    VSYS ──┬──────────┬──► VIN, VINA, EN        VOUT ──┬───────┬──────┬──► VLED (4.0 V)
+           │          │                                │       │      │
+         C79        C80        U11 TPS63000          R23     C83    C81, C82
+         10µF      100nF       L9 2.2µH across        1M    2.2pF   2× 10µF
+           │          │        L1 / L2                 │       │      │
+          GND        GND                          FB ──┴───────┘     GND
+                               PS/SYNC ── GND          │
+                                                      R24 143k
+                                                       │
+                                                      GND
+```
+
+| Ref | Value | Package | Notes |
+|-----|-------|---------|-------|
+| U11 | TPS63000DRCR | VSON-10 (3×3mm) | Adjustable version of U5 (same footprint and pinout) |
+| L9 | 2.2µH | 3×3mm | Same part as L1 |
+| C79 | 10µF | 0805 | Input |
+| C80 | 100nF | 0402 | VINA decoupling |
+| C81, C82 | 10µF | 0805 | Output |
+| R23 | 1MΩ 1% | 0603 | Feedback, upper |
+| R24 | 143kΩ 1% | 0603 | Feedback, lower |
+| C83 | 2.2pF | 0402 | Feed-forward across R23 (datasheet: 2.2 µs / R23) |
+
+**Output voltage:** VOUT = 0.5 V × (1 + R23/R24) = 0.5 × (1 + 1000/143) = **4.00 V**
+
+**PS/SYNC is tied to ground**, which enables power-save mode. The LEDs do not care about ripple, and the rail idles at a few tens of milliamps where power-save mode is more efficient. (U5 does the opposite, for the sake of the audio path.)
+
+**EN is tied to VSYS**, so the rail is always on. A dark WS2812B still draws its quiescent current, so sleep current includes the 26 LEDs. Controlling EN from a spare GPIO would remove that; it is not implemented.
+
+### Limits
+
+- **Current:** the TPS6300x has 1.8 A switches. Boosting a nearly flat battery to 4.0 V, plan on no more than about 0.8 A out. All 26 LEDs at full white would ask for about 1.5 A, so **firmware must cap total LED brightness**. The planned animations draw 70–120 mA.
+- **Battery cost:** the LEDs are constant-current, so they take about 20 % more power at 4.0 V than at 3.3 V — roughly 15 mA more from the battery at idle.
+
+### Layout
+
+- U11 and its parts are on the back, at about (10–22, 89–104) mm, between the display socket J3 and the charger. The layout is a copy of U5's.
+- VLED is distributed on the inner power layer (In2) as tracks, not as a plane. The trunk follows the board edges so that it does not cut the 3.3 V plane through the middle of the board: from U11 up the left edge, along the top edge, and into each ear. Border rows and columns chain LED to LED.
+- The radio supply track on the same layer blocks the top row between D13 and D14; that one link is on the front layer.
+- Trunk resistance from U11 to the far ear tip is about 0.2 Ω, so the drop is under 0.1 V at 300 mA.
+- VLED is in the `Power` net class (0.2 mm clearance).
+
+---
 
 ---
 
@@ -2201,6 +2262,7 @@ The chain uses two different WS2812B packages optimized for their location:
 - **Ear LEDs (D2-D11):** 10× WS2812B in **5050 package** (5.0×5.0mm) — large and visible on the rabbit ear antennas, 5 per ear
 - **Display border LEDs (D12-D27):** 16× WS2812B-2020 in **2020 package** (2.0×2.0mm) — compact for tight spacing around the display, 3×5×3×5 layout
 - Each LED has a 100nF bypass cap between VDD and GND
+- All 26 LEDs are powered from the 4.0V **VLED** rail (U11, TPS63000), not from 3.3V — see "LED Supply Rail" in the power section. The data line stays at 3.3V logic.
 
 Both packages use the same WS2812B protocol and are daisy-chained on a single data line.
 
@@ -2477,7 +2539,7 @@ TX "Capacitor Discharge":              RX "Filling The Tank":
 ### Blinky Power Budget
 
 **Worst case (all white, full brightness):**
-- 26 WS2812B × 60mA = 1,560mA ❌ (would drain battery in 1 hour)
+- 26 WS2812B × 60mA = 1,560mA ❌ (would drain battery in 1 hour, and is about twice what the VLED regulator can supply — firmware must cap total brightness)
 - PWR LED: ~10mA (negligible)
 
 **Realistic usage with smart animations:**
@@ -2519,6 +2581,9 @@ TX "Capacitor Discharge":              RX "Filling The Tank":
 - Bottom: 5 LEDs (B8-B12), ~12mm spacing
 - Left: 3 LEDs (B13-B15), ~15mm spacing
 - Chain is continuous, clockwise from top-left
+
+**Supply:**
+- LED VDD pads and bypass caps connect by vias to VLED tracks on the inner power layer (In2); see "LED Supply Rail"
 
 **Bypass Capacitors:**
 - Each WS2812B requires 100nF bypass cap
@@ -2754,7 +2819,7 @@ Design status and open items are tracked in a separate document:
 
 ## References
 
-- [TPS63001 Datasheet](https://www.ti.com/product/TPS63001)
+- [TPS63001 Datasheet](https://www.ti.com/product/TPS63001) (also covers the TPS63000 used for the LED rail)
 - [TPS22919 Datasheet](https://www.ti.com/product/TPS22919)
 - [PCM5102A Datasheet](https://www.ti.com/product/PCM5102A)
 - [ILI9341 Datasheet](https://cdn-shop.adafruit.com/datasheets/ILI9341.pdf)

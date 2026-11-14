@@ -699,6 +699,10 @@
         "pattern": "VBUS"
       },
       {
+        "netclass": "Power",
+        "pattern": "VLED"
+      },
+      {
         "netclass": "USB",
         "pattern": "USB_DP"
       },
