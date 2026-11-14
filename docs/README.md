@@ -25,7 +25,7 @@ Raw BOM data exported from KiCad.
 Design and implementation status tracker for all subsystems.
 
 **[prototype-checklist.md](prototype-checklist.md)**
-Checks that need the physical parts or an assembled prototype: module pinouts and polarities to confirm before ordering boards, and measurements to make on the first prototypes.
+The single pre-fab and prototype list: desk checks, reviews and fab outputs before ordering boards; module pinouts and polarities to confirm with parts in hand; and measurements to make on the first prototypes.
 
 ### Software Architecture
 

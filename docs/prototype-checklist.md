@@ -1,12 +1,36 @@
-# Parts-in-Hand and Prototype Checklist
+# Pre-Fab, Parts-in-Hand and Prototype Checklist
 
-Checks that cannot be done on paper. Each one needs either the physical part or an assembled prototype board. They come out of the November 2026 design review (`engineers-notebook/main-badge-review-2026-11.md`) and the LED supply rail work (`engineers-notebook/led-supply-rail.md`).
+Everything that stands between the finished design files and a proven board, in the order it has to happen: desk checks and fab outputs (Part 0), checks that need the physical parts (Part 1), and measurements on the first assembled prototypes (Part 2). The items come out of the November 2026 design review (`engineers-notebook/main-badge-review-2026-11.md`) and the LED supply rail work (`engineers-notebook/led-supply-rail.md`).
 
 This list does **not** replace the subsystem test procedures in `electrical-design.md` ("Testing Notes"). It covers the specific assumptions and open risks the review left behind. Where a test already exists there, this list points to it.
 
 Tick items off here as they are done, and record what was found.
 
 ---
+
+## Part 0 — Before ordering boards, no parts needed
+
+Checks that can be done at a desk with the design files and datasheets, and the steps that produce the fab order.
+
+### Desk checks
+
+- [ ] **5050 ear LED rated current.** Read the WS2812B (5050) datasheet's maximum current per LED. The data-high threshold (0.7 × supply) and supply range (3.5–5.3 V) are already confirmed. The current figure feeds the firmware brightness cap and the LED rail's load estimate.
+- [ ] **Fuel gauge supply maximum.** Confirm the LC709203F's recommended maximum supply voltage from its datasheet. The figure used so far (4.5 V) was not taken from the datasheet, and the gauge is on VSYS, which sits near 5 V with USB connected.
+- [ ] **Critical footprints against datasheets.** Compare pad positions, sizes and pin 1 with the manufacturer's land pattern for: U1 RP2350B (QFN-80), U4 MCP73871 (QFN-20), U5/U11 TPS63001/TPS63000 (VSON-10), U6 TPS22919 (SC-70-6), U7 LC709203F (WDFN-8), U8 PCM5102A (TSSOP-20), U2 flash (SOIC-8), Y1 crystal (3215), J2 USB-C, J10 microSD, J1 JST PH, D1 and the two WS2812B packages, and the SA818 on the carriers.
+- [ ] **Custom footprints.** Check the three footprints made for this project against their datasheets: `L_Abracon_AOTA-B201610` (including the polarity dot at pad 1), `C_0402_1005Metric_Wide`, and `L_0603HP` on the carriers.
+
+### Reviews in KiCad
+
+- [ ] **Main badge visual pass.** Look over the areas reworked in the November 2026 review: the power section on the back (U4, U5, U6), under and around U1, the LED rail regulator (about x 10–22, y 89–104 mm), the battery connector J1, the SD socket corner, the power LED beside J6, the border LEDs (D17/D18 are the tightest), the `CAM_HREF` jog near D18, and the inner power layer with the radio supply track and the VLED tracks.
+- [ ] **UHF carrier visual pass.** The UHF carrier PCB was generated from the VHF layout; look it over as a board in its own right.
+- [ ] **ERC and DRC.** Re-run both on all three boards after the last change and confirm: no unconnected items, no schematic-parity issues, and only the known excluded items.
+
+### Fab outputs
+
+- [ ] **Generate fab files** for the main badge and both carriers: Gerbers, drill files, pick-and-place positions and BOM.
+- [ ] **Inspect them** in a Gerber viewer: layer order, board outline including the ears and feet, drill hits, solder mask openings on the fiducials and test pads, and paste on the fine-pitch parts.
+- [ ] **Check assembler requirements:** fiducial count and placement, minimum silkscreen text height (two labels are hidden for this reason), via tenting, and whether the 4-layer stackup entered in KiCad matches what will be ordered.
+- [ ] **Order a small prototype run** before any quantity order. The carriers can go first.
 
 ## Part 1 — With parts in hand, before ordering boards
 
@@ -22,7 +46,6 @@ These check assumptions that are built into the PCB. If one turns out wrong, the
 - [ ] **Display support socket position.** Measure the chosen display module: the distance from the 14-pin header row to the pins on the opposite edge (usually a 4-pin SD header), and their position along that edge. A support socket for the display's free end can only be placed once this is known. Free copper-clear area on the board is x ≈ 74.5–81.5 mm, y ≈ 73–88 mm; outside it, traces would have to move.
 - [ ] **Back of the display module.** Note anything conductive on the module's back (SD card shell, header pins, exposed copper) and what it would sit over on the badge.
 - [ ] **Battery plug fit.** The battery's JST-PH plug mates with the side-entry connector J1 on the back, and the lead has slack when the pouch is in its final position.
-- [ ] **Rail voltages at the test pads.** TP1 GND, TP2 +3V3, TP3 VBUS, TP4 VSYS, TP5 VLED, TP6 SA818_VCC (positions in `electrical-design.md`, "Power Test Pads").
 - [ ] **Battery pouch fit.** The planned spot is on the back, to the right of the 3.3 V regulator's inductor. The largest part-free rectangle there is about 41 × 67 mm (x 47.3–88.3, y 44.7–112.1 mm), which should take the 50 × 35 mm pouch in the BOM. Check the real cell against it, keep it off the Tag-Connect debug pads just above (J9) and the VSYS test pad TP4 at the left edge, and confirm the lead reaches J1.
 - [ ] **Regulator versus battery pouch.** The LED rail regulator (U11, L9) sits on the back at about x 10–22 mm, y 89–104 mm. Confirm the battery pouch can be mounted without resting on the inductor.
 
@@ -30,6 +53,7 @@ These check assumptions that are built into the PCB. If one turns out wrong, the
 
 ### Power
 
+- [ ] **Rail voltages at the test pads.** TP1 GND, TP2 +3V3, TP3 VBUS, TP4 VSYS, TP5 VLED, TP6 SA818_VCC (positions in `electrical-design.md`, "Power Test Pads").
 - [ ] **Real SA818 transmit current.** Measure battery current during high-power TX. The docs assume 1.7 A; the load switch (TPS22919) is rated 1.5 A, and the charger's battery switch plus the load switch lose about 0.3 V per amp. This measurement decides whether the radio supply path needs a redesign.
 - [ ] **SA818 supply voltage during TX.** Measure the voltage at the carrier's VCC pin while transmitting on a part-discharged battery (about 3.6 V). The SA818 needs at least 3.5 V.
 - [ ] **Battery trace temperature.** After a two-minute transmission, check the battery trace and the charger (U4) for heating.

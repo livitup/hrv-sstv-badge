@@ -293,7 +293,7 @@ Not verifiable on paper: camera module pinout against J4, battery connector pola
 
 - [Electrical Design](electrical-design.md) — Circuit schematics and component details
 - [BOM](bom.md) — Complete bill of materials with costs
-- [Parts-in-Hand and Prototype Checklist](prototype-checklist.md) — Checks that need the physical parts or an assembled prototype
+- [Pre-Fab, Parts-in-Hand and Prototype Checklist](prototype-checklist.md) — Desk checks and fab outputs before ordering, then checks that need the physical parts or an assembled prototype
 - [PCB Design](../hardware/pcb-design.md) — Physical PCB layout and dimensions
 - [Firmware Architecture](firmware-architecture.md) — Software design
 
