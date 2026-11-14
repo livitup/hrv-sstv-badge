@@ -36,6 +36,7 @@ fp-info-cache
 # KiCAD auto-generated files
 *.pro.user
 *.kicad_pro.user
+*.kicad_prl
 **/[#]auto_saved_files[#]
 *.lck
 _autosave*
