@@ -202,6 +202,7 @@ defcon-sstv-badge/
 │   ├── bom.md                    # Bill of materials
 │   ├── bom-raw.md                # Raw BOM export
 │   ├── project-status.md         # Design status tracker
+│   ├── prototype-checklist.md    # Checks needing parts in hand or a prototype
 │   └── engineers-notebook/       # Design decisions and rationale
 ├── firmware/                     # RP2350 embedded C code
 │   ├── src/                      # Main source code
@@ -238,6 +239,7 @@ defcon-sstv-badge/
 - `docs/bom.md` - Bill of materials with costs and sourcing
 - `docs/firmware-architecture.md` - Software design
 - `docs/project-status.md` - Design and implementation status
+- `docs/prototype-checklist.md` - Checks that need parts in hand or an assembled prototype
 - `docs/engineers-notebook/` - Design decisions and rationale
 
 ## Hardware Changes from Original Design

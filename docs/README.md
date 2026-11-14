@@ -24,6 +24,9 @@ Raw BOM data exported from KiCad.
 **[project-status.md](project-status.md)**
 Design and implementation status tracker for all subsystems.
 
+**[prototype-checklist.md](prototype-checklist.md)**
+Checks that need the physical parts or an assembled prototype: module pinouts and polarities to confirm before ordering boards, and measurements to make on the first prototypes.
+
 ### Software Architecture
 
 **[firmware-architecture.md](firmware-architecture.md)**
