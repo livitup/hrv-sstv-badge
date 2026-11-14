@@ -4,4 +4,5 @@
   (lib (name "TPS22919DCKT")(type "KiCad")(uri "${KIPRJMOD}/footprints.pretty")(options "")(descr "TPS22919 load switch"))
   (lib (name "USB4105-GF-A")(type "KiCad")(uri "${KIPRJMOD}/footprints.pretty")(options "")(descr "GCT USB-C connector"))
   (lib (name "VHF_UHF_Modules")(type "KiCad")(uri "${KIPRJMOD}/footprints.pretty")(options "")(descr "SA818 VHF/UHF transceiver module"))
+  (lib (name "SSTV_Badge")(type "KiCad")(uri "${KIPRJMOD}/footprints.pretty")(options "")(descr "Badge-specific footprints"))
 )

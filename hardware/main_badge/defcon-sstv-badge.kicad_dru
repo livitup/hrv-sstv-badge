@@ -1,0 +1,8 @@
+(version 1)
+
+# The RP2350 on-chip regulator is laid out to match Raspberry Pi's reference
+# design ("Hardware design with RP2350"), which uses 0.13-0.15 mm gaps between
+# the regulator nets. This rule allows that for those three nets only.
+(rule "RP2350 regulator reference layout"
+	(condition "A.NetName == 'Net-(U1-VREG_LX)' || A.NetName == 'Net-(U1-VREG_FB)' || A.NetName == '/MCU/VREG_AVDD'")
+	(constraint clearance (min 0.12mm)))

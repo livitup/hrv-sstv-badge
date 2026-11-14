@@ -3886,12 +3886,6 @@
 		(uuid "ba52a37d-9758-49dd-9547-b1793c0b4587")
 	)
 	(junction
-		(at 130.81 39.37)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "bc492650-8692-4ea1-8265-75ac4aabbd86")
-	)
-	(junction
 		(at 182.88 121.92)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -4144,16 +4138,6 @@
 			(type default)
 		)
 		(uuid "084929f4-18d2-44ae-b779-e31d6220d582")
-	)
-	(wire
-		(pts
-			(xy 171.45 57.15) (xy 171.45 39.37)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "09b13ced-a0a0-499b-928e-228495c7287c")
 	)
 	(wire
 		(pts
@@ -4527,16 +4511,6 @@
 	)
 	(wire
 		(pts
-			(xy 130.81 39.37) (xy 171.45 39.37)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "4b89dd4d-b8ac-4e97-b59f-6e6011b2dbbf")
-	)
-	(wire
-		(pts
 			(xy 46.99 189.23) (xy 114.3 189.23)
 		)
 		(stroke
@@ -4544,16 +4518,6 @@
 			(type default)
 		)
 		(uuid "4c868493-819c-4b04-aeca-161015ed2945")
-	)
-	(wire
-		(pts
-			(xy 226.06 76.2) (xy 226.06 113.03)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "4e0fcbb4-de13-404a-a47b-82758e53966c")
 	)
 	(wire
 		(pts
@@ -5604,16 +5568,6 @@
 			(type default)
 		)
 		(uuid "e2fad569-6121-40c7-9532-0245ae67d39e")
-	)
-	(wire
-		(pts
-			(xy 182.88 113.03) (xy 226.06 113.03)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "e4618952-062d-449f-bfbe-0080b2220825")
 	)
 	(wire
 		(pts
@@ -7827,73 +7781,6 @@
 		)
 	)
 	(symbol
-		(lib_id "power:PWR_FLAG")
-		(at 182.88 152.4 270)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "a46f65bc-1a35-4349-8854-1bcda9b1a5c1")
-		(property "Reference" "#FLG04"
-			(at 184.785 152.4 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "PWR_FLAG"
-			(at 186.69 152.3999 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" ""
-			(at 182.88 152.4 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 182.88 152.4 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Special symbol for telling ERC where power comes from"
-			(at 182.88 152.4 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "36da0c85-8e76-40ea-862c-a43ab7e13ea1")
-		)
-		(instances
-			(project ""
-				(path "/6bfeada4-0da3-4bdd-af4a-70929e466b35/17cd243b-0ed3-4c80-b4b5-c33d52f301e8"
-					(reference "#FLG04")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Device:C")
 		(at 274.32 58.42 90)
 		(unit 1)
@@ -9259,6 +9146,434 @@
 			(project ""
 				(path "/6bfeada4-0da3-4bdd-af4a-70929e466b35/17cd243b-0ed3-4c80-b4b5-c33d52f301e8"
 					(reference "#FLG02")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 171.45 57.15) (xy 171.45 43.18)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d9243014-5be9-4891-9612-3df1fe5b54b7")
+	)
+	(junction
+		(at 128.27 43.18)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "61878653-0ae1-40ab-bb72-d9f2c667a80e")
+	)
+	(wire
+		(pts
+			(xy 203.2 109.22) (xy 203.2 113.03)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "03d97871-eec4-4ae4-8a86-128fb6e3f441")
+	)
+	(junction
+		(at 203.2 113.03)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "da75f859-5cf7-4a8e-87ff-102da5ad1415")
+	)
+	(junction
+		(at 203.2 109.22)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "450a52f2-47f2-4797-ac0d-e9768cb7ed1d")
+	)
+	(wire
+		(pts
+			(xy 182.88 113.03) (xy 203.2 113.03)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e4e55a02-2ad6-4be6-acf4-72e64076a925")
+	)
+	(wire
+		(pts
+			(xy 203.2 113.03) (xy 226.06 113.03)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a4b9fd80-c822-48ad-8579-7a535e50862b")
+	)
+	(wire
+		(pts
+			(xy 226.06 76.2) (xy 226.06 104.14)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "991d716f-3265-493a-b8d0-7cc2b225813e")
+	)
+	(wire
+		(pts
+			(xy 226.06 104.14) (xy 226.06 113.03)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "009f90c7-2eda-4451-84ca-47eec57efa5a")
+	)
+	(wire
+		(pts
+			(xy 226.06 104.14) (xy 231.14 104.14)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "780836f8-f887-4993-bf4b-5900271944c1")
+	)
+	(junction
+		(at 226.06 104.14)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "17fd717a-95f8-46ef-b0ea-3037d2edaa49")
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 231.14 107.95 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "4a0e637f-2640-42f6-9fd4-27f76d68556d")
+		(property "Reference" "C73"
+			(at 234.95 106.6799 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "1uF"
+			(at 234.95 109.2199 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+			(at 232.1052 111.76 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 231.14 107.95 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Unpolarized capacitor"
+			(at 231.14 107.95 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "KLC_S4.2_DVDD" ""
+			(at 231.14 107.95 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "KLC_S4.2_VREG_LX" ""
+			(at 231.14 107.95 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "c39bff37-f06b-424d-a2e5-b30d30bd5d40")
+		)
+		(pin "1"
+			(uuid "af772cb2-8759-4ce9-b91d-a3ec29d740d7")
+		)
+		(instances
+			(project ""
+				(path "/6bfeada4-0da3-4bdd-af4a-70929e466b35/17cd243b-0ed3-4c80-b4b5-c33d52f301e8"
+					(reference "C73")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 231.14 111.76 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "99b77536-2570-4669-ad32-3056d6283f60")
+		(property "Reference" "#PWR024"
+			(at 231.14 118.11 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 231.14 116.84 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 231.14 111.76 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 231.14 111.76 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 231.14 111.76 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "6f1c10ae-f0dd-4b03-ac54-019da947b31e")
+		)
+		(instances
+			(project ""
+				(path "/6bfeada4-0da3-4bdd-af4a-70929e466b35/17cd243b-0ed3-4c80-b4b5-c33d52f301e8"
+					(reference "#PWR024")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 171.45 43.18) (xy 160.02 43.18)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3ce1d852-0cc2-4c0b-9eac-22c69476546c")
+	)
+	(wire
+		(pts
+			(xy 160.02 43.18) (xy 128.27 43.18)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c42f30a3-c01f-4092-a7a3-c337e9950b0e")
+	)
+	(junction
+		(at 160.02 43.18)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "0e42f29c-de24-43e9-a753-458261da54b3")
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 160.02 46.99 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "36b1f089-f6bc-4838-9e49-4b1a47c9910d")
+		(property "Reference" "C76"
+			(at 163.83 45.7199 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "4.7uF"
+			(at 163.83 48.2599 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+			(at 160.9852 50.8 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 160.02 46.99 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Unpolarized capacitor"
+			(at 160.02 46.99 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "KLC_S4.2_DVDD" ""
+			(at 160.02 46.99 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "KLC_S4.2_VREG_LX" ""
+			(at 160.02 46.99 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "ca169ae7-f0a4-48cd-9115-bc1517217541")
+		)
+		(pin "1"
+			(uuid "c4f4c9e8-468c-443c-8fc3-0ec11193675e")
+		)
+		(instances
+			(project ""
+				(path "/6bfeada4-0da3-4bdd-af4a-70929e466b35/17cd243b-0ed3-4c80-b4b5-c33d52f301e8"
+					(reference "C76")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 160.02 50.8 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "7ff2a5b5-f009-4c3e-bd16-8a3ab8f1c8fa")
+		(property "Reference" "#PWR025"
+			(at 160.02 57.15 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 160.02 55.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 160.02 50.8 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 160.02 50.8 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 160.02 50.8 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "485dfe32-51f0-4e6a-9749-d3d3e4571b32")
+		)
+		(instances
+			(project ""
+				(path "/6bfeada4-0da3-4bdd-af4a-70929e466b35/17cd243b-0ed3-4c80-b4b5-c33d52f301e8"
+					(reference "#PWR025")
 					(unit 1)
 				)
 			)
