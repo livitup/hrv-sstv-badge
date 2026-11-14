@@ -40,9 +40,9 @@
 | 4.7nF | 1 | RX anti-alias filter |
 | 10nF | 1 | TX low-pass filter |
 | 100nF | 39 | Decoupling (MCU, LEDs, ICs, LED rail, carrier) |
-| 1µF | 2 | DVDD, RX DC block |
-| 2.2µF | 2 | DAC charge pump |
-| 10µF | 17 | Bulk caps throughout (3 on the LED rail) |
+| 1µF | 3 | RX DC block, load switch input, VBUS at connector |
+| 2.2µF | 3 | DAC charge pump, charger input |
+| 10µF | 15 | Bulk caps throughout (3 on the LED rail) |
 | 100µF | 1 | Load switch output |
 
 ## Resistors
@@ -57,7 +57,7 @@
 | 2k | 1 | Charge current (PROG1) |
 | 4.7k | 4 | I2C pullups, RX filter |
 | 5.1k | 2 | USB CC resistors |
-| 10k | 3 | Pullups/pulldowns |
+| 10k | 7 | Pullups/pulldowns (incl. four SD card pull-ups) |
 | 15k | 1 | Pre-charge/term (PROG3) |
 | 47k | 3 | TX attenuator, RX bias |
 | 143k | 1 | LED rail feedback (lower) |

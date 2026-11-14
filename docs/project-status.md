@@ -224,7 +224,9 @@ This document tracks the design and implementation status for all badge subsyste
 - [x] DRC clean-up — 0 unconnected, 0 schematic-parity issues; only the excluded silkscreen items remain
 - [x] **Design review fixes (2026-11-13)** — see "Main Badge Review" below
 - [ ] Open questions from the reviews: fuel gauge supply (VSYS vs cell) and thermistor sharing, radio supply drop and TPS22919 rating vs TX current, crystal series resistor, band-ID scheme, SD card pull-ups, VBUS capacitance, camera XCLK — see `engineers-notebook/main-badge-review-2026-11.md`
-- [ ] Not done: third DVDD cap at U1 pin 32 (no room), test points
+- [x] **Smaller review items worked through (2026-11-14)**: VBUS capacitance under 10µF, SD card pull-ups, six power test pads, BOOTSEL resistor moved closer, 1.1V links widened — see `engineers-notebook/main-badge-review-2026-11.md` section 8
+- [x] **SD card socket turned to face the board edge (2026-11-14)** — the card now sits flush with the right-hand edge; all four SD pull-ups fitted
+- [ ] Not done: third DVDD cap at U1 pin 32 (no room)
 - [x] USB D+/D− length mismatch (about 215 mm vs 170 mm) reviewed and **accepted** 2026-11-14 — not significant at Full Speed; see `engineers-notebook/main-badge-review-2026-11.md` section 6
 - [ ] Evaluate if main board can be 2-layer with RF removed
 - [ ] Integration test: carrier + main board

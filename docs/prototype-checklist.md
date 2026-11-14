@@ -22,6 +22,8 @@ These check assumptions that are built into the PCB. If one turns out wrong, the
 - [ ] **Display support socket position.** Measure the chosen display module: the distance from the 14-pin header row to the pins on the opposite edge (usually a 4-pin SD header), and their position along that edge. A support socket for the display's free end can only be placed once this is known. Free copper-clear area on the board is x ≈ 74.5–81.5 mm, y ≈ 73–88 mm; outside it, traces would have to move.
 - [ ] **Back of the display module.** Note anything conductive on the module's back (SD card shell, header pins, exposed copper) and what it would sit over on the badge.
 - [ ] **Battery plug fit.** The battery's JST-PH plug mates with the side-entry connector J1 on the back, and the lead has slack when the pouch is in its final position.
+- [ ] **Rail voltages at the test pads.** TP1 GND, TP2 +3V3, TP3 VBUS, TP4 VSYS, TP5 VLED, TP6 SA818_VCC (positions in `electrical-design.md`, "Power Test Pads").
+- [ ] **Battery pouch fit.** The planned spot is on the back, to the right of the 3.3 V regulator's inductor. The largest part-free rectangle there is about 41 × 67 mm (x 47.3–88.3, y 44.7–112.1 mm), which should take the 50 × 35 mm pouch in the BOM. Check the real cell against it, keep it off the Tag-Connect debug pads just above (J9) and the VSYS test pad TP4 at the left edge, and confirm the lead reaches J1.
 - [ ] **Regulator versus battery pouch.** The LED rail regulator (U11, L9) sits on the back at about x 10–22 mm, y 89–104 mm. Confirm the battery pouch can be mounted without resting on the inductor.
 
 ## Part 2 — On the first assembled prototypes
@@ -32,7 +34,7 @@ These check assumptions that are built into the PCB. If one turns out wrong, the
 - [ ] **SA818 supply voltage during TX.** Measure the voltage at the carrier's VCC pin while transmitting on a part-discharged battery (about 3.6 V). The SA818 needs at least 3.5 V.
 - [ ] **Battery trace temperature.** After a two-minute transmission, check the battery trace and the charger (U4) for heating.
 - [ ] **Fuel gauge with USB connected.** Read the LC709203F with and without USB plugged in. It is powered from VSYS, which sits near 5 V on USB, so its voltage reading is expected to be wrong while charging. Record how wrong.
-- [ ] **USB inrush.** About 25 µF sits on VBUS against a 10 µF USB limit. Plug into a few different hosts and hubs and confirm none of them trip.
+- [ ] **USB attach.** VBUS capacitance is about 7.9 µF nominal, under the 10 µF USB limit. Plug into a few different hosts and hubs and confirm clean attach, and that the charger still starts reliably with the smaller input capacitors.
 
 ### LED supply rail (VLED)
 
@@ -58,7 +60,8 @@ These check assumptions that are built into the PCB. If one turns out wrong, the
 
 - [ ] **Backlight control.** GPIO29 low turns the backlight on, high turns it off, and PWM dims it smoothly. The backlight is expected to be on during reset.
 - [ ] **Power LED.** Each of red, green and blue lights from its own GPIO. This also confirms the APFA3010 pad numbering if that has not been settled from the datasheet drawing.
-- [ ] **SD card.** Card initialises and reads/writes reliably. DAT1, DAT2, MISO and CS have no pull-ups; add them in the next revision if cards misbehave.
+- [ ] **SD card.** Card initialises and reads/writes reliably (CS, MISO, DAT1 and DAT2 all have 10 kΩ pull-ups). Try several card brands.
+- [ ] **SD card access.** A card can be inserted and removed at the right-hand board edge with the badge assembled, and its outer end sits flush with the edge.
 - [ ] **Subsystem tests.** Run the procedures in `electrical-design.md`, "Testing Notes" (power, audio, display, camera, user controls, integrated system).
 
 ---

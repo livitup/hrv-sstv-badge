@@ -1,6 +1,6 @@
 # DEFCON SSTV Badge — Bill of Materials
 
-**Version:** 3.5
+**Version:** 3.6
 **Last Updated:** 2026-11-13
 **Source:** KiCad schematic export, verified against `docs/electrical-design.md`
 
@@ -90,7 +90,7 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 | U3 | 1 | USBLC6-2SC6 | SOT-23-6 | Fab | D+/D- ESD protection |
 | D_VBUS1 | 1 | TVS (PESD5V0S1BL) | SOD-323 | Fab | VBUS surge protection |
 | R_CC1, R_CC2 | 2 | 5.1kΩ | 0402 | Fab | USB sink identification (to GND) |
-| C_USB1 | 1 | 10µF | 0603 | Fab | VBUS decoupling |
+| C_USB1 | 1 | 1µF | 0603 | Fab | VBUS decoupling at the connector (reduced from 10µF to keep total VBUS capacitance under the 10µF USB limit) |
 
 **Subtotal:** ~$1.20
 
@@ -105,7 +105,8 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 | U4 | 1 | MCP73871-2CCI/ML | QFN-20 (4×4mm) | Fab | Li-Po charge controller |
 | R3 | 1 | 2kΩ | 0603 | Fab | PROG1: Charge current = 1000/R = 500mA |
 | R4 | 1 | 15kΩ | 0603 | Fab | PROG3: Pre-charge/termination = ~67mA |
-| C8, C10, C11 | 3 | 10µF | 0805 | Fab | Input/battery/output caps, X5R 10V |
+| C8, C11 | 2 | 10µF | 0805 | Fab | Battery/output caps, X5R 10V |
+| C10 | 1 | 2.2µF | 0805 | Fab | Charger input (reduced from 10µF; C76 4.7µF sits at the IN pins) |
 
 **Subtotal:** ~$3.00
 
@@ -239,7 +240,9 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 | C78 | 1 | 4.7µF | 0402 | Fab | VREG_AVDD filter capacitor |
 | C70, C72 | 2 | 100nF | 0402 | Fab | DVDD decoupling under U1 at pins 10 and 51 (back side) |
 | R20, R21 | 2 | 27Ω | 0402 | Fab | USB D−/D+ series termination at U1 (per RP2350 hardware design guide) |
-| R19 | 1 | 1kΩ | 0402 | Fab | In series with BOOTSEL switch on QSPI_SS (back side) |
+| R19 | 1 | 1kΩ | 0402 | Fab | In series with BOOTSEL switch on QSPI_SS (back side, about 14mm from the flash chip-select line) |
+| R25–R28 | 4 | 10kΩ | 0402 | Fab | SD card pull-ups to 3.3V: chip select (R25), data out / MISO (R26), DAT2 (R27), DAT1 (R28) |
+| TP1–TP6 | 6 | Test pad 1.0mm | Pad only | — | Back side: GND, +3V3, VBUS, VSYS, VLED, SA818_VCC (no component, excluded from BOM) |
 | SW_BOOT1 | 1 | Tactile 3×4mm | SMD | Fab | BOOTSEL for UF2 bootloader |
 | R1, R2 | 2 | 4.7kΩ | 0603 | Fab | I2C SDA/SCL pullups (to +3V3) |
 | R17 | 1 | 10kΩ | 0603 | Fab | RUN pin pullup |
@@ -357,7 +360,7 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 | Value | Qty | Package | Use |
 |-------|-----|---------|-----|
 | 0Ω | 1 | 0402 | VHF carrier band ID (R18) |
-| 10kΩ | 1 | 0402 | UHF carrier band ID pull-up (R18) |
+| 10kΩ | 5 | 0402 | UHF carrier band ID pull-up (R18), SD card pull-ups (R25–R28) |
 | 100Ω | 2 | 0603 | PWR LED G/B (R15, R16) |
 | 220Ω | 1 | 0603 | PWR LED R (R14) |
 | 470Ω | 1 | 0603 | TX attenuator (R6) |
@@ -390,11 +393,12 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 | 4.7nF | 1 | 0603 | RX anti-alias (C27) |
 | 10nF | 1 | 0603 | TX filter (C24) |
 | 100nF | 42 | 0402/0603 | Decoupling: MCU (C3-C7, C9, C70, C72), LEDs (C28-C53), ICs (incl. C74, C75), carriers (C54, C56) |
-| 1µF | 2 | 0402/0603 | RX DC block (C26), load switch input (C73) |
+| 1µF | 3 | 0402/0603 | RX DC block (C26), load switch input (C73), VBUS at connector (C_USB1) |
 | 4.7µF | 3 | 0402 | RP2350 regulator (C1, C77, C78) |
 | 4.7µF | 1 | 0603 | Charger input (C76) |
 | 2.2µF | 2 | 0603 | PCM5102A charge pump (C21, C22) |
-| 10µF | 17 | 0603/0805 | Bulk caps throughout, LED rail (C79, C81, C82), carriers (C55, C57) |
+| 2.2µF | 1 | 0805 | Charger input (C10) |
+| 10µF | 15 | 0603/0805 | Bulk caps throughout, LED rail (C79, C81, C82), carriers (C55, C57) |
 | 100µF | 1 | 1206 | Load switch bulk (C17) |
 
 ### Inductors
@@ -470,6 +474,7 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 | 3.3 | 2026-11 | **Carrier harmonic LPFs** added (VHF C58-C63/L3-L5, UHF C64-C69/L6-L8), UHF R18 = 10kΩ pull-up, SMA corrected to edge-mount, carrier header pinout corrected to the locked main badge order. **Camera module requirement**: OV2640 module must have its own on-board oscillator (badge supplies no XCLK). **Main badge review fixes**: added R19 (1kΩ BOOTSEL), R20/R21 (27Ω USB), C70/C72 (DVDD), C73 (load switch input), C74/C75 (DAC supply pins), C76 (charger input). |
 | 3.4 | 2026-11 | **Schematic review fixes**: Q1 → AO3401A (backlight high-side), L1 → 2.2µH. **LED supply rail added**: U11 TPS63000, L9, C79–C83, R23, R24 (4.0V VLED for all 26 WS2812B). |
 | 3.5 | 2026-11 | **Battery connector J1** changed from through-hole vertical JST-PH (user-soldered) to SMD side-entry S2B-PH-SM4-TB (fab-assembled), so its pins no longer come through under the display. |
+| 3.6 | 2026-11 | **Small review items**: VBUS capacitance cut to about 7.9µF (C_USB1 10µF→1µF, C10 10µF→2.2µF); SD card socket J10 turned to face the board edge (card flush with the edge) and SD card pull-ups R25–R28 (10kΩ) added; six test pads TP1–TP6 added; BOOTSEL resistor R19 moved closer to the flash chip-select line. |
 
 ---
 

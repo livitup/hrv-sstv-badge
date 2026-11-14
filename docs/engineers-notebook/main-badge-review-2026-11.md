@@ -139,8 +139,8 @@ Flash, USB (CC resistors, ESD, series resistors), SAO, Tag-Connect, SD card SPI 
 | Fuel gauge thermistor | Shared with the charger; the gauge's own drive pin is unconnected. Firmware should use I2C temperature mode. |
 | Crystal series resistor | The RP2350 guide uses 1 kΩ; the board has none. |
 | Band ID | The UHF pull-up goes to the switched radio supply, so it reads as VHF when the radio is off. A scheme that separates no board / VHF / UHF is still to be discussed. |
-| SD card pull-ups | DAT1, DAT2, MISO and CS have none. |
-| VBUS capacitance | About 25 µF, above the 10 µF USB inrush limit. |
+| SD card pull-ups | DAT1, DAT2, MISO and CS had none. CS and MISO added afterwards; see section 8. |
+| VBUS capacitance | About 25 µF, above the 10 µF USB inrush limit. Reduced to about 7.9 µF afterwards; see section 8. |
 | Camera XCLK | See section 2. |
 | Parts not verifiable on paper | Camera module pinout against J4; battery connector polarity; APFA3010 pad numbering. |
 
@@ -209,6 +209,46 @@ It was the only through-hole part under the display other than J3 itself, and th
 ### Still open: support for the display's free end
 
 A second socket near the display's right edge would stop the module being pressed down. There is room: a scan of all four layers shows a 1×4 socket fits without touching any copper at x ≈ 74.5–81.5 mm for a band of y between about 73 and 88 mm. The exact position has to come from the module — many 14-pin ILI9341 modules have a 4-pin SD header on the far edge that such a socket could mate with — so this waits on the module being chosen and measured.
+
+---
+
+## 8. Smaller review items worked through (2026-11-14)
+
+The list of smaller hardware items from the review was worked through in one pass. What was done, what was not, and why.
+
+### Done
+
+**USB input capacitance.** VBUS carried about 25 µF (10 µF at the connector, 10 µF and 4.7 µF at the charger). The USB limit for a device is 10 µF, because a larger value draws an inrush spike the host may reject. Values only were changed: C_USB1 10 µF → 1 µF and C10 10 µF → 2.2 µF, leaving C76 (4.7 µF) at the charger's input pins. Total is about 7.9 µF. The MCP73871 asks for at least 4.7 µF at its input, which C76 plus C10 still provides.
+
+**SD card pull-ups.** Four 10 kΩ resistors to 3.3 V: R25 on SD_CS, R26 on MISO, R27 on DAT2 and R28 on DAT1. The chip-select pull-up is the one that matters most: with the RP2350 in reset its pins have a weak pull-down, which would otherwise select the card. DAT1 and DAT2 are unused in SPI mode; pulling unused SD data lines up rather than leaving them floating is the usual recommendation (taken from general practice, not checked against the SD specification text). They were first left off because the pads were boxed in (see below), and added once the socket was turned round.
+
+**BOOTSEL resistor.** R19 slid along its existing trace toward the MCU. The unterminated stub hanging off the flash chip-select line went from about 36 mm to about 14 mm. Nothing nearer was free on that layer.
+
+**1.1 V links under the MCU.** The back-layer links between the core-supply vias were 0.2 mm. They are now 0.4 mm where they clear their neighbours by 0.2 mm, 0.3 mm on the link toward pin 10, and unchanged at 0.2 mm on the link to pin 32, where nothing wider fits. The front-layer stubs into the 0.4 mm pitch pins stay at 0.2 mm; the pads are that width.
+
+**Test pads.** Six 1.0 mm pads on the back: GND, +3V3, VBUS, VSYS, VLED and SA818_VCC, each beside the part that makes or uses that rail. Battery voltage and the 1.1 V rail were left without pads because they can be probed at J1 and C1, and adding pads would have meant renaming nets.
+
+**Kinked LED data joints.** The data traces into D25 and D27 each went up, sideways and down to reach the pad. D25 now leaves the pad sideways and joins its diagonal directly; D27 has two fewer bends (a direct run would pass too close to a ground via).
+
+### Not done, with reasons
+
+**Third core-supply capacitor at U1 pin 32.** Still no room on either side of the board. Unchanged from the first review.
+
+**Camera lines with long routes.** Left alone on the owner's instruction.
+
+**Reference labels for R23 and C83.** They stay hidden. The only free silkscreen space would need 0.7 mm text, and the board's minimum is 0.8 mm.
+
+**Short joints on the inner-layer LED rail.** Ten sub-0.2 mm segments remain where tracks meet at junctions. They are on an inner layer, cause no rule violations, and removing them means moving junction points on a finished rail.
+
+### Found along the way: the SD card socket faced inward
+
+Placing the pull-ups showed that the socket's footprint draws the inserted card overhanging about 4 mm past the contact pads, and that those pads faced the middle of the board. The card would have been inserted from the board-interior side. `hardware/pcb-design.md` has always said "SD card slot accessible at edge", and the owner confirmed the card should sit flush with the edge, facing out.
+
+J10 was turned 180° and moved 2.6 mm so the inserted card's outer end lands exactly on the board edge (x = 120 mm). The four SPI lines were re-laid on the back layer as parallel runs under the socket body, between its two mounting pads. Power and ground pins have their own vias in the strip between the pads and the edge, which is under the card, so only traces and tented vias are there. With the pads now facing open board, the DAT1 and DAT2 pull-ups could be added just above and below the socket.
+
+### Battery location
+
+The owner's intended battery position is on the back, to the right of the 3.3 V regulator's inductor. The parts that looked like they bounded it (the border LEDs and their capacitors) are on the front. On the back, the largest part-free rectangle there is about 41 × 67 mm (x 47.3–88.3, y 44.7–112.1 mm), bounded by the inductor and a test pad on the left, a D-pad switch's pins on the right, the Tag-Connect pads above and the slide switch below. No through-hole pins come out inside it and the vias are tented. That is enough for the 50 × 35 mm pouch in the BOM; the real cell still has to be checked against it.
 
 ---
 

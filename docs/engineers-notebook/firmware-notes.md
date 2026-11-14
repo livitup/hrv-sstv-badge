@@ -46,6 +46,10 @@ The LC709203F shares the charger's thermistor and its own thermistor-drive pin (
 
 - The gauge is powered from VSYS, which sits near 5 V with USB connected, so its voltage reading is wrong while charging. Whether to fix that in hardware is still open; until then, firmware should not trust the gauge while USB is present.
 
+### SD card chip select has an external pull-up
+
+R25 (10 kΩ) holds SD_CS high while the RP2350 is in reset, so the card stays deselected until firmware drives the pin. MISO has a 10 kΩ pull-up (R26) as well, and the card's unused DAT1 and DAT2 pins are pulled up on the board (R27, R28). The display's chip select (GPIO5) has no pull-up; drive it high early in start-up before touching the shared SPI bus.
+
 ### Band ID reads as VHF when the radio is off
 
 The UHF carrier's ID pull-up goes to the switched radio supply. Read GPIO39 only after the load switch is on. The scheme cannot yet tell "no carrier" from "VHF"; a hardware change is under discussion.

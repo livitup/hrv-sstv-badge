@@ -258,7 +258,7 @@ The USB-C connector provides two functions:
 | VBUS TVS | PESD5V0S1BL | SOD-323 | Surge/ESD protection on 5V | ~$0.10 |
 | Data ESD | USBLC6-2SC6 | SOT-23-6 | TVS array for D+/D- | ~$0.20 |
 | CC Resistors | 2× 5.1kΩ | 0402 | UFP (sink) identification | ~$0.02 |
-| Bulk Capacitor | 10µF ceramic | 0603 | VBUS decoupling | ~$0.05 |
+| Bulk Capacitor | 1µF ceramic | 0603 | VBUS decoupling at the connector. Total on VBUS is about 7.9µF (this 1µF + 2.2µF and 4.7µF at the charger), under the 10µF USB inrush limit | ~$0.05 |
 | **Total** | | | | **~$1.17** |
 
 ### Design Notes
@@ -1213,6 +1213,12 @@ The standalone SD card socket (J10) shares the SPI bus with the display. This me
 
 No workflow requires simultaneous display update and SD access.
 
+**Pull-ups:** four 10kΩ resistors to 3.3V — R25 on SD_CS, R26 on SPI_MISO, R27 on the card's DAT2 pin and R28 on its DAT1 pin.
+- The chip-select pull-up keeps the card deselected while the RP2350 is in reset, when its pins default to a weak pull-down.
+- DAT1 and DAT2 are unused in SPI mode. They are pulled up rather than left floating, the usual recommendation for unused SD data lines (not checked against the SD specification text).
+
+**Card access:** the socket (J10, on the back) faces the right-hand board edge. The inserted card's outer end is flush with the edge at x = 120mm. The card overhangs the strip between the socket's contact pads and the edge (x ≈ 116–120mm, y ≈ 25.4–36.5mm on the back); only traces and tented vias may be placed there.
+
 ### Backlight PWM Circuit
 
 The 14-pin ILI9341 module that J3 is pinned for lights its backlight when the LED pin is driven **high** (tie it to 3.3 V for always-on). To add PWM dimming, a P-channel MOSFET switches 3.3 V onto that pin:
@@ -1981,6 +1987,21 @@ Programming and debugging uses a Tag-Connect pogo-pin interface instead of a tra
 **Alternative: Add test points**
 - If debugging is frequent during development, add labeled test points nearby
 - SWCLK, SWDIO, GND, RUN as 1.27mm pads for clip leads
+
+### Power Test Pads
+
+Six 1.0mm test pads on the back of the board give probe access to the supply rails:
+
+| Ref | Net | Position (mm) | Near |
+|-----|-----|---------------|------|
+| TP1 | GND | (37.0, 101.5) | Below the 3.3V regulator |
+| TP2 | +3V3 | (41.0, 83.5) | 3.3V regulator output caps |
+| TP3 | VBUS | (23.5, 104.75) | Charger input cap C10 |
+| TP4 | VSYS | (46.25, 96.75) | 3.3V regulator input cap C13 |
+| TP5 | VLED | (14.5, 87.9) | LED rail regulator output |
+| TP6 | SA818_VCC | (17.3, 76.2) | Load switch output cap C17 |
+
+The battery voltage can be probed at the battery connector J1, and the 1.1V core rail at C1.
 
 ### Probe Compatibility
 

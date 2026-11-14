@@ -120,7 +120,7 @@ Route these first — they have the tightest constraints and set the placement o
 | Spacing | 6 mil between D+ and D- |
 | ESD protection | U3 (USBLC6-2SC6) inline, as close to J2 as possible |
 | CC resistors | R_CC1, R_CC2 (5.1kΩ) close to J2 |
-| VBUS cap | C_USB1 (10µF) close to J2 |
+| VBUS cap | C_USB1 (1µF) close to J2 — total VBUS capacitance is kept under the 10µF USB limit |
 | TVS | D_VBUS1 close to J2 |
 
 **Route order:** J2 → U3 (ESD) → RP2350B USB_DP/USB_DM
