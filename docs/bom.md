@@ -210,23 +210,31 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 | Ref | Qty | Value | Package | Assembly | Notes |
 |-----|-----|-------|---------|----------|-------|
 | U1 | 1 | RP2350B | QFN-80 (10×10mm) | Fab | 48 GPIO variant required |
-| L2 | 1 | 3.3µH | 3×3mm | Fab | Internal regulator inductor (VREG_LX to DVDD) |
+| L2 | 1 | 3.3µH, Abracon AOTA-B201610S3R3-101-T | 0806 (2016) | Fab | RP2350 regulator inductor. **Polarity-marked: the dot goes at pad 1 (1.1 V side). Do not substitute** — see the Raspberry Pi hardware design guide |
 | Y1 | 1 | 12MHz | 3215 | Fab | ±20ppm, CL=10pF (required for USB) |
 | C_Y1, C_Y2 | 2 | 15pF | 0402 | Fab | Crystal load caps |
 | U2 | 1 | W25Q128JVS | SOIC-8 | Fab | 16MB QSPI flash |
 | C9 | 1 | 100nF | 0402 | Fab | Flash decoupling |
 | C3-C7 | 5 | 100nF | 0402 | Fab | MCU VDD decoupling |
 | C2 | 1 | 10µF | 0603 | Fab | MCU bulk cap |
-| C1 | 1 | 1µF | 0402 | Fab | DVDD (core voltage) decoupling |
+| C1 | 1 | 4.7µF | 0402 (wide-pad footprint) | Fab | RP2350 regulator output capacitor (1.1 V) |
+| C77 | 1 | 4.7µF | 0402 (wide-pad footprint) | Fab | RP2350 regulator input capacitor (VREG_VIN) |
+| R22 | 1 | 33Ω | 0402 | Fab | VREG_AVDD filter resistor |
+| C78 | 1 | 4.7µF | 0402 | Fab | VREG_AVDD filter capacitor |
+| C70, C72 | 2 | 100nF | 0402 | Fab | DVDD decoupling under U1 at pins 10 and 51 (back side) |
+| R20, R21 | 2 | 27Ω | 0402 | Fab | USB D−/D+ series termination at U1 (per RP2350 hardware design guide) |
+| R19 | 1 | 1kΩ | 0402 | Fab | In series with BOOTSEL switch on QSPI_SS (back side) |
 | SW_BOOT1 | 1 | Tactile 3×4mm | SMD | Fab | BOOTSEL for UF2 bootloader |
 | R1, R2 | 2 | 4.7kΩ | 0603 | Fab | I2C SDA/SCL pullups (to +3V3) |
 | R17 | 1 | 10kΩ | 0603 | Fab | RUN pin pullup |
 
-**Subtotal:** ~$3.90
+*Added in the 2026-11 board review, in other sections' circuits: C73 (1µF, 0603) at the TPS22919 input, C76 (4.7µF, 0603) at the MCP73871 IN pins, C74/C75 (100nF, 0402) at the PCM5102A DVDD and CPVDD pins. All fab-assembled. C71 is not used.*
+
+**Subtotal:** ~$3.95
 
 *Notes:*
 - *Crystal is required — RP2350 internal oscillator is too inaccurate for USB (needs ±0.25%, ROSC is ±2-5%).*
-- *L2 is required for the RP2350's internal switching regulator (converts 3.3V → 1.1V core voltage).*
+- *L2 is required for the RP2350's internal switching regulator (converts 3.3V → 1.1V core voltage). The regulator parts and their placement follow Raspberry Pi's RP2350B minimal reference design; the 4.7µF 0402 parts must be rated for that value at 3.3 V bias.*
 - *I2C pullups MUST connect to +3V3 (IOVDD level), NOT to DVDD (1.1V core).*
 
 ---
@@ -337,7 +345,10 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 | 100Ω | 2 | 0603 | PWR LED G/B (R15, R16) |
 | 220Ω | 1 | 0603 | PWR LED R (R14) |
 | 470Ω | 1 | 0603 | TX attenuator (R6) |
+| 27Ω | 2 | 0402 | USB series termination (R20, R21) |
+| 33Ω | 1 | 0402 | RP2350 VREG_AVDD filter (R22) |
 | 1kΩ | 1 | 0603 | Backlight gate (R11) |
+| 1kΩ | 1 | 0402 | BOOTSEL series resistor (R19) |
 | 2kΩ | 1 | 0603 | Charge current PROG1 (R3) |
 | 4.7kΩ | 4 | 0603 | RX filter (R7, R8), I2C pullups (R1, R2) |
 | 5.1kΩ | 2 | 0402 | USB CC (R_CC1, R_CC2) |
@@ -362,8 +373,10 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 | 39pF | 2 | 0402 C0G | VHF carrier LPF (C59, C60) |
 | 4.7nF | 1 | 0603 | RX anti-alias (C27) |
 | 10nF | 1 | 0603 | TX filter (C24) |
-| 100nF | 38 | 0402/0603 | Decoupling: MCU (C3-C7, C9), LEDs (C28-C53), ICs, carriers (C54, C56) |
-| 1µF | 2 | 0402/0603 | DVDD (C1), RX DC block (C26) |
+| 100nF | 42 | 0402/0603 | Decoupling: MCU (C3-C7, C9, C70, C72), LEDs (C28-C53), ICs (incl. C74, C75), carriers (C54, C56) |
+| 1µF | 2 | 0402/0603 | RX DC block (C26), load switch input (C73) |
+| 4.7µF | 3 | 0402 | RP2350 regulator (C1, C77, C78) |
+| 4.7µF | 1 | 0603 | Charger input (C76) |
 | 2.2µF | 2 | 0603 | PCM5102A charge pump (C21, C22) |
 | 10µF | 14 | 0603/0805 | Bulk caps throughout, carriers (C55, C57) |
 | 100µF | 1 | 1206 | Load switch bulk (C17) |
@@ -377,7 +390,7 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 | 68nH | 2 | 0603 wirewound | VHF carrier LPF (L3, L5) |
 | 82nH | 1 | 0603 wirewound | VHF carrier LPF (L4) |
 | 1µH | 1 | 3×3mm | TPS63001 buck-boost (L1) |
-| 3.3µH | 1 | 3×3mm | RP2350 internal regulator (L2) |
+| 3.3µH | 1 | 0806 (2016) | RP2350 internal regulator (L2), Abracon AOTA-B201610S3R3-101-T |
 
 ---
 
@@ -438,7 +451,7 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 | 3.0 | 2026-02 | **Synchronized with KiCad schematic**: Updated all ref designators to match KiCad, added R4 (15k PROG3), added C21/C22 (2.2µF charge pump), added J10 (SD card), fixed TH1 as NTC, removed PS/SYNC resistor (intentional), added I2C pullup warning |
 | 3.1 | 2026-02 | **Added SA818 carrier boards**: VHF (U9, J13-J17, C54-C55, R18) and UHF (U10, J18-J22, C56-C57) schematics complete with header pinout tables, mechanical headers connected to GND |
 | 3.2 | 2026-03 | **LED split**: WS2812B-5050 for ears (D2-D11), WS2812B-2020 for display border (D12-D27). **Removed SW6** (12mm photo button) — D-pad center doubles as capture. Camera connector J4 updated to 2×9 socket. |
-| 3.3 | 2026-11 | **Carrier harmonic LPFs** added (VHF C58-C63/L3-L5, UHF C64-C69/L6-L8), UHF R18 = 10kΩ pull-up, SMA corrected to edge-mount, carrier header pinout corrected to the locked main badge order. **Camera module requirement**: OV2640 module must have its own on-board oscillator (badge supplies no XCLK). |
+| 3.3 | 2026-11 | **Carrier harmonic LPFs** added (VHF C58-C63/L3-L5, UHF C64-C69/L6-L8), UHF R18 = 10kΩ pull-up, SMA corrected to edge-mount, carrier header pinout corrected to the locked main badge order. **Camera module requirement**: OV2640 module must have its own on-board oscillator (badge supplies no XCLK). **Main badge review fixes**: added R19 (1kΩ BOOTSEL), R20/R21 (27Ω USB), C70/C72 (DVDD), C73 (load switch input), C74/C75 (DAC supply pins), C76 (charger input). |
 
 ---
 

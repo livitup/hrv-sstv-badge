@@ -217,15 +217,32 @@ This document tracks the design and implementation status for all badge subsyste
 - [x] **KiCad: Component placement nearly complete** (MCU, power, audio, display, camera sections placed; power ICs on back side)
 - [x] Trace routing (main board) — complete, design locked
 - [x] Ground pour
-- [ ] DRC clean-up — 2026-11-13 run shows 4 clearance errors between U5 pads 12-15 (GND) and the +3V3 pour on the PWR layer (0.3755mm vs 0.5mm), and those four pads have no matching schematic pin; review before fab
+- [x] DRC clean-up — 0 unconnected, 0 schematic-parity issues; only the excluded silkscreen items remain
+- [x] **Design review fixes (2026-11-13)** — see "Main Badge Review" below
+- [ ] Open questions from the review: fuel gauge supply (VSYS vs cell), TPS22919 rating vs TX current, WS2812B on 3.3V, crystal series resistor
+- [ ] Not done: third DVDD cap at U1 pin 32 (no room), USB D+/D− length matching, test points
 - [ ] Evaluate if main board can be 2-layer with RF removed
 - [ ] Integration test: carrier + main board
+
+### Main Badge Review (2026-11-13)
+
+A full review of the routed board found two schematic errors that would have stopped it powering up, plus layout weaknesses. All of the following are fixed in schematic and PCB:
+
+- **Charger output now feeds VSYS.** U4 (MCP73871) OUT was connected only to C_OUT1; the 3.3V regulator, load switch and fuel gauge had no supply. The power flag that hid this from ERC was removed.
+- **Charger input now on VBUS.** U4 IN pins 18/19 were tied to GND.
+- **Radio supply path widened.** Battery, VSYS and SA818_VCC traces widened to 0.8mm where clearances allow; SA818_VCC also has a 2.0mm path on the PWR layer in parallel, with three vias at the load switch end.
+- **3.3V regulator** switch-node and output traces widened.
+- **RP2350**: 100nF DVDD caps under the chip at pins 10 and 51; six ground vias in the exposed pad (it previously reached the ground plane through two thin traces); 27Ω USB series resistors; 1kΩ in series with BOOTSEL.
+- **Decoupling** added at the load switch input, the charger input and the DAC's DVDD/CPVDD pins; local ground vias added at 24 capacitors and the DAC.
+- **RP2350 regulator rebuilt to the Raspberry Pi reference layout (2026-11-14)**: Abracon polarity-marked inductor, 4.7µF input and output capacitors, 33Ω + 4.7µF filter on VREG_AVDD, switch-node trace run between the capacitor pads. The five back-layer signal tracks that crossed under the regulator (USB D+, SAO1_GPIO2, I2C SCL, I2C SDA, SD_CS) were rerouted around its north side, so the back layer under it now carries only the 1.1 V trunk, as in the reference: two vias at the output capacitor feed a 0.6 mm back-layer trace under the chip, and the capacitor grounds have two local vias. Remaining differences: the copper is drawn as tracks rather than small filled polygons, and this is a 4-layer board (ground plane directly under the regulator) where the reference is 2-layer. `defcon-sstv-badge.kicad_dru` allows the reference's 0.12 mm gaps for the three regulator nets only.
+- **Board-wide tidy (2026-11-14)**: every signal net one width, power stubs normalised, redundant ground links and via stubs removed, bent traces straightened, five long detours rerouted.
+- **Housekeeping**: stale zone fill refilled (U5 clearance errors), U5 thermal-via pads renumbered to match the symbol, stray net-less via removed, real 1.6mm stackup entered, eight fiducials added.
 
 ---
 
 ## Next Steps (Priority Order)
 
-1. **Pre-fab review** — resolve the main badge U5 clearance item; look over the UHF carrier PCB in KiCad
+1. **Pre-fab review** — look over the reworked main badge power section and the area under U1 in KiCad; settle the open design questions from the review
 2. **Source long-lead components** — SA818, display, camera modules, LPF tuning values (Murata GJM15 caps, Coilcraft 0603HP inductors)
 3. **Generate Gerbers** — main badge and both carriers
 4. **Prototype ordering** — JLCPCB or similar (carriers can go first); tune the LPFs on the prototypes
@@ -243,7 +260,7 @@ This document tracks the design and implementation status for all badge subsyste
 | PCB outline designed | ✓ | Done |
 | KiCad schematic | ✓ | **Complete** — ERC clean (Main board + VHF/UHF carriers) |
 | Carrier PCB layout | ✓ | **Complete** — Both carriers routed with harmonic LPF; 0 unconnected, 0 parity issues |
-| Main badge PCB layout | ✓ | **Complete** — Routed and locked; one U5 clearance item to review |
+| Main badge PCB layout | ✓ | **Complete** — Routed; 2026-11 review fixes applied, DRC clean |
 | Gerbers generated | | Not started |
 | Prototype ordered | | Not started |
 | First power-on | | Not started |

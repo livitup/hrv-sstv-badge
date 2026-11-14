@@ -220,7 +220,8 @@ defcon-sstv-badge/
 ## Current Development Status
 - **Hardware design**: Schematic complete, ERC clean
 - **KiCad**: All schematic sheets complete; main badge PCB routed and locked; both carrier PCBs complete with harmonic LPF (0 unconnected, 0 parity issues)
-- **Open before fab**: main badge U5 pad/pour clearance item; visual review of UHF carrier; LPF prototype tuning
+- **Main badge review (2026-11-13)**: charger wiring errors fixed (OUT→VSYS, IN→VBUS), radio supply path widened (2.0mm SA818_VCC path on the PWR layer), USB 27Ω and BOOTSEL 1kΩ resistors and extra decoupling added — see `docs/project-status.md`
+- **Open before fab**: visual review of the reworked main badge; open design questions (fuel gauge supply, load switch rating, WS2812B at 3.3V, crystal series resistor); LPF prototype tuning
 - **Documentation**: Comprehensive technical docs, power/RF design documented
 - **Project structure**: Professional repository setup
 - **Firmware development**: Not started
