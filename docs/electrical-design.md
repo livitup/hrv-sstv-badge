@@ -1215,7 +1215,7 @@ No workflow requires simultaneous display update and SD access.
 
 **Pull-ups:** four 10kΩ resistors to 3.3V — R25 on SD_CS, R26 on SPI_MISO, R27 on the card's DAT2 pin and R28 on its DAT1 pin.
 - The chip-select pull-up keeps the card deselected while the RP2350 is in reset, when its pins default to a weak pull-down.
-- DAT1 and DAT2 are unused in SPI mode. They are pulled up rather than left floating, the usual recommendation for unused SD data lines (not checked against the SD specification text).
+- DAT1 and DAT2 are unused in SPI mode. They are pulled up rather than left floating. SanDisk's OEM product manual says the host designer must fit pull-ups on all data lines even if only DAT0 is used, because floating DAT1 and DAT2 inputs can cause unexpectedly high current draw. (Taken from vendor documents; the SD Association's specification text was not read.)
 
 **Card access:** the socket (J10, on the back) faces the right-hand board edge. The inserted card's outer end is flush with the edge at x = 120mm. The card overhangs the strip between the socket's contact pads and the edge (x ≈ 116–120mm, y ≈ 25.4–36.5mm on the back); only traces and tented vias may be placed there.
 

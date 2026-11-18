@@ -29,7 +29,8 @@ Checks that can be done at a desk with the design files and datasheets, and the 
 
 - [ ] **Generate fab files** for the main badge and both carriers: Gerbers, drill files, pick-and-place positions and BOM.
 - [ ] **Inspect them** in a Gerber viewer: layer order, board outline including the ears and feet, drill hits, solder mask openings on the fiducials and test pads, and paste on the fine-pitch parts.
-- [ ] **Check assembler requirements:** fiducial count and placement, minimum silkscreen text height (two labels are hidden for this reason), via tenting, and whether the 4-layer stackup entered in KiCad matches what will be ordered.
+- [ ] **Fiducials — verify with the specific fab.** The main badge has eight 1 mm fiducials, four per side (FID1–FID8). Ask the chosen assembler what they need: how many per side, minimum size and mask opening, keep-out from the board edge, and whether they add their own on panel rails. Remove, move or add fiducials to match before ordering. They were kept as they are pending this check.
+- [ ] **Other assembler requirements:** minimum silkscreen text height (two labels are hidden for this reason), via tenting, and whether the 4-layer stackup entered in KiCad matches what will be ordered.
 - [ ] **Order a small prototype run** before any quantity order. The carriers can go first.
 
 ## Part 1 — With parts in hand, before ordering boards

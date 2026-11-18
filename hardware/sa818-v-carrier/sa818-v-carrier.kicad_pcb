@@ -683,7 +683,7 @@
 			)
 		)
 		(embedded_fonts no)
-		(model "${KIPRJMOD}/../3dmodels/SA818_module.wrl"
+		(model "${KIPRJMOD}/../3dmodels/SA818S.step"
 			(offset
 				(xyz 0 0 0)
 			)
@@ -691,7 +691,7 @@
 				(xyz 1 1 1)
 			)
 			(rotate
-				(xyz 0 0 0)
+				(xyz -90 0 180)
 			)
 		)
 	)

@@ -22,17 +22,13 @@ Notes:
 - The JST model is placed with a rotation and offset in the footprint (−90° about X, −4.8 mm in Y) so that its leads land on the pads. The model's solder tabs do not line up exactly with the KiCad footprint's tab pads.
 - The files are unmodified copies, renamed.
 
-## Placeholder shape made for this project
+## From SnapEDA
 
-A plain box drawn to the footprint's outline. It is **not** a manufacturer model, and its height is approximate. Do not use it for mechanical clearance checks.
+| File | Part | Used by | Source | Licence |
+|---|---|---|---|---|
+| `SA818S.step` | SA818S radio module | Both carriers, U9 / U10 | [SnapEDA](https://www.snapeda.com/) free download, `SA818S--3DModel-STEP-418109.STEP`, downloaded by the project owner | SnapEDA's terms for its CAD files (CC BY-SA 4.0 with their Design Exception); the project owner has accepted these for this repository |
 
-| File | Part | Used by | Notes |
-|---|---|---|---|
-| `SA818_module.wrl` | SA818 radio module | Both carriers, U9 / U10 | Board outline from the footprint; shield can and height approximate |
-
-It is a VRML (`.wrl`) file, which the 3D viewer and `kicad-cli pcb render` use. A STEP export of the board will not include it.
-
-**Why there is no real SA818 model here.** A DRA818V STEP file exists on Flux.ai, on a user-uploaded part page whose licence field says CC BY 4.0. That page's datasheet link points at SnapEDA, which suggests the part was imported from there, and SnapEDA's own files are CC BY-SA 4.0 with extra site terms on redistribution. The two licences disagree and the file's origin could not be confirmed, so it was not copied. A model downloaded directly from SnapEDA could be added under CC BY-SA 4.0 with attribution.
+The body is 35.6 × 19.0 × 3.2 mm, which matches the carrier footprint outline. It is placed with −90° about X and 180° about Z so its side castellations sit on the footprint's side pads. It is a model of the SA818**S**; the carriers are designed around the SA818, which has the same outline.
 
 ## Stand-ins from KiCad's own library
 
