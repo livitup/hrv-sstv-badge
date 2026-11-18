@@ -58,9 +58,13 @@ GPIO34 (SA818_PD) also enables the load switch that powers the SA818. While that
 
 ### Fuel gauge: use I2C temperature mode
 
-The LC709203F shares the charger's thermistor and its own thermistor-drive pin (TSW) is not connected, so its thermistor mode will not read correctly. Supply temperature over I2C instead, or leave it at the default.
+The LC709203F (U7) has no thermistor. Its TSW and TSENSE pins are unconnected, which is the datasheet's "temperature input via I2C" arrangement, so firmware must put it in I2C temperature mode and either write a temperature or leave the default. The charger's thermistor (TH1) is not readable by the MCU.
 
-- The gauge is powered from VSYS, which sits near 5 V with USB connected, so its voltage reading is wrong while charging. Whether to fix that in hardware is still open; until then, firmware should not trust the gauge while USB is present.
+- A real battery temperature is not available to firmware. The RP2350's internal temperature sensor measures the chip, not the cell; for an indoor badge a fixed 25 °C is a reasonable starting point.
+- The gauge is powered from the battery net (VBAT), so its voltage and state-of-charge readings are valid with or without USB connected. (Before 2026-11-17 it was on VSYS and read wrong while charging.)
+- The gauge is always powered while a battery is connected, including when the rest of the badge is off.
+- ALARMB is tied to ground, so the gauge's alarm output is not available; poll it over I2C.
+- Per the datasheet, the Status Bit register (0x16) selects the mode: 0x0000 is I2C mode and is the power-on default, and the Cell Temperature register (0x08) defaults to 25 °C. So the gauge works with no temperature set-up at all; writing 0x08 is only needed to supply a better value.
 
 ### SD card chip select has an external pull-up
 

@@ -1,6 +1,6 @@
 # DEFCON SSTV Badge — Bill of Materials
 
-**Version:** 3.7
+**Version:** 3.8
 **Last Updated:** 2026-11-13
 **Source:** KiCad schematic export, verified against `docs/electrical-design.md`
 
@@ -115,15 +115,16 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 | Ref | Qty | Value | Package | Assembly | Notes |
 |-----|-----|-------|---------|----------|-------|
 | U7 | 1 | LC709203FQH-01TWG | WDFN-8 (2×2.5mm) | Fab | Battery SoC monitor, I2C |
-| C16 | 1 | 100nF | 0402 | Fab | Decoupling |
+| C84 | 1 | 1µF | 0402 | Fab | Fuel gauge supply decoupling (on the battery net, VBAT) |
+| C16 | 1 | 100nF | 0402 | Fab | VSYS decoupling beside the 3.3V regulator's VINA pin |
 
 **Subtotal:** ~$2.50
 
-### Shared Thermistor
+### Charger Thermistor
 
 | Ref | Qty | Value | Package | Assembly | Notes |
 |-----|-----|-------|---------|----------|-------|
-| TH1 | 1 | NTC 10k | 0603 | Fab | B=3380, shared by MCP73871 (THERM) + LC709203F (TSENSE) |
+| TH1 | 1 | NTC 10k | 0603 | Fab | B=3380, for the MCP73871 charger (THERM). Not shared with the fuel gauge |
 
 *Place near battery for accurate temperature reading.*
 
@@ -393,7 +394,7 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 | 4.7nF | 1 | 0603 | RX anti-alias (C27) |
 | 10nF | 1 | 0603 | TX filter (C24) |
 | 100nF | 42 | 0402/0603 | Decoupling: MCU (C3-C7, C9, C70, C72), LEDs (C28-C53), ICs (incl. C74, C75), carriers (C54, C56) |
-| 1µF | 3 | 0402/0603 | RX DC block (C26), load switch input (C73), VBUS at connector (C_USB1) |
+| 1µF | 4 | 0402/0603 | RX DC block (C26), load switch input (C73), VBUS at connector (C_USB1), fuel gauge supply (C84) |
 | 4.7µF | 3 | 0402 | RP2350 regulator (C1, C77, C78) |
 | 4.7µF | 1 | 0603 | Charger input (C76) |
 | 2.2µF | 2 | 0603 | PCM5102A charge pump (C21, C22) |
@@ -476,6 +477,7 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 | 3.5 | 2026-11 | **Battery connector J1** changed from through-hole vertical JST-PH (user-soldered) to SMD side-entry S2B-PH-SM4-TB (fab-assembled), so its pins no longer come through under the display. |
 | 3.6 | 2026-11 | **Small review items**: VBUS capacitance cut to about 7.9µF (C_USB1 10µF→1µF, C10 10µF→2.2µF); SD card socket J10 turned to face the board edge (card flush with the edge) and SD card pull-ups R25–R28 (10kΩ) added; six test pads TP1–TP6 added; BOOTSEL resistor R19 moved closer to the flash chip-select line. |
 | 3.7 | 2026-11 | **PWR LED D1** changed from the right-angle APFA3010 to the flat-top AAA3528LSEEZGKQBKS (same LED chips, so R14–R16 are unchanged) and moved next to SAO connector J6. It now also indicates TX/RX. |
+| 3.8 | 2026-11 | **Fuel gauge wiring corrected**: U7 supply moved from VSYS to the battery net (VBAT), its thermistor pin disconnected from the charger's NTC, ALARMB grounded, and C84 (1µF) added at its supply pin. |
 
 ---
 

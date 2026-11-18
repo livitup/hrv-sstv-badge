@@ -40,7 +40,7 @@
 | 4.7nF | 1 | RX anti-alias filter |
 | 10nF | 1 | TX low-pass filter |
 | 100nF | 39 | Decoupling (MCU, LEDs, ICs, LED rail, carrier) |
-| 1µF | 3 | RX DC block, load switch input, VBUS at connector |
+| 1µF | 4 | RX DC block, load switch input, VBUS at connector, fuel gauge supply |
 | 2.2µF | 3 | DAC charge pump, charger input |
 | 10µF | 15 | Bulk caps throughout (3 on the LED rail) |
 | 100µF | 1 | Load switch output |

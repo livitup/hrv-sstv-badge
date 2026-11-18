@@ -135,8 +135,8 @@ Flash, USB (CC resistors, ESD, series resistors), SAO, Tag-Connect, SD card SPI 
 |---|---|
 | WS2812B supply voltage | The 2020 datasheet specifies 3.7–5.3 V; the LEDs ran from 3.3 V. **Resolved after this review** by a dedicated 4.0 V LED rail — see `led-supply-rail.md`. |
 | Radio supply drop | Charger battery switch is 200 mΩ typical, load switch 90 mΩ, and the TPS22919 is rated 1.5 A. The real SA818 transmit current decides whether this matters. |
-| Fuel gauge supply | U7 is on VSYS, which sits near 5 V with USB connected, so it reads the wrong voltage then. |
-| Fuel gauge thermistor | Shared with the charger; the gauge's own drive pin is unconnected. Firmware should use I2C temperature mode. |
+| Fuel gauge supply | U7 was on VSYS, which sits near 5 V with USB connected, so it read the wrong voltage then. Fixed; see section 10. |
+| Fuel gauge thermistor | Was shared with the charger. Now disconnected; the gauge uses I2C temperature mode. See section 10. |
 | Crystal series resistor | The RP2350 guide uses 1 kΩ; the board has none. |
 | Band ID | The UHF pull-up goes to the switched radio supply, so it reads as VHF when the radio is off. A scheme that separates no board / VHF / UHF is still to be discussed. |
 | SD card pull-ups | DAT1, DAT2, MISO and CS had none. CS and MISO added afterwards; see section 8. |
@@ -285,4 +285,34 @@ Decision: keep the common-anode part and do the inversion once in firmware set-u
 
 ---
 
-*Written 2026-11-14.*
+## 10. Fuel gauge wiring corrected (2026-11-17)
+
+### What was wrong
+
+Three things, all checked against the LC709203F datasheet:
+
+1. **Supply on the wrong net.** The gauge measures its own VDD pin; that *is* its battery voltage reading. The datasheet's pin table says to connect VDD to the battery's positive terminal. U7's VDD was on VSYS, the charger's output. On battery the two are close, but with USB plugged in VSYS sits near 5 V: the reading is wrong, and it is above the part's 4.5 V operating maximum (absolute maximum 6.5 V). `electrical-design.md` had always drawn VDD on the battery; the schematic did not match it.
+2. **Thermistor pin tied to the charger's thermistor.** TSENSE was connected to the same NTC as the MCP73871's THERM pin, with the gauge's TSW drive pin left open. The two parts read a thermistor in incompatible ways: the charger pushes a constant current through it, while the gauge switches TSW on through a matching resistor and measures the divider. Shared like this, the gauge cannot read it and may disturb the charger's reading. The datasheet also says TSW and TSENSE "must be disconnected" when not in use.
+3. **Alarm pin floating.** The datasheet says to tie ALARMB to VSS when it is not used.
+
+### What was done
+
+- **VDD moved to the battery net.** The net was given a name, VBAT, so it could be labelled at both ends in the schematic. On the board, a 0.2 mm sense line runs from the battery trunk between J1 and the charger, around the top of U7, to its VDD pin, on the back layer with no vias. The line carries microamps, so its width does not matter.
+- **TSENSE disconnected** from the thermistor net; about 25 mm of track that carried it was removed. The gauge runs in I2C temperature mode. TH1 now serves the charger alone.
+- **ALARMB grounded** to the gauge's own exposed pad.
+- **Ground brought in through the exposed pad.** The gauge used to be grounded from a single via outside the package, through pin 1 and a pair of 0.8 mm traces into the exposed pad. It now has two ground vias in the exposed pad itself, and pins 1, 2 and 4 each run a short 0.25 mm stub straight into the pad. The datasheet marks the exposed pad "don't care", so this is tidiness and a shorter ground path, not a functional fix.
+- **C84, 1 µF, added at VDD**, as in the datasheet's application circuit. The gauge's supply now arrives down a long thin line, so a local capacitor matters more than it did.
+- In the schematic symbol, ALARMB's pin type was changed from open-collector to passive so that grounding it does not raise an ERC error against the ground net's power flag. This is the same workaround already used on the TPS63001 symbol, and adds one "symbol doesn't match library" warning.
+
+### Why not give the gauge its own thermistor
+
+It would take three more parts (a second NTC, a matching 10 kΩ resistor and a 100 Ω series resistor) and somewhere near the battery to put the sensor. Temperature mainly improves the gauge's accuracy at temperature extremes. This is a badge worn indoors; a fixed room-temperature value over I2C is good enough, and can be revisited if the state-of-charge readings prove poor.
+
+### Side effects
+
+- The gauge is now powered whenever a battery is connected, even with the badge off. It draws a few microamps.
+- The battery net is called VBAT in the schematic and on the board. It was previously the unnamed net at J1 pin 1.
+
+---
+
+*Written 2026-11-14; section 10 added 2026-11-17.*

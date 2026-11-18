@@ -15,7 +15,6 @@ Checks that can be done at a desk with the design files and datasheets, and the 
 ### Desk checks
 
 - [ ] **5050 ear LED rated current.** Read the WS2812B (5050) datasheet's maximum current per LED. The data-high threshold (0.7 × supply) and supply range (3.5–5.3 V) are already confirmed. The current figure feeds the firmware brightness cap and the LED rail's load estimate.
-- [ ] **Fuel gauge supply maximum.** Confirm the LC709203F's recommended maximum supply voltage from its datasheet. The figure used so far (4.5 V) was not taken from the datasheet, and the gauge is on VSYS, which sits near 5 V with USB connected.
 - [ ] **Critical footprints against datasheets.** Compare pad positions, sizes and pin 1 with the manufacturer's land pattern for: U1 RP2350B (QFN-80), U4 MCP73871 (QFN-20), U5/U11 TPS63001/TPS63000 (VSON-10), U6 TPS22919 (SC-70-6), U7 LC709203F (WDFN-8), U8 PCM5102A (TSSOP-20), U2 flash (SOIC-8), Y1 crystal (3215), J2 USB-C, J10 microSD, J1 JST PH, D1 and the two WS2812B packages, and the SA818 on the carriers.
 - [ ] **Custom footprints.** Check the three footprints made for this project against their datasheets: `L_Abracon_AOTA-B201610` (including the polarity dot at pad 1), `C_0402_1005Metric_Wide`, and `L_0603HP` on the carriers.
 
@@ -58,7 +57,7 @@ These check assumptions that are built into the PCB. If one turns out wrong, the
 - [ ] **Real SA818 transmit current.** Measure battery current during high-power TX. The docs assume 1.7 A; the load switch (TPS22919) is rated 1.5 A, and the charger's battery switch plus the load switch lose about 0.3 V per amp. This measurement decides whether the radio supply path needs a redesign.
 - [ ] **SA818 supply voltage during TX.** Measure the voltage at the carrier's VCC pin while transmitting on a part-discharged battery (about 3.6 V). The SA818 needs at least 3.5 V.
 - [ ] **Battery trace temperature.** After a two-minute transmission, check the battery trace and the charger (U4) for heating.
-- [ ] **Fuel gauge with USB connected.** Read the LC709203F with and without USB plugged in. It is powered from VSYS, which sits near 5 V on USB, so its voltage reading is expected to be wrong while charging. Record how wrong.
+- [ ] **Fuel gauge readings.** Read the LC709203F's cell voltage with and without USB plugged in and compare with a meter on the battery connector. They should agree within a few tens of millivolts in both cases, now that the gauge is powered from the battery net. Check that state of charge moves sensibly through a charge and a discharge.
 - [ ] **USB attach.** VBUS capacitance is about 7.9 µF nominal, under the 10 µF USB limit. Plug into a few different hosts and hubs and confirm clean attach, and that the charger still starts reliably with the smaller input capacitors.
 
 ### LED supply rail (VLED)

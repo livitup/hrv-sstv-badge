@@ -30,7 +30,7 @@ LiPo (3.0-4.2V) ──┬──► TPS63001 (buck-boost) ──► 3.3V Rail (RP
 - **TPS63000**: Second buck-boost (U11), 4.0V "VLED" rail for the WS2812B LEDs only — in spec for the LED supply (≥3.7V) while keeping 3.3V data valid (0.7 × VDD); firmware must cap total LED brightness (~0.8A available)
 - **TPS22919**: Load switch for SA818 power control (airplane mode, sleep)
 - **MCP73871**: Battery charging controller
-- **LC709203**: Battery fuel gauge
+- **LC709203**: Battery fuel gauge, powered from the battery net (VBAT) so it reads the cell correctly with USB connected; temperature supplied over I2C
 - **USB-C**: Through-hole connector with ESD protection (USBLC6-2 for data, PESD5V0 for VBUS)
 
 See `docs/electrical-design.md` for complete power system documentation.
@@ -228,7 +228,7 @@ defcon-sstv-badge/
 - **Main badge review (2026-11-13)**: charger wiring errors fixed (OUT→VSYS, IN→VBUS), radio supply path widened (2.0mm SA818_VCC path on the PWR layer), USB 27Ω and BOOTSEL 1kΩ resistors and extra decoupling added — see `docs/project-status.md`
 - **Schematic review (2026-11-14)**: border LED pinout (wrong symbol for the 2020 package), TX attenuator wiring, backlight switch polarity (now AO3401A high-side, GPIO low = on) and L1 value (2.2µH) fixed in schematic and PCB — see `docs/engineers-notebook/main-badge-review-2026-11.md`
 - **LED supply rail (2026-11-14)**: WS2812Bs moved from 3.3V to a dedicated 4.0V rail (U11 TPS63000, VLED on the inner power layer) — see `docs/engineers-notebook/led-supply-rail.md`
-- **Open before fab**: visual review of the reworked main badge; open design questions (fuel gauge supply, radio supply drop / load switch rating, crystal series resistor, band-ID scheme); LPF prototype tuning
+- **Open before fab**: visual review of the reworked main badge; open design questions (radio supply drop / load switch rating, crystal series resistor, band-ID scheme); LPF prototype tuning
 - **Documentation**: Comprehensive technical docs, power/RF design documented
 - **Project structure**: Professional repository setup
 - **Firmware development**: Not started

@@ -67,11 +67,11 @@ This document tracks the design and implementation status for all badge subsyste
 ### Battery Management
 - [x] MCP73871 charger circuit designed (500mA charge current)
 - [x] LC709203F fuel gauge circuit designed (I2C interface)
-- [x] Thermistor shared between charger and fuel gauge
+- [x] Thermistor (TH1) on the charger; fuel gauge takes temperature over I2C (they cannot share one — corrected 2026-11-17)
 - [x] JST-PH battery connector specified — changed 2026-11-14 to SMD side-entry (S2B-PH-SM4-TB) so no pins come through under the display; see `engineers-notebook/main-badge-review-2026-11.md` section 7
 - [ ] Display free-end support socket: position waits on the display module's dimensions (see `prototype-checklist.md`)
 - [x] **KiCad: MCP73871 charger complete** (VBUS input, battery connector, PROG resistors, THERM)
-- [x] **KiCad: LC709203F fuel gauge complete** (VSYS power, shared thermistor, I2C bus, decoupling cap)
+- [x] **KiCad: LC709203F fuel gauge complete** (powered from the battery net VBAT, temperature over I2C, ALARMB grounded, 1µF decoupling — wiring corrected 2026-11-17)
 - [ ] Verify MCP73871 QFN-20 footprint in KiCad
 - [ ] Verify LC709203F WDFN-8 footprint in KiCad
 - [ ] Source 10K NTC thermistor (B=3380)
@@ -223,7 +223,7 @@ This document tracks the design and implementation status for all badge subsyste
 - [x] Ground pour
 - [x] DRC clean-up — 0 unconnected, 0 schematic-parity issues; only the excluded silkscreen items remain
 - [x] **Design review fixes (2026-11-13)** — see "Main Badge Review" below
-- [ ] Open questions from the reviews: fuel gauge supply (VSYS vs cell) and thermistor sharing, radio supply drop and TPS22919 rating vs TX current, crystal series resistor, band-ID scheme, SD card pull-ups, VBUS capacitance, camera XCLK — see `engineers-notebook/main-badge-review-2026-11.md`
+- [ ] Open questions from the reviews: radio supply drop and TPS22919 rating vs TX current, crystal series resistor, band-ID scheme, SD card pull-ups, VBUS capacitance, camera XCLK — see `engineers-notebook/main-badge-review-2026-11.md`
 - [x] **Smaller review items worked through (2026-11-14)**: VBUS capacitance under 10µF, SD card pull-ups, six power test pads, BOOTSEL resistor moved closer, 1.1V links widened — see `engineers-notebook/main-badge-review-2026-11.md` section 8
 - [x] **SD card socket turned to face the board edge (2026-11-14)** — the card now sits flush with the right-hand edge; all four SD pull-ups fitted
 - [ ] Not done: third DVDD cap at U1 pin 32 (no room)

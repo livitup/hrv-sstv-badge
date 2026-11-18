@@ -436,20 +436,28 @@ The battery system provides portable power with USB charging and accurate state-
 #### LC709203F Circuit
 
 ```
-                               LC709203F
+                               LC709203F (U7)
                               ┌───────────────┐
+    Battery + (VBAT) ──┬──────┤ VDD      SDA  ├───► I2C SDA (GPIO44)
+                       │      │               │
+                     C84 1µF  │          SCL  ├───► I2C SCL (GPIO45)
+                       │      │               │
+    Battery − (GND) ───┴──────┤ VSS    ALARMB ├───► GND (not used)
                               │               │
-    Battery + ────────────────┤ VCC      ALRM ├───► To RP2350 (optional alert)
+                      GND ────┤ TEST     TSW  ├───  not connected
                               │               │
-    Battery - (GND) ──────────┤ VSS      SDA  ├───► I2C SDA (GPIO0)
-                              │               │
-    NTC Thermistor ───────────┤ THERMISTOR    │
-         │                    │          SCL  ├───► I2C SCL (GPIO1)
-        [10kΩ NTC]            │               │
-         │                    │       TSENSE  ├───► GND (internal temp sense)
-        GND                   │               │
+                              │       TSENSE  ├───  not connected
                               └───────────────┘
 ```
+
+The gauge works by measuring its own supply pin, so **VDD must be the battery itself**, taken from the battery net (VBAT) between the battery connector and the charger. It is not on VSYS: with USB plugged in, VSYS sits near 5 V, which is both the wrong voltage to measure and above the part's 4.5 V operating maximum.
+
+- **Temperature comes over I2C, not from a thermistor.** The datasheet's "temperature input via I2C" circuit leaves TSW and TSENSE unconnected, and that is how U7 is wired. The 10 kΩ NTC (TH1) belongs to the charger alone; the gauge cannot share it, because the charger biases it with a constant current while the gauge expects to drive its own divider through TSW.
+- **ALARMB is tied to ground**, as the datasheet asks for an unused alarm pin.
+- **C84 (1 µF)** sits at the VDD pin, as in the datasheet's application circuit.
+- The gauge stays powered from the battery at all times. It draws a few microamps.
+
+*Wiring corrected 2026-11-17. Earlier revisions had VDD on VSYS and TSENSE tied to the charger's thermistor. See `engineers-notebook/main-badge-review-2026-11.md`, section 10.*
 
 #### LC709203F Configuration
 
@@ -457,12 +465,12 @@ The battery system provides portable power with USB charging and accurate state-
 |-----------|---------|-------|
 | I2C Address | 0x0B | Fixed |
 | Battery Profile | APA = 0x0036 | For 2000mAh LiPo (adjust per datasheet) |
-| Thermistor B | 0x0D34 | For 10K NTC, B=3380 |
+| Status Bit | 0x0000 | Temperature supplied over I2C (the gauge has no thermistor) |
 | Change of Parameter | 0x0001 | 1-cell, 3.7V nominal |
 
 **Firmware initialization:**
 1. Write APA (Adjustment Pack Application) for battery capacity
-2. Write thermistor B value
+2. Set the Status Bit register to I2C temperature mode and write the cell temperature (or leave the 25 °C default)
 3. Set Change of Parameter for cell configuration
 4. Read RSOC (Relative State of Charge) register for battery %
 
@@ -472,7 +480,7 @@ The battery system provides portable power with USB charging and accurate state-
 |----------|---------|-------------|
 | RSOC | 0x0D | Relative State of Charge (0-100%) |
 | Cell Voltage | 0x09 | Battery voltage in mV |
-| Cell Temp | 0x08 | Temperature (via thermistor) |
+| Cell Temp | 0x08 | Temperature, written by the host over I2C |
 | Alarm RSOC | 0x13 | Low battery threshold |
 | IC Version | 0x11 | Chip version (verify communication) |
 
@@ -481,12 +489,11 @@ The battery system provides portable power with USB charging and accurate state-
 | Ref | Qty | Value | Package | Notes |
 |-----|-----|-------|---------|-------|
 | U_FUEL | 1 | LC709203FQH-01TWG | WDFN-8 (2×2.5mm) | Fuel gauge |
-| C_FUEL | 1 | 100nF | 0402 | Decoupling |
-| R_NTC | 1 | 10kΩ NTC | 0603 | Shared with MCP73871 |
+| C_FUEL (C84) | 1 | 1µF | 0402 | VDD decoupling, per the datasheet's application circuit |
 
 **Subtotal:** ~$2.50
 
-**Note:** The 10K NTC thermistor is shared between MCP73871 and LC709203F. Both ICs read the same temperature sensor.
+**Note:** The 10K NTC thermistor (TH1) is used by the MCP73871 charger only. The fuel gauge takes its temperature over I2C.
 
 ### Battery Connector
 
@@ -538,7 +545,7 @@ For pouch cells, the thermistor can be taped directly to the battery surface for
               │                            │      │          │                 │    │
               └────────────────────────────┼──────┤ SCL      ├──► I2C SCL      │    │
                                            │      │          │                 │    │
-                                           │      │THERMISTOR├─────────────────┤    │
+                                           │      │ (no thermistor: temperature via I2C)  │
                                            │      └──────────┘                 │    │
                                            │                               ┌───┴───┐│
                                            │                               │10K NTC││
