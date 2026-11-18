@@ -69,7 +69,7 @@ This document tracks the design and implementation status for all badge subsyste
 - [x] LC709203F fuel gauge circuit designed (I2C interface)
 - [x] Thermistor (TH1) on the charger; fuel gauge takes temperature over I2C (they cannot share one — corrected 2026-11-17)
 - [x] JST-PH battery connector specified — changed 2026-11-14 to SMD side-entry (S2B-PH-SM4-TB) so no pins come through under the display; see `engineers-notebook/main-badge-review-2026-11.md` section 7
-- [ ] Display free-end support socket: position waits on the display module's dimensions (see `prototype-checklist.md`)
+- [x] Display free-end support socket J23 (1×3, no connection) placed from the MSP2401 dimension drawing (2026-11-18); fit check with a real module is in `prototype-checklist.md`
 - [x] **KiCad: MCP73871 charger complete** (VBUS input, battery connector, PROG resistors, THERM)
 - [x] **KiCad: LC709203F fuel gauge complete** (powered from the battery net VBAT, temperature over I2C, ALARMB grounded, 1µF decoupling — wiring corrected 2026-11-17)
 - [ ] Verify MCP73871 QFN-20 footprint in KiCad
@@ -120,8 +120,8 @@ This document tracks the design and implementation status for all badge subsyste
 - [x] Assign RP2350 SPI pins for display (GPIO4,6,7: MISO, SCK, MOSI)
 - [x] Assign GPIO pins (GPIO5: CS, GPIO19: DC, GPIO20: RST, GPIO29: BL, GPIO26: SD_CS)
 - [x] **KiCad: Display module complete** (14-pin connector, SPI bus, backlight MOSFET circuit)
-- [ ] Source specific ILI9341 2.4" module (verify pinout, SD slot)
-- [ ] Confirm the chosen module's LED pin is active-high (the circuit assumes the common 14-pin ILI9341 module)
+- [x] Display module specified: QDtech / LCDwiki MSP2401 (pin order and SD header position read from its manual and drawing, 2026-11-18)
+- [x] Module's LED pin is active-high per the MSP2401/MSP2402 manual; still to be confirmed on a real part (`prototype-checklist.md`)
 - [ ] Test SPI communication at various clock speeds
 - [ ] Test SD card on shared SPI bus
 - [ ] Validate SSTV image display (all common modes)

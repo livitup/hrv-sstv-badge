@@ -110,7 +110,7 @@
 
 | Type | Qty | Notes |
 |------|-----|-------|
-| ILI9341 2.4" TFT | 1 | 320x240 SPI display |
+| ILI9341 2.4" TFT | 1 | QDtech / LCDwiki MSP2401 (no touch), 320x240 SPI display; add a 1x3 pin header for the support socket J23 |
 | OV2640 DVP | 1 | Camera module — **MUST have on-board clock oscillator** (badge supplies no XCLK; J4 has no XCLK pin) |
 | Stubby antenna | 1 | VHF or UHF matched |
 

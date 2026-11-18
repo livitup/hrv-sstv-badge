@@ -12,7 +12,7 @@ This directory contains design decisions, trade-off analyses, and educational ba
 
 - **[electrical-design-decisions.md](electrical-design-decisions.md)** — Power system redesign rationale, buck-boost regulator selection, audio codec selection (PCM5102A vs WM8960), carrier board rationale, MCU variant selection (RP2350B), display/camera interface decisions, alternate part options
 
-- **[main-badge-review-2026-11.md](main-badge-review-2026-11.md)** — Decisions from the November 2026 review of both carriers, the routed main badge and the schematic-versus-datasheet check: carrier layout choices, camera clock requirement, charger wiring errors, RP2350 regulator rebuilt to the reference layout, layout hygiene rules, border LED pinout error, TX attenuator, backlight high-side switch, the crystal series resistor, and the list of open questions.
+- **[main-badge-review-2026-11.md](main-badge-review-2026-11.md)** — Decisions from the November 2026 review of both carriers, the routed main badge and the schematic-versus-datasheet check: carrier layout choices, camera clock requirement, charger wiring errors, RP2350 regulator rebuilt to the reference layout, layout hygiene rules, border LED pinout error, TX attenuator, backlight high-side switch, the crystal series resistor, the display module choice and its support socket, and the list of open questions.
 
 - **[firmware-notes.md](firmware-notes.md)** — Hardware-driven constraints for the firmware (inverted backlight PWM, LED current cap, radio pin sequencing, fuel gauge mode, band-ID timing), what is already designed (display timeout), and open questions — including the TODO on what to do with the debug port.
 

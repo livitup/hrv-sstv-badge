@@ -4536,4 +4536,105 @@
 		(color 0 0 0 0)
 		(uuid "e897fa60-9791-4719-bf9b-8c6ffaf37796")
 	)
+	(symbol
+		(lib_id "Connector:Conn_01x03_Socket")
+		(at 241.3 54.61 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "6613f777-01f4-40e2-9a81-e3102f707fad")
+		(property "Reference" "J23"
+			(at 241.3 49.53 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "Display support"
+			(at 241.3 52.07 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Connector_PinSocket_2.54mm:PinSocket_1x03_P2.54mm_Vertical"
+			(at 241.3 54.61 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 241.3 54.61 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Generic connector, single row, 01x03, script generated"
+			(at 241.3 54.61 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "KLC_S4.2_DVDD" ""
+			(at 241.3 54.61 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "KLC_S4.2_VREG_LX" ""
+			(at 241.3 54.61 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "3"
+			(uuid "e81c490e-1ca6-4b9d-a4cf-5be7bb25c869")
+		)
+		(pin "1"
+			(uuid "a556a2f1-c438-41c6-9314-06df90e49ef6")
+		)
+		(pin "2"
+			(uuid "e2526a44-e927-45ed-88ec-e16f9e5a96cf")
+		)
+		(instances
+			(project ""
+				(path "/6bfeada4-0da3-4bdd-af4a-70929e466b35/7e9c56de-ddef-4aba-ac8d-c699010ce68c"
+					(reference "J23")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(no_connect
+		(at 238.76 59.69)
+		(uuid "35a1fcef-bb5c-471d-a7cc-a59b11f39843")
+	)
+	(no_connect
+		(at 241.3 59.69)
+		(uuid "cc4ca8a6-2d90-4e23-9e14-09252a524136")
+	)
+	(no_connect
+		(at 243.84 59.69)
+		(uuid "4b1fede5-823c-47f0-9e55-2a3baf6822d7")
+	)
 )

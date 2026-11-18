@@ -1,6 +1,6 @@
 # DEFCON SSTV Badge — Bill of Materials
 
-**Version:** 3.9
+**Version:** 3.10
 **Last Updated:** 2026-11-13
 **Source:** KiCad schematic export, verified against `docs/electrical-design.md`
 
@@ -165,7 +165,9 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 
 | Ref | Qty | Value | Package | Assembly | Notes |
 |-----|-----|-------|---------|----------|-------|
-| J3 | 1 | ILI9341 2.4" module | Breakout | Module | 320×240 SPI display |
+| J3 | 1 | QDtech / LCDwiki MSP2401 — 2.4" ILI9341 SPI TFT module, no touch (MSP2402 touch version also fits) | Breakout, 77.18 × 42.72 mm | Module | 320×240 SPI display; 14-pin header plugs into J3 |
+| J23 | 1 | 1×3 socket | 2.54mm | User | Support for the display's free end (no electrical connection) |
+| — | 1 | 1×3 male header | 2.54mm | User | Soldered into the first three SD header holes on the display module; plugs into J23 |
 | Q1 | 1 | AO3401A | SOT-23 | Fab | Backlight high-side switch (P-channel) |
 | R11 | 1 | 1kΩ | 0603 | User | Gate pull-down |
 
@@ -480,6 +482,7 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 | 3.7 | 2026-11 | **PWR LED D1** changed from the right-angle APFA3010 to the flat-top AAA3528LSEEZGKQBKS (same LED chips, so R14–R16 are unchanged) and moved next to SAO connector J6. It now also indicates TX/RX. |
 | 3.8 | 2026-11 | **Fuel gauge wiring corrected**: U7 supply moved from VSYS to the battery net (VBAT), its thermistor pin disconnected from the charger's NTC, ALARMB grounded, and C84 (1µF) added at its supply pin. |
 | 3.9 | 2026-11 | **Crystal series resistor R29** (1kΩ, 0402) added between XOUT and Y1, as in the RP2350 hardware design guide. |
+| 3.10 | 2026-11 | **Display module specified**: QDtech / LCDwiki MSP2401 (2.4" ILI9341, no touch). **Display support socket J23** (1×3, no connection) added under the module's SD header position, plus a 1×3 pin header to solder to the module. |
 
 ---
 

@@ -1171,7 +1171,8 @@ All pins connected to GND for RF shielding and mechanical stability.
 The display shows SSTV images, menus, and status information.
 
 **Specifications:**
-- **Module:** 2.4" ILI9341-based TFT LCD breakout
+- **Module:** QDtech / LCDwiki **MSP2401** — 2.4" ILI9341 SPI TFT breakout, no touch panel (the touch version, MSP2402, uses the same board and also fits)
+- **Module board:** 77.18 × 42.72 mm; 14-pin header on one short edge, 4-pin SD header position on the opposite edge
 - **Resolution:** 320×240 pixels (landscape orientation)
 - **Interface:** SPI (up to 62.5 MHz)
 - **Backlight:** PWM dimming via GPIO + MOSFET
@@ -1313,11 +1314,34 @@ The 14-pin ILI9341 module that J3 is pinned for lights its backlight when the LE
 
 | Ref | Value | Package | Assembly | Notes |
 |-----|-------|---------|----------|-------|
-| U_DISP | ILI9341 2.4" module | Breakout | User | 320×240, SPI, w/ SD slot |
+| U_DISP | QDtech MSP2401 (ILI9341 2.4") | Breakout | User | 320×240, SPI, no touch; plugs into J3 and J23 |
+| J23 | 1×3 socket | 2.54mm | User | Support for the display's free end; no electrical connection |
+| — | 1×3 pin header | 2.54mm | User | Soldered to the module's SD header position (pins SD_CS, SD_MOSI, SD_MISO) to plug into J23 |
 | Q_BL (Q1) | AO3401A | SOT-23 | Fab | Backlight high-side P-MOSFET |
 | R_BL | 1kΩ | 0603 | User | Gate resistor |
 
 **Cost:** ~$8-12 for module + ~$0.10 for MOSFET/resistor
+
+### Display Module and Support Socket (J23)
+
+The module is the QDtech / LCDwiki MSP2401. From its user manual and dimension drawing:
+
+- The 14 header pins are, in order, VCC, GND, CS, RESET, DC/RS, SDI(MOSI), SCK, LED, SDO(MISO), then five touch pins (unused on the MSP2401). This is J3's pin order.
+- Supply is 3.3 V or 5 V. LED is "high level lighting"; tie to 3.3 V if not controlled. This is what the backlight switch Q1 assumes.
+- The board is 77.18 × 42.72 mm. The 14-pin header row is 2.00 mm in from one short edge, with pin 1 4.85 mm from the long edge.
+- On the opposite short edge is a 4-pin SD header position (SD_CS, SD_MOSI, SD_MISO, SD_SCK), 2.17 mm in from that edge, first pin 17.23 mm from the same long edge. In the manual's photo these four holes have no pins fitted.
+
+So the SD header row is 77.18 − 2.00 − 2.17 = **73.01 mm** from the 14-pin row, and its first pin is 17.23 − 4.85 = **12.38 mm** along from pin 1.
+
+**J23** is a 1×3 socket at those positions: pins at x = 81.646 mm, y = 81.468, 84.008 and 86.548 mm (J3 pin 1 is at 8.636, 69.088). Its pads connect to nothing. The builder solders a 1×3 pin header into the first three SD holes on the module (from the square pad), pins pointing the same way as the 14-pin header, and the module then plugs into J3 and J23 together and is held at both ends.
+
+Only three of the four positions are used: the fourth would land on the CAM_D3 trace on the front and the USB D+ trace on the back. If a 1×4 header is fitted to the module instead, its fourth pin hangs clear of the board beside the socket.
+
+The module's SD card slot is not used (the badge has its own socket, J10) and the three SD pins in J23 are left unconnected.
+
+The silkscreen "SCREEN" outline is the module's board outline: x 6.636–83.816 mm, y 64.238–106.958 mm.
+
+Sources: [user manual](https://www.lcdwiki.com/res/MSP2402/2.4inch_SPI_Module_MSP2402_User_Manual_EN.pdf), [dimension drawing](https://www.lcdwiki.com/res/MSP2402/MSP2401_Size_QD.pdf).
 
 ### Orientation and Mounting
 

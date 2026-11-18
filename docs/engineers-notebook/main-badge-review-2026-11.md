@@ -208,7 +208,7 @@ It was the only through-hole part under the display other than J3 itself, and th
 
 ### Still open: support for the display's free end
 
-A second socket near the display's right edge would stop the module being pressed down. There is room: a scan of all four layers shows a 1×4 socket fits without touching any copper at x ≈ 74.5–81.5 mm for a band of y between about 73 and 88 mm. The exact position has to come from the module — many 14-pin ILI9341 modules have a 4-pin SD header on the far edge that such a socket could mate with — so this waits on the module being chosen and measured.
+A second socket near the display's right edge would stop the module being pressed down. There is room: a scan of all four layers shows a 1×4 socket fits without touching any copper at x ≈ 74.5–81.5 mm for a band of y between about 73 and 88 mm. The exact position has to come from the module — many 14-pin ILI9341 modules have a 4-pin SD header on the far edge that such a socket could mate with — so this waited on the module being chosen and measured. **Done 2026-11-18; see section 12.**
 
 ---
 
@@ -337,4 +337,45 @@ One silkscreen consequence: the "Y1" label moved to the left of the crystal to m
 
 ---
 
-*Written 2026-11-14; section 10 added 2026-11-17; section 11 added 2026-11-18.*
+## 12. Display module chosen, support socket added (2026-11-18)
+
+### What the documents said before
+
+The display was "a 2.4 inch ILI9341 module", not a specific part. `project-status.md` listed sourcing a specific module as open, J3 was pinned for "the common 14-pin ILI9341 module", touch was ruled out (D-pad navigation), and the module's own SD slot was not to be used (J10 is the card socket). Section 7 left a support socket for the display's free end waiting on a module.
+
+### Module: QDtech / LCDwiki MSP2401
+
+Chosen because it is the board the earlier documents were already describing, it has a published dimension drawing, and it has a second row of holes on the far edge to hang a support from.
+
+- MSP2401 is the version without a touch panel; MSP2402 is the same board with one. Either fits. The no-touch one is specified because the badge does not use touch.
+- Pin order and backlight polarity in the manual match J3 and Q1 as built, so nothing else on the badge changes.
+- The far-edge holes are the module's SD header (SD_CS, SD_MOSI, SD_MISO, SD_SCK). The manual's photo shows them without pins, so the builder solders a header in. That suits the kit: the builder is already soldering through-hole parts.
+
+### Where the socket goes
+
+From the drawing: 14-pin row 2.00 mm from one short edge, SD row 2.17 mm from the other, board 77.18 mm long, so the rows are 73.01 mm apart. First SD pin is 17.23 mm from the long edge and pin 1 of the 14-pin row is 4.85 mm from the same edge, so 12.38 mm along. With J3 pin 1 at (8.636, 69.088) that puts the SD pins at x = 81.646 mm and y = 81.468, 84.008, 86.548 and 89.088 mm.
+
+The earlier scan had found room for a 1×4 at x ≈ 74.5–81.5, y ≈ 73–88. The real position is at the edge of that: the first three pins are clear on all four layers, and the fourth sits on CAM_D3 (front) and USB D+ (back).
+
+### Why three pins, not four
+
+- A support needs to hold the end up, not carry signals. Three pins do that.
+- Moving USB D+ would disturb the pair whose length mismatch was measured and accepted in section 6; CAM_D3 is one of the long camera routes that were deliberately left alone.
+- The fourth module pin, if fitted, hangs beside the socket above the board and touches nothing.
+
+J23's pads are not connected to anything, so the module's SD lines stay isolated from the badge.
+
+### Other things this settled
+
+- The silkscreen display outline was 77 × 43 mm but assumed the header row 3 mm from the board edge. It is now the module's real outline. The module clears the border LEDs on all four sides (closest is the right-hand column, about 0.8 mm from the LED bodies).
+- With both ends of the module on sockets, the worry in section 7 about the free end being pressed onto the board no longer applies.
+
+### Not checked
+
+No module was in hand. The numbers come from the manufacturer's drawing (tolerance ±0.2 mm). Boards sold as "2.4 inch ILI9341 SPI" by other makers may differ; the prototype checklist has the fit check.
+
+Sources: [MSP2402/MSP2401 user manual](https://www.lcdwiki.com/res/MSP2402/2.4inch_SPI_Module_MSP2402_User_Manual_EN.pdf), [MSP2401 dimension drawing](https://www.lcdwiki.com/res/MSP2402/MSP2401_Size_QD.pdf).
+
+---
+
+*Written 2026-11-14; section 10 added 2026-11-17; sections 11 and 12 added 2026-11-18.*

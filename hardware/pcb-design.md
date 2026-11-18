@@ -119,7 +119,7 @@ The badge PCB is cut in the shape of a classic 1950s/60s CRT television, inspire
     ┌─────────────── 70mm ───────────────┐
     │  ┌─────────────────────────────┐   │
     │  │                             │   │
-    │  │    Display module           │   │  ← Module: ~43 × 60mm
+    │  │    Display module           │   │  ← Module: 42.72 × 77.18mm (MSP2401)
     │  │    (ILI9341 2.4")           │   │
     │  │                             │   │
  50mm  │    Visible: 37 × 49mm       │   │
