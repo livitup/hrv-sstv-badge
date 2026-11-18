@@ -1,6 +1,6 @@
 # DEFCON SSTV Badge — Bill of Materials
 
-**Version:** 3.8
+**Version:** 3.9
 **Last Updated:** 2026-11-13
 **Source:** KiCad schematic export, verified against `docs/electrical-design.md`
 
@@ -242,6 +242,7 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 | C70, C72 | 2 | 100nF | 0402 | Fab | DVDD decoupling under U1 at pins 10 and 51 (back side) |
 | R20, R21 | 2 | 27Ω | 0402 | Fab | USB D−/D+ series termination at U1 (per RP2350 hardware design guide) |
 | R19 | 1 | 1kΩ | 0402 | Fab | In series with BOOTSEL switch on QSPI_SS (back side, about 14mm from the flash chip-select line) |
+| R29 | 1 | 1kΩ | 0402 | Fab | Crystal series resistor between XOUT and Y1 (limits crystal drive level) |
 | R25–R28 | 4 | 10kΩ | 0402 | Fab | SD card pull-ups to 3.3V: chip select (R25), data out / MISO (R26), DAT2 (R27), DAT1 (R28) |
 | TP1–TP6 | 6 | Test pad 1.0mm | Pad only | — | Back side: GND, +3V3, VBUS, VSYS, VLED, SA818_VCC (no component, excluded from BOM) |
 | SW_BOOT1 | 1 | Tactile 3×4mm | SMD | Fab | BOOTSEL for UF2 bootloader |
@@ -368,7 +369,7 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 | 27Ω | 2 | 0402 | USB series termination (R20, R21) |
 | 33Ω | 1 | 0402 | RP2350 VREG_AVDD filter (R22) |
 | 1kΩ | 1 | 0603 | Backlight gate (R11) |
-| 1kΩ | 1 | 0402 | BOOTSEL series resistor (R19) |
+| 1kΩ | 2 | 0402 | BOOTSEL series resistor (R19), crystal series resistor (R29) |
 | 2kΩ | 1 | 0603 | Charge current PROG1 (R3) |
 | 4.7kΩ | 4 | 0603 | RX filter (R7, R8), I2C pullups (R1, R2) |
 | 5.1kΩ | 2 | 0402 | USB CC (R_CC1, R_CC2) |
@@ -478,6 +479,7 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 | 3.6 | 2026-11 | **Small review items**: VBUS capacitance cut to about 7.9µF (C_USB1 10µF→1µF, C10 10µF→2.2µF); SD card socket J10 turned to face the board edge (card flush with the edge) and SD card pull-ups R25–R28 (10kΩ) added; six test pads TP1–TP6 added; BOOTSEL resistor R19 moved closer to the flash chip-select line. |
 | 3.7 | 2026-11 | **PWR LED D1** changed from the right-angle APFA3010 to the flat-top AAA3528LSEEZGKQBKS (same LED chips, so R14–R16 are unchanged) and moved next to SAO connector J6. It now also indicates TX/RX. |
 | 3.8 | 2026-11 | **Fuel gauge wiring corrected**: U7 supply moved from VSYS to the battery net (VBAT), its thermistor pin disconnected from the charger's NTC, ALARMB grounded, and C84 (1µF) added at its supply pin. |
+| 3.9 | 2026-11 | **Crystal series resistor R29** (1kΩ, 0402) added between XOUT and Y1, as in the RP2350 hardware design guide. |
 
 ---
 

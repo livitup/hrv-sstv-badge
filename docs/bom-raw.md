@@ -54,6 +54,7 @@
 | 220 | 1 | PWR LED R |
 | 470 | 1 | TX attenuator |
 | 1k | 1 | Backlight gate pulldown |
+| 1k | 1 | Crystal series resistor (R29, 0402) |
 | 2k | 1 | Charge current (PROG1) |
 | 4.7k | 4 | I2C pullups, RX filter |
 | 5.1k | 2 | USB CC resistors |

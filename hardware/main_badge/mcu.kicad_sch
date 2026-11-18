@@ -4236,16 +4236,6 @@
 	)
 	(wire
 		(pts
-			(xy 119.38 121.92) (xy 111.76 121.92)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "a61fa572-e430-446a-8385-d293a5879386")
-	)
-	(wire
-		(pts
 			(xy 170.18 116.84) (xy 207.01 116.84)
 		)
 		(stroke
@@ -9417,6 +9407,91 @@
 			(project ""
 				(path "/6bfeada4-0da3-4bdd-af4a-70929e466b35/1cd19f8e-9dd8-4d11-a3db-45fa5ed6d9f6"
 					(reference "#FLG07")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 115.57 121.92 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "175187b7-ec2d-4717-818d-f5889475ee97")
+		(property "Reference" "R29"
+			(at 115.316 117.094 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "1k"
+			(at 115.316 119.634 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
+			(at 115.57 123.698 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 115.57 121.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 115.57 121.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "KLC_S4.2_DVDD" ""
+			(at 115.57 121.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "KLC_S4.2_VREG_LX" ""
+			(at 115.57 121.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "eed6a075-2475-4cc4-9c7a-3f65c04932d7")
+		)
+		(pin "1"
+			(uuid "5e838783-dff7-401f-9159-c4e30ecac0db")
+		)
+		(instances
+			(project ""
+				(path "/6bfeada4-0da3-4bdd-af4a-70929e466b35/1cd19f8e-9dd8-4d11-a3db-45fa5ed6d9f6"
+					(reference "R29")
 					(unit 1)
 				)
 			)

@@ -228,7 +228,7 @@ defcon-sstv-badge/
 - **Main badge review (2026-11-13)**: charger wiring errors fixed (OUT→VSYS, IN→VBUS), radio supply path widened (2.0mm SA818_VCC path on the PWR layer), USB 27Ω and BOOTSEL 1kΩ resistors and extra decoupling added — see `docs/project-status.md`
 - **Schematic review (2026-11-14)**: border LED pinout (wrong symbol for the 2020 package), TX attenuator wiring, backlight switch polarity (now AO3401A high-side, GPIO low = on) and L1 value (2.2µH) fixed in schematic and PCB — see `docs/engineers-notebook/main-badge-review-2026-11.md`
 - **LED supply rail (2026-11-14)**: WS2812Bs moved from 3.3V to a dedicated 4.0V rail (U11 TPS63000, VLED on the inner power layer) — see `docs/engineers-notebook/led-supply-rail.md`
-- **Open before fab**: visual review of the reworked main badge; open design questions (radio supply drop / load switch rating, crystal series resistor, band-ID scheme); LPF prototype tuning
+- **Open before fab**: visual review of the reworked main badge; open design questions (radio supply drop / load switch rating, band-ID scheme); LPF prototype tuning
 - **Documentation**: Comprehensive technical docs, power/RF design documented
 - **Project structure**: Professional repository setup
 - **Firmware development**: Not started

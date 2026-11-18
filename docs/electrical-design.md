@@ -1754,7 +1754,7 @@ The I2C bus on GPIO0 (SDA) and GPIO1 (SCL) is shared by multiple devices:
                     RP2350B
                    ┌────────────────┐
                    │                │
-                   │    XIN  ●──────┼────┬────[Y1 12MHz]────┬────●  XOUT
+                   │    XIN  ●──────┼────┬────[Y1 12MHz]────┬──[R29 1kΩ]──●  XOUT
                    │                │    │                  │
                    │                │   [C1]               [C2]
                    │                │   15pF               15pF
@@ -1768,7 +1768,8 @@ The I2C bus on GPIO0 (SDA) and GPIO1 (SCL) is shared by multiple devices:
 | Ref | Value | Package | Notes |
 |-----|-------|---------|-------|
 | Y1 | 12MHz | 3215 (3.2×1.5mm) | ±20ppm, 10pF load, fundamental |
-| C1, C2 | 15pF | 0402 | Load capacitors (2 × CL - C_stray = 2×10 - 5 = 15pF) |
+| C1, C2 | 15pF | 0402 | Load capacitors (2 × CL - C_stray = 2×10 - 5 = 15pF). C_Y1, C_Y2 on the board |
+| R29 | 1kΩ | 0402 | In series between XOUT and the crystal, to limit crystal drive level. Value from the RP2350 hardware design guide; confirm on the prototype |
 
 **Layout notes:**
 - Keep crystal close to XIN/XOUT pins (<5mm trace length)

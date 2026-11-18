@@ -137,7 +137,7 @@ Flash, USB (CC resistors, ESD, series resistors), SAO, Tag-Connect, SD card SPI 
 | Radio supply drop | Charger battery switch is 200 mΩ typical, load switch 90 mΩ, and the TPS22919 is rated 1.5 A. The real SA818 transmit current decides whether this matters. |
 | Fuel gauge supply | U7 was on VSYS, which sits near 5 V with USB connected, so it read the wrong voltage then. Fixed; see section 10. |
 | Fuel gauge thermistor | Was shared with the charger. Now disconnected; the gauge uses I2C temperature mode. See section 10. |
-| Crystal series resistor | The RP2350 guide uses 1 kΩ; the board has none. |
+| Crystal series resistor | The RP2350 guide uses 1 kΩ; the board had none. Added as R29; see section 11. |
 | Band ID | The UHF pull-up goes to the switched radio supply, so it reads as VHF when the radio is off. A scheme that separates no board / VHF / UHF is still to be discussed. |
 | SD card pull-ups | DAT1, DAT2, MISO and CS had none. CS and MISO added afterwards; see section 8. |
 | VBUS capacitance | About 25 µF, above the 10 µF USB inrush limit. Reduced to about 7.9 µF afterwards; see section 8. |
@@ -315,4 +315,26 @@ It would take three more parts (a second NTC, a matching 10 kΩ resistor and a 1
 
 ---
 
-*Written 2026-11-14; section 10 added 2026-11-17.*
+## 11. Crystal series resistor added (2026-11-18)
+
+### What changed
+
+R29, 1 kΩ 0402, now sits in series between the RP2350's XOUT pin and the crystal. The load capacitor C_Y2 stays on the crystal side of the resistor, as in the RP2350 hardware design guide.
+
+### Why
+
+The resistor limits how hard the chip drives the crystal. Small crystals have a maximum drive level, and over-driving one shortens its life or shifts its frequency. The guide includes this resistor; the board had left it out. Earlier documents hold no decision either way: the crystal section of `electrical-design.md` showed only the crystal and two capacitors, and the question was first raised in section 5 of this review.
+
+### Value
+
+1 kΩ is the guide's value, picked there for the guide's own crystal. The badge's crystal is specified only as a 12 MHz 3215 part with 10 pF load (three candidates are listed in `electrical-design-decisions.md`), so 1 kΩ is a starting value. A prototype check for start-up and USB enumeration is in `docs/prototype-checklist.md`.
+
+### Layout
+
+There is no room on the direct run from pin to crystal: the SWDIO and RUN vias, a 3.3 V via and the XIN trace hem it in. R29 is placed just right of the crystal at (63.85, 44.2), standing vertically. The XOUT trace passes between R17 and the top of the crystal pad to R29's upper pad, and R29's lower pad joins the crystal pad directly. Everything is on the front layer with no vias; the XOUT run is about 1.5 mm longer than before.
+
+One silkscreen consequence: the "Y1" label moved to the left of the crystal to make room. R29's label sits to the right of the resistor.
+
+---
+
+*Written 2026-11-14; section 10 added 2026-11-17; section 11 added 2026-11-18.*

@@ -86,7 +86,7 @@ Route these first — they have the tightest constraints and set the placement o
     ┌──────┐        ┌────────┐
     │  XIN ├────────┤        │
     │      │   C_Y1 │        │  <5mm traces
-    │ XOUT ├────────┤        │
+    │ XOUT ├──[R29]─┤        │   R29 1kΩ beside the crystal pad
     └──────┘   C_Y2 └────────┘
                 │  │
                GND GND (via to In1.Cu)
