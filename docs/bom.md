@@ -1,6 +1,6 @@
 # DEFCON SSTV Badge — Bill of Materials
 
-**Version:** 3.11
+**Version:** 3.12
 **Last Updated:** 2026-11-13
 **Source:** KiCad schematic export, verified against `docs/electrical-design.md`
 
@@ -217,8 +217,8 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 
 | Ref | Qty | Value | Package | Assembly | Notes |
 |-----|-----|-------|---------|----------|-------|
-| D2–D11 | 10 | WS2812B | 5050 (5.0×5.0mm) | Fab | Rabbit ear antennas (5 per ear) |
-| D12–D27 | 16 | WS2812B-2020 | 2020 (2.0×2.0mm) | Fab | Display border (3×5×3×5 layout) |
+| D2–D11 | 10 | WS2812B-V6 (Worldsemi) | 5050 (5.0×5.0mm) | Fab | Rabbit ear antennas (5 per ear). **Must be the V6 revision**: standby ≤1µA (V5 is 0.6mA each) |
+| D12–D27 | 16 | WS2812B-2020-V6 (Worldsemi) | 2020 (2.0×2.0mm) | Fab | Display border (3×5×3×5 layout). **Must be the V6 revision** for the same reason |
 | C28–C53 | 26 | 100nF | 0402 | Fab | Bypass caps (one per LED) |
 
 **Subtotal:** ~$2.28
@@ -486,6 +486,7 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 | 3.9 | 2026-11 | **Crystal series resistor R29** (1kΩ, 0402) added between XOUT and Y1, as in the RP2350 hardware design guide. |
 | 3.10 | 2026-11 | **Display module specified**: QDtech / LCDwiki MSP2401 (2.4" ILI9341, no touch). **Display support socket J23** (1×3, no connection) added under the module's SD header position, plus a 1×3 pin header to solder to the module. |
 | 3.11 | 2026-11 | **Backlight gate pull-up R30** (4.7kΩ, 0402) added so the backlight is off until firmware turns it on. R11 description corrected: it is a series gate resistor, not a pull-down. |
+| 3.12 | 2026-11 | **LED revision specified**: WS2812B-V6 and WS2812B-2020-V6. The V6 parts draw 1µA or less when dark, which is what keeps the always-on LED rail out of the sleep budget. Same footprints and pinout. |
 
 ---
 

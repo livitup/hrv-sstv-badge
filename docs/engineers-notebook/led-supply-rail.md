@@ -75,7 +75,19 @@ Rejected in favour of C once the user decided the risk was not worth a respin.
 
 **Power-save mode on (PS/SYNC to ground).** The 3.3 V regulator runs with power save off to keep ripple out of the SSTV audio path. The LED rail has no such concern and spends most of its life at tens of milliamps, where power-save mode is markedly more efficient.
 
-**Always enabled (EN to VSYS).** Putting EN on a spare GPIO would let firmware cut the LEDs' quiescent current in sleep. It was left out because only two GPIOs are spare and the camera-clock question may want them. It remains an option.
+**Always enabled (EN to VSYS).** Putting EN on a spare GPIO would let firmware cut the LEDs' quiescent current in sleep. It was left out because only two GPIOs are spare and the camera-clock question may want them.
+
+*Revisited and closed 2026-11-20.* The camera-clock question had been closed, so both spare GPIOs were free and the enable line was looked at properly:
+
+- *What it would save depends on the LED revision.* Worldsemi's V5 datasheet gives 0.6 mA quiescent per LED; the V6 datasheet gives 1 µA or less. For 26 LEDs that is about 16 mA against about 26 µA. The regulator itself idles at about 50 µA in power-save mode.
+- *What it would cost.* Both spare pins (GPIO46, GPIO47) are boxed in at the chip: they sit in a 0.3 mm gap between the I2C clock trace and a 3.3 V via, too narrow for a trace or a via. Escaping means moving that via and trace or going under the chip, followed by about 90 mm of routing across the board to U11. A dry run found a route from U11 to mid-board but not out of the chip; a complete route was not found.
+- *Decision.* Leave EN tied to VSYS and specify the V6 revision of both LED types in the BOM. That gets nearly all the saving with no board change. V6 has the same footprint and pinout as V5.
+
+Side findings from reading the datasheets: both V5 and V6 need a reset gap of more than 280 µs (now in the firmware notes), and V6's data-high threshold is 0.55 × VDD — 2.2 V at the 4.0 V rail — which gives 3.3 V logic more margin than the 0.7 × VDD used when the rail voltage was chosen. V6 in the 5050 package is also specified down to a 3.3 V supply; the 2020 package is still 3.7 V minimum, so the rail is still needed.
+
+If a later board revision wants a hardware switch anyway, the place to start is the 3.3 V via beside U1 pins 57–58.
+
+Sources: [WS2812B-V6 datasheet](https://atta.szlcsc.com/upload/public/pdf/source/20251201/45CD695EA06F90F53A3AC4760AC4DC7D.pdf), [WS2812B V5 datasheet](https://mm.digikey.com/Volume0/opasdata/d220001/medias/docus/8880/WS2812B.pdf), [WS2812B-2020-V6 datasheet](https://www.tme.com/Document/f57342b0dc3e7d573aa1f8b6b5942fcf/WS2812B-2020-V6_V1.2_EN.pdf) (excerpts only; the PDF could not be opened).
 
 **Distribution on the inner power layer as tracks.** The LED supply pads already had vias into the power plane, so re-netting them and joining the vias with inner-layer tracks disturbed the outer layers least. The cost is that every such track is a slot in the 3.3 V plane.
 

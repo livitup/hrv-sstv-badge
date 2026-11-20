@@ -38,6 +38,7 @@ These check assumptions that are built into the PCB. If one turns out wrong, the
 
 - [ ] **Camera module pinout.** The 2×9 header on the OV2640 module matches the J4 pin table in `electrical-design.md` exactly, pin for pin, including which row is odd and which is even.
 - [ ] **Camera module has its own clock.** With 3.3 V applied, RESET high and PWDN low, and no clock fed in, PCLK toggles on a scope. The badge supplies no XCLK, so a module that fails this will not work.
+- [ ] **LED revision.** The WS2812B reels are the V6 revision (WS2812B-V6 and WS2812B-2020-V6), not V5 or earlier. Check the reel label and, if in doubt, measure one dark LED's current at 4.0 V: V6 is 1 µA or less, older parts about 0.6 mA.
 - [ ] **Display module backlight polarity.** On the MSP2401, the LED pin lights the backlight when driven **high** (3.3 V), and stays dark when left open or grounded. The manual says so; confirm on a real module. The backlight switch (Q1) assumes this.
 - [ ] **Display module pin order.** The module's 14 pins match J3: VCC, GND, CS, RESET, DC, MOSI, SCK, LED, MISO, then the five touch pins. The manual says so; confirm against the silkscreen on the module actually bought, since look-alike boards exist.
 - [ ] **Battery connector polarity.** With the battery's JST-PH plug inserted in J1, battery positive lands on J1 pin 1 (the net that goes to the charger's battery pins). JST-PH polarity is not standardised between battery vendors — check the actual battery with a meter.
@@ -54,6 +55,7 @@ These check assumptions that are built into the PCB. If one turns out wrong, the
 ### Power
 
 - [ ] **Rail voltages at the test pads.** TP1 GND, TP2 +3V3, TP3 VBUS, TP4 VSYS, TP5 VLED, TP6 SA818_VCC (positions in `electrical-design.md`, "Power Test Pads").
+- [ ] **Sleep current.** With the badge asleep, the radio off and the LEDs sent an all-black frame, measure battery current. The target in the docs is 10 mA and has never been measured. Then check the LED rail's share: it should be about 0.1 mA with V6-revision LEDs. If the chain draws milliamps when dark, the LEDs fitted are an older revision (about 0.6 mA each).
 - [ ] **Real SA818 transmit current.** Measure battery current during high-power and low-power TX on both carriers. The SA818S datasheet gives 650 mA typical / 750 mA maximum at high power and 450 / 550 mA at low power; the load switch (TPS22919) is rated 1.5 A. If a module draws much more than 750 mA, revisit section 14 of `engineers-notebook/main-badge-review-2026-11.md`.
 - [ ] **Transmit at low battery.** Measure SA818_VCC (TP6) during high-power TX as the battery runs down, and note the battery voltage at which transmit power sags or the module drops out (its minimum supply is 3.3 V; the path from the cell loses about 0.22 V at 0.75 A). Use the result to set a firmware "battery too low to transmit" threshold.
 - [ ] **SA818 supply voltage during TX.** Measure the voltage at the carrier's VCC pin while transmitting on a part-discharged battery (about 3.6 V). The SA818 needs at least 3.5 V.

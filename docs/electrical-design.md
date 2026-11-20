@@ -106,7 +106,7 @@ Figures from the NiceRF SA818S specification (supply 3.3V minimum, 4.2V typical,
 
 The 26 WS2812B LEDs run from their own 4.0 V rail, **VLED**, made by a second buck-boost converter (U11). They are no longer on the 3.3 V rail.
 
-- The WS2812B-2020 datasheet specifies a 3.7–5.3 V supply and the 5050 part 3.5–5.3 V. At 3.3 V both are out of spec, and blue is the first colour to suffer.
+- The WS2812B-2020 datasheet specifies a 3.7–5.3 V supply. For the 5050 part the figure depends on the revision: 3.7–5.3 V for V5, 3.3–5.3 V for the V6 revision now specified. So 3.3 V is out of spec for the 2020 parts, and blue is the first colour to suffer.
 - The LED data line is driven by a 3.3 V GPIO. The 5050 datasheet requires a data-high level of 0.7 × VDD, which is 2.8 V at a 4.0 V supply (met by 3.3 V logic with 0.5 V to spare) but 3.5 V at a 5 V supply (not met). 4.0 V is therefore high enough for the supply spec and low enough for the data spec.
 - A buck-boost holds 4.0 V whether VSYS is 3.0 V (battery nearly empty) or about 5 V (USB connected). A boost-only converter would pass 5 V through on USB.
 
@@ -142,7 +142,7 @@ See `engineers-notebook/led-supply-rail.md` for the options that were compared.
 
 **PS/SYNC is tied to ground**, which enables power-save mode. The LEDs do not care about ripple, and the rail idles at a few tens of milliamps where power-save mode is more efficient. (U5 does the opposite, for the sake of the audio path.)
 
-**EN is tied to VSYS**, so the rail is always on. A dark WS2812B still draws its quiescent current, so sleep current includes the 26 LEDs. Controlling EN from a spare GPIO would remove that; it is not implemented.
+**EN is tied to VSYS**, so the rail is always on. That is acceptable only because the **V6 revision** of both LED types is specified: a dark V6 LED draws 1 µA or less, so 26 of them plus the idling regulator (about 50 µA) add roughly 0.1 mA in sleep. Older revisions draw about 0.6 mA each when dark — about 16 mA for the chain — so the revision matters. Controlling EN from a spare GPIO was considered and left out (decided 2026-11-20; see `engineers-notebook/led-supply-rail.md`).
 
 ### Limits
 
@@ -2343,6 +2343,8 @@ The chain uses two different WS2812B packages optimized for their location:
 
 Both packages use the same WS2812B protocol and are daisy-chained on a single data line.
 
+**Part revision:** both are the Worldsemi **V6** revision (WS2812B-V6 and WS2812B-2020-V6). Timing from the WS2812B-V6 datasheet: 0 bit = 220–380 ns high, 1 bit = 580 ns–1 µs high, low time 580 ns–1 µs, bit period at least 1.25 µs, and a **reset (latch) gap of more than 280 µs** with the line low. The older 50 µs reset figure found in many tutorials is not enough.
+
 **LED Sections:**
 
 | Section | LEDs | Package | Index | Purpose |
@@ -2633,9 +2635,11 @@ TX "Capacitor Discharge":              RX "Filling The Tank":
 
 | Mode | LED Current | System Total | Runtime |
 |------|-------------|--------------|---------|
-| Sleep | 3mA | ~50mA | ~40 hours |
+| Sleep | 3mA | ~10mA (target, unmeasured) | ~200 hours |
 | Idle blinky | 70mA | ~250mA | ~8 hours |
 | Active TX/RX | 110mA | ~280mA | ~7 hours |
+
+The sleep figure is the 10mA target from `firmware-architecture.md`; an earlier revision of this table said ~50mA. Neither has been measured — see the sleep-current check in `prototype-checklist.md`.
 
 **Power saving features (firmware):**
 - Auto-dim after 30s inactivity

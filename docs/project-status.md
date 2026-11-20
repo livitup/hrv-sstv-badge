@@ -116,6 +116,7 @@ This document tracks the design and implementation status for all badge subsyste
 
 ### Display Interface
 - [x] ILI9341 2.4" module selected (320×240), standalone SD socket (J10)
+- [x] LED revision specified as V6 for both packages (standby ≤1µA); LED rail enable left tied on (decided 2026-11-20)
 - [x] Backlight circuit designed (AO3401A P-channel high-side switch, PWM control, GPIO low = on; gate pull-up R30 added 2026-11-20 so it is off until firmware turns it on)
 - [x] Assign RP2350 SPI pins for display (GPIO4,6,7: MISO, SCK, MOSI)
 - [x] Assign GPIO pins (GPIO5: CS, GPIO19: DC, GPIO20: RST, GPIO29: BL, GPIO26: SD_CS)

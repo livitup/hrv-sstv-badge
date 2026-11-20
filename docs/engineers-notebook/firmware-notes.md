@@ -42,9 +42,21 @@ The LED rail regulator (U11, TPS63000, 4.0 V) can supply roughly 0.8 A when boos
 
 The 16 border LEDs are WS2812B-2020 parts (described in KiCad's library as 12 mA parts); the 10 ear LEDs are the larger 5050 package. Expect the border to look dimmer than the ears at the same value, and plan a per-group scale factor. The 5050's rated current has not been checked against its datasheet.
 
+### WS2812B reset gap: more than 280 µs
+
+After the last bit of a frame, hold the LED data line low for **more than 280 µs** before sending the next frame. Both current revisions of the LED (V5 and V6) require this; the 50 µs figure in older datasheets and many tutorials and example drivers is too short and gives flicker or frames that never latch. Use 300 µs or more.
+
+Bit timing from the WS2812B-V6 datasheet: 0 bit 220–380 ns high, 1 bit 580 ns–1 µs high, low time 580 ns–1 µs, bit period at least 1.25 µs (800 kbit/s).
+
+- Source: WS2812B V5 and WS2812B-V6 datasheets, read 2026-11-20. The 2020-package V6 datasheet could not be opened directly; excerpts of it give the same reset figure.
+
 ### LED rail is always on
 
-U11's enable pin is tied to VSYS. A dark WS2812B still draws quiescent current, so the sleep-current figures in `firmware-architecture.md` do not yet account for 26 idle LEDs. Firmware cannot switch the rail off with the current hardware.
+U11's enable pin is tied to VSYS, so firmware cannot switch the LED rail off. This was reviewed on 2026-11-20 and left as is: the BOM now specifies the V6 revision of both LED types, which draw 1 µA or less each when dark, so the rail adds roughly 0.1 mA in sleep (mostly the idling regulator).
+
+What firmware must do for sleep: send one all-black frame and then stop driving the chain. The LEDs hold their last value, so a frame that is not black keeps burning current.
+
+If boards are ever built with older-revision LEDs (about 0.6 mA each when dark), the chain would add about 16 mA in sleep and nothing in firmware can fix it.
 
 ### SA818 H/L pin: open-drain only
 

@@ -28,8 +28,8 @@
 | AO3401A | P-MOSFET SOT-23 | 1 |
 | PESD5V0S1BL | TVS Diode | 1 |
 | AAA3528LSEEZGKQBKS | RGB LED, 3.5×2.8mm flat-top (common-anode) | 1 |
-| WS2812B (5050) | Addressable LED | 10 |
-| WS2812B-2020 | Addressable LED | 16 |
+| WS2812B-V6 (5050) | Addressable LED — V6 revision required (standby ≤1µA) | 10 |
+| WS2812B-2020-V6 | Addressable LED — V6 revision required | 16 |
 
 ## Capacitors
 
