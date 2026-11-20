@@ -83,11 +83,16 @@ Rejected in favour of C once the user decided the risk was not worth a respin.
 - *What it would cost.* Both spare pins (GPIO46, GPIO47) are boxed in at the chip: they sit in a 0.3 mm gap between the I2C clock trace and a 3.3 V via, too narrow for a trace or a via. Escaping means moving that via and trace or going under the chip, followed by about 90 mm of routing across the board to U11. A dry run found a route from U11 to mid-board but not out of the chip; a complete route was not found.
 - *Decision.* Leave EN tied to VSYS and specify the V6 revision of both LED types in the BOM. That gets nearly all the saving with no board change. V6 has the same footprint and pinout as V5.
 
-Side findings from reading the datasheets: both V5 and V6 need a reset gap of more than 280 µs (now in the firmware notes), and V6's data-high threshold is 0.55 × VDD — 2.2 V at the 4.0 V rail — which gives 3.3 V logic more margin than the 0.7 × VDD used when the rail voltage was chosen. V6 in the 5050 package is also specified down to a 3.3 V supply; the 2020 package is still 3.7 V minimum, so the rail is still needed.
+Side findings from reading the datasheets:
+
+- Both V5 and V6 need a reset gap of more than 280 µs (now in the firmware notes).
+- V6's data-high threshold is 0.55 × VDD — 2.2 V at the 4.0 V rail — which gives 3.3 V logic more margin than the 0.7 × VDD used when the rail voltage was chosen.
+- **V6 is rated for a 3.3–5.3 V supply in both packages** ("3.3 V power supply is supported"). The datasheets this rail was designed against gave 3.7 V as the minimum. So with V6 parts the LEDs would be in spec on the 3.3 V rail, and this regulator is no longer strictly required. It was not removed: it is built and routed, it keeps the board correct if an older revision is ever fitted, and a higher supply leaves the blue LEDs more voltage to work with. A future cost-down could revisit it.
+- Both packages are driven at 12 mA per colour, 36 mA at full white, so the whole chain is about 0.94 A at full white rather than the 1.5 A assumed when the rail was sized.
 
 If a later board revision wants a hardware switch anyway, the place to start is the 3.3 V via beside U1 pins 57–58.
 
-Sources: [WS2812B-V6 datasheet](https://atta.szlcsc.com/upload/public/pdf/source/20251201/45CD695EA06F90F53A3AC4760AC4DC7D.pdf), [WS2812B V5 datasheet](https://mm.digikey.com/Volume0/opasdata/d220001/medias/docus/8880/WS2812B.pdf), [WS2812B-2020-V6 datasheet](https://www.tme.com/Document/f57342b0dc3e7d573aa1f8b6b5942fcf/WS2812B-2020-V6_V1.2_EN.pdf) (excerpts only; the PDF could not be opened).
+Sources: [WS2812B-V6 datasheet](https://atta.szlcsc.com/upload/public/pdf/source/20251201/45CD695EA06F90F53A3AC4760AC4DC7D.pdf), [WS2812B V5 datasheet](https://mm.digikey.com/Volume0/opasdata/d220001/medias/docus/8880/WS2812B.pdf), [WS2812B-2020-V6 datasheet](https://files.waveshare.com/wiki/common/WS2812_0807.pdf).
 
 **Distribution on the inner power layer as tracks.** The LED supply pads already had vias into the power plane, so re-netting them and joining the vias with inner-layer tracks disturbed the outer layers least. The cost is that every such track is a slot in the 3.3 V plane.
 
@@ -102,7 +107,7 @@ Sources: [WS2812B-V6 datasheet](https://atta.szlcsc.com/upload/public/pdf/source
 
 ## Consequences to remember
 
-- **Firmware must cap LED brightness.** The regulator can supply roughly 0.8 A when boosting from a low battery; all 26 LEDs at full white would ask for about 1.5 A.
+- **Firmware must cap LED brightness.** The regulator can supply roughly 0.8 A when boosting from a low battery; all 26 LEDs at full white would ask for about 0.94 A (26 × 36 mA; corrected 2026-11-20 from 1.5 A after reading the datasheets for both packages, which give 12 mA per colour).
 - **Battery life.** WS2812Bs are constant-current devices, so raising the rail from 3.3 V to 4.0 V costs about 20 % more LED power — around 15 mA more battery current at idle.
 - **Sleep current** includes the quiescent draw of 26 LEDs, since the rail is always on.
 - **Not verified on hardware.** Regulator stability with this divider, real LED brightness balance between the two packages, and the voltage at the far ear tip should be checked on the first prototype.

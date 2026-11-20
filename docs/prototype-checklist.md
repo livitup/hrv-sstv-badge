@@ -14,7 +14,7 @@ Checks that can be done at a desk with the design files and datasheets, and the 
 
 ### Desk checks
 
-- [ ] **5050 ear LED rated current.** Read the WS2812B (5050) datasheet's maximum current per LED. The data-high threshold (0.7 × supply) and supply range (3.5–5.3 V) are already confirmed. The current figure feeds the firmware brightness cap and the LED rail's load estimate.
+- [x] **5050 ear LED rated current.** Done 2026-11-20. The WS2812B V5 and WS2812B-V6 datasheets give 12 mA per colour as the working current (the condition for the brightness figures); neither states a separate maximum. That is 36 mA per LED at full white and about 0.94 A for all 26, not the 60 mA / 1.5 A assumed earlier. The WS2812B-2020-V6 datasheet gives the same 12 mA per colour (36 mA white) for the border LEDs. For the V6 parts now specified, both packages have a data-high threshold of 0.55 × supply and a supply range of 3.3–5.3 V.
 - [ ] **Critical footprints against datasheets.** Compare pad positions, sizes and pin 1 with the manufacturer's land pattern for: U1 RP2350B (QFN-80), U4 MCP73871 (QFN-20), U5/U11 TPS63001/TPS63000 (VSON-10), U6 TPS22919 (SC-70-6), U7 LC709203F (WDFN-8), U8 PCM5102A (TSSOP-20), U2 flash (SOIC-8), Y1 crystal (3215), J2 USB-C, J10 microSD, J1 JST PH, D1 and the two WS2812B packages, and the SA818 on the carriers.
 - [ ] **Custom footprints.** Check the three footprints made for this project against their datasheets: `L_Abracon_AOTA-B201610` (including the polarity dot at pad 1), `C_0402_1005Metric_Wide`, and `L_0603HP` on the carriers.
 

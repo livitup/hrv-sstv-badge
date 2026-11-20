@@ -27,7 +27,7 @@ LiPo (3.0-4.2V) ──┬──► TPS63001 (buck-boost) ──► 3.3V Rail (RP
 
 **Components:**
 - **TPS63001**: Buck-boost regulator, 3.3V output, handles full LiPo voltage range
-- **TPS63000**: Second buck-boost (U11), 4.0V "VLED" rail for the WS2812B LEDs only — in spec for the LED supply (≥3.7V) while keeping 3.3V data valid (0.7 × VDD); firmware must cap total LED brightness (~0.8A available)
+- **TPS63000**: Second buck-boost (U11), 4.0V "VLED" rail for the WS2812B LEDs only — in spec for the LED supply (≥3.7V for older revisions; the V6 parts specified in the BOM accept 3.3V) while keeping 3.3V data valid; firmware must cap total LED brightness (~0.8A available, ~0.94A at full white)
 - **TPS22919**: Load switch for SA818 power control (airplane mode, sleep)
 - **MCP73871**: Battery charging controller
 - **LC709203**: Battery fuel gauge, powered from the battery net (VBAT) so it reads the cell correctly with USB connected; temperature supplied over I2C

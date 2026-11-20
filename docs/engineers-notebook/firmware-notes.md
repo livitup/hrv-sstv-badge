@@ -33,14 +33,14 @@ GPIO29 **low** turns the backlight on. It is off by default, so firmware must tu
 
 ### Cap total WS2812B brightness
 
-The LED rail regulator (U11, TPS63000, 4.0 V) can supply roughly 0.8 A when boosting from a low battery. All 26 LEDs at full white would ask for about 1.5 A. The LED driver needs a global current budget, not just a per-LED brightness setting.
+The LED rail regulator (U11, TPS63000, 4.0 V) can supply roughly 0.8 A when boosting from a low battery. All 26 LEDs at full white would ask for about 0.94 A (26 × 36 mA; the V5 and V6 datasheets give 12 mA per colour as the working current, not the 20 mA per colour often assumed). That is still above what the regulator can give on a low battery, so the LED driver needs a global current budget, not just a per-LED brightness setting — but the cap only bites near full white on most of the chain. Budget 12 mA per lit colour channel at full value.
 
 - The 0.8 A figure is an estimate from the regulator's 1.8 A switch limit, not a measured value. Measure it on the first prototype.
 - Source: `led-supply-rail.md`.
 
 ### The two LED packages will not match in brightness
 
-The 16 border LEDs are WS2812B-2020 parts (described in KiCad's library as 12 mA parts); the 10 ear LEDs are the larger 5050 package. Expect the border to look dimmer than the ears at the same value, and plan a per-group scale factor. The 5050's rated current has not been checked against its datasheet.
+Both packages are driven at 12 mA per colour (36 mA at full white), read from the WS2812B-V6 and WS2812B-2020-V6 datasheets. They still differ in brightness: typical figures are 310 / 780 / 215 mcd (red / green / blue) for the 5050 ear LEDs against 200 / 520 / 160 mcd for the 2020 border LEDs, so the border is about two-thirds as bright at the same value. Plan a per-group scale factor and tune it by eye on the prototype.
 
 ### WS2812B reset gap: more than 280 µs
 
@@ -48,7 +48,7 @@ After the last bit of a frame, hold the LED data line low for **more than 280 µ
 
 Bit timing from the WS2812B-V6 datasheet: 0 bit 220–380 ns high, 1 bit 580 ns–1 µs high, low time 580 ns–1 µs, bit period at least 1.25 µs (800 kbit/s).
 
-- Source: WS2812B V5 and WS2812B-V6 datasheets, read 2026-11-20. The 2020-package V6 datasheet could not be opened directly; excerpts of it give the same reset figure.
+- Source: WS2812B V5, WS2812B-V6 and WS2812B-2020-V6 datasheets, read 2026-11-20. All three give the same reset figure and bit timing.
 
 ### LED rail is always on
 

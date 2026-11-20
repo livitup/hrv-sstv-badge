@@ -106,7 +106,7 @@ Figures from the NiceRF SA818S specification (supply 3.3V minimum, 4.2V typical,
 
 The 26 WS2812B LEDs run from their own 4.0 V rail, **VLED**, made by a second buck-boost converter (U11). They are no longer on the 3.3 V rail.
 
-- The WS2812B-2020 datasheet specifies a 3.7–5.3 V supply. For the 5050 part the figure depends on the revision: 3.7–5.3 V for V5, 3.3–5.3 V for the V6 revision now specified. So 3.3 V is out of spec for the 2020 parts, and blue is the first colour to suffer.
+- The supply range depends on the LED revision. The older datasheets this rail was designed against specify 3.7–5.3 V (WS2812B-2020 and WS2812B V5), which puts 3.3 V out of spec, with blue the first colour to suffer. The V6 revision now specified in the BOM is rated 3.3–5.3 V in both packages, so with V6 parts the 4.0 V rail is headroom rather than a necessity. It stays: it keeps the LEDs in spec if an older revision is ever fitted, and gives the blue LEDs more voltage to work with.
 - The LED data line is driven by a 3.3 V GPIO. The 5050 datasheet requires a data-high level of 0.7 × VDD, which is 2.8 V at a 4.0 V supply (met by 3.3 V logic with 0.5 V to spare) but 3.5 V at a 5 V supply (not met). 4.0 V is therefore high enough for the supply spec and low enough for the data spec.
 - A buck-boost holds 4.0 V whether VSYS is 3.0 V (battery nearly empty) or about 5 V (USB connected). A boost-only converter would pass 5 V through on USB.
 
@@ -146,7 +146,7 @@ See `engineers-notebook/led-supply-rail.md` for the options that were compared.
 
 ### Limits
 
-- **Current:** the TPS6300x has 1.8 A switches. Boosting a nearly flat battery to 4.0 V, plan on no more than about 0.8 A out. All 26 LEDs at full white would ask for about 1.5 A, so **firmware must cap total LED brightness**. The planned animations draw 70–120 mA.
+- **Current:** the TPS6300x has 1.8 A switches. Boosting a nearly flat battery to 4.0 V, plan on no more than about 0.8 A out. All 26 LEDs at full white would ask for about 0.94 A (26 × 36 mA: the WS2812B datasheets give 12 mA per colour as the working current), so **firmware must cap total LED brightness**. The planned animations draw 70–120 mA.
 - **Battery cost:** the LEDs are constant-current, so they take about 20 % more power at 4.0 V than at 3.3 V — roughly 15 mA more from the battery at idle.
 
 ### Layout
@@ -2618,7 +2618,7 @@ TX "Capacitor Discharge":              RX "Filling The Tank":
 ### Blinky Power Budget
 
 **Worst case (all white, full brightness):**
-- 26 WS2812B × 60mA = 1,560mA ❌ (would drain battery in 1 hour, and is about twice what the VLED regulator can supply — firmware must cap total brightness)
+- 26 WS2812B × 36mA = 936mA ❌ (12mA per colour per the WS2812B-V6 and WS2812B-2020-V6 datasheets; an earlier revision of this document assumed 60mA per LED. Still more than the VLED regulator can supply on a low battery — firmware must cap total brightness)
 - PWR LED: ~10mA (negligible)
 
 **Realistic usage with smart animations:**
@@ -2629,7 +2629,7 @@ TX "Capacitor Discharge":              RX "Filling The Tank":
 | Idle | Border rainbow @ 25%, ear tips breathing | ~70mA |
 | TX active | Capacitor charge + discharge | ~120mA |
 | RX active | Ear pulses + border fill | ~100mA |
-| Max brightness | All @ 100% (not recommended) | ~380mA |
+| Max brightness | All @ 100% white (not possible on a low battery) | ~940mA |
 
 **Battery life estimates (2000mAh):**
 
