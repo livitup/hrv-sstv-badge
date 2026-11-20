@@ -2034,7 +2034,7 @@ Six 1.0mm test pads on the back of the board give probe access to the supply rai
 | TP1 | GND | (37.0, 101.5) | Below the 3.3V regulator |
 | TP2 | +3V3 | (41.0, 83.5) | 3.3V regulator output caps |
 | TP3 | VBUS | (23.5, 104.75) | Charger input cap C10 |
-| TP4 | VSYS | (46.25, 96.75) | 3.3V regulator input cap C13 |
+| TP4 | VSYS | (46.38, 97.26) | 3.3V regulator input cap C13 |
 | TP5 | VLED | (14.5, 87.9) | LED rail regulator output |
 | TP6 | SA818_VCC | (17.3, 76.2) | Load switch output cap C17 |
 

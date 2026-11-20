@@ -86,6 +86,8 @@ Rejected in favour of C once the user decided the risk was not worth a respin.
 
 **Regulator placement.** On the back between the display socket and the charger: the only free area next to VSYS, and close to the left-edge trunk.
 
+**Input feed.** A 0.5 mm front-layer trace runs about 14 mm from the VSYS trunk beside the load switch (U6) to U11's input via at (12.1, 96.5). It joins the 0.8 mm trunk directly on the front layer at the via at (20.1, 85.55). As first built it tapped VSYS at U6's pin 1 pad on the back through an extra via, so the LED regulator's current passed through the load switch's pad; that was tidied on 2026-11-20 (the extra via and back-layer stub removed) after the owner asked what the trace was for.
+
 ## Consequences to remember
 
 - **Firmware must cap LED brightness.** The regulator can supply roughly 0.8 A when boosting from a low battery; all 26 LEDs at full white would ask for about 1.5 A.
