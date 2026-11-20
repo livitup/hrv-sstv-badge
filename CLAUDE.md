@@ -76,7 +76,7 @@ See `docs/electrical-design.md` for complete audio circuit design and component 
 
 - **Resolution**: 320×240 pixels, landscape orientation
 - **Interface**: SPI (up to 62.5 MHz)
-- **Backlight**: PWM dimming via GPIO + AO3401A P-channel high-side switch (GPIO low = on)
+- **Backlight**: PWM dimming via GPIO + AO3401A P-channel high-side switch (GPIO low = on; off by default via gate pull-up R30)
 - **SD Card**: Standalone SD socket (J10) on main badge, shared SPI bus with display (separate CS pins)
 - **Touch**: None (D-pad navigation)
 

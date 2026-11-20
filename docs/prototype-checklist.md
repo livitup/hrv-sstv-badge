@@ -83,7 +83,7 @@ These check assumptions that are built into the PCB. If one turns out wrong, the
 
 ### Display, camera and controls
 
-- [ ] **Backlight control.** GPIO29 low turns the backlight on, high turns it off, and PWM dims it smoothly. The backlight is expected to be on during reset.
+- [ ] **Backlight control.** GPIO29 low turns the backlight on, high turns it off, and PWM dims it smoothly. The backlight must be fully **off** during reset and in BOOTSEL mode (R30 holds the gate up): hold RUN low or enter BOOTSEL in a dark room and check there is no faint glow. If there is, measure the gate voltage at Q1 and reduce R30.
 - [ ] **Power LED.** Each of red, green and blue lights from its own GPIO (driven low = on), confirming the AAA3528 pin order and orientation. Check brightness balance between the three colours, and that the LED is dark, not faintly glowing, while the MCU is held in reset.
 - [ ] **SD card.** Card initialises and reads/writes reliably (CS, MISO, DAT1 and DAT2 all have 10 kΩ pull-ups). Try several card brands.
 - [ ] **SD card access.** A card can be inserted and removed at the right-hand board edge with the badge assembled, and its outer end sits flush with the edge.

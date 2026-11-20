@@ -22,11 +22,11 @@ gpio_set_outover(PWR_B,   GPIO_OVERRIDE_INVERT);
 
 From then on the rest of the firmware uses normal logic: a PWM duty of 100% means fully on. (`pwm_set_output_polarity()` does the same job at the PWM slice level.) Confirm the call names against the Pico SDK version in use.
 
-Until that code runs — in reset and early boot — the pins are inputs with a weak pull-down, so the backlight is on and the PWR LED channels see a few microamps. Check on the prototype that the PWR LED is not visibly glowing in reset.
+Until that code runs — in reset and early boot — the pins are inputs with a weak pull-down. The backlight stays **off** (R30 pulls Q1's gate up, added 2026-11-20), and the PWR LED channels see a few microamps. Check on the prototype that the PWR LED is not visibly glowing in reset.
 
 ### Backlight PWM is inverted
 
-GPIO29 **low** turns the backlight on. Q1 is a P-channel high-side switch (AO3401A), so brightness is the fraction of the time the pin is low. Use the output-inversion setting above and this stops mattering to the rest of the code.
+GPIO29 **low** turns the backlight on. It is off by default, so firmware must turn it on: initialise the display, draw the first frame, then enable the backlight. That order gives a clean start with no white flash. Q1 is a P-channel high-side switch (AO3401A), so brightness is the fraction of the time the pin is low. Use the output-inversion setting above and this stops mattering to the rest of the code.
 
 - The gate has no pull-up. While the RP2350 is in reset, and until firmware configures GPIO29, the pin's default pull-down holds the gate low and the backlight is **on**. Drive the pin high early in start-up if a dark boot is wanted.
 - Source: schematic review, 2026-11-14 (`main-badge-review-2026-11.md`, section 4).

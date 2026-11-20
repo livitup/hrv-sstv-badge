@@ -118,7 +118,7 @@ The original circuit used a 2N7002 to pull the display module's LED pin to groun
 
 - An N-channel FET cannot switch the high side from a 3.3 V gate, so Q1 became an AO3401A P-channel FET in the same SOT-23 footprint: source to 3.3 V, drain to the LED pin.
 - PWM is inverted: GPIO low = backlight on.
-- No gate pull-up was added. During reset the RP2350's default pull-down holds the gate low, so the backlight is on until firmware takes over. A pull-up to make it default off would cost one resistor; this was left as is.
+- No gate pull-up was added. During reset the RP2350's default pull-down holds the gate low, so the backlight is on until firmware takes over. A pull-up to make it default off would cost one resistor; this was left as is. **Changed 2026-11-20: pull-up added, see section 15.**
 - The pin was not simply tied to 3.3 V, because that would remove dimming and any backlight timeout. The docs contain no decision that the display is always on; `firmware-architecture.md` defines an idle state with the display off.
 
 ### TPS63001 inductor
@@ -436,6 +436,34 @@ SA818 modules vary between batches and sellers. The prototype checklist keeps th
 
 Sources: [NiceRF SA818S specification](https://atta.szlcsc.com/upload/public/pdf/source/20250909/77A4136874318C9FB929E64DC658FE59.pdf), [NiceRF SA818S product page](https://nicerf.com/walkie-talkie-module/1w-embedded-walkie-talkie-module-sa818s.html).
 
+## 15. Backlight now off by default (2026-11-20)
+
+### What the documents said before
+
+Section 4 recorded the missing gate pull-up as a deliberate leave-alone, and `electrical-design.md` and the prototype checklist both described "backlight on during reset" as expected.
+
+### Why change it
+
+With no pull-up, the backlight is fully on whenever firmware is not driving GPIO29:
+
+- at power-up and reset, before the display is initialised, so the screen flashes white;
+- for as long as the badge sits in BOOTSEL mode, at 50–80 mA;
+- after a crash early in start-up.
+
+Sleep was never affected, since firmware sets the pin first. The only thing in favour of leaving it was that a lit screen is a crude sign of life. A clean start on something worn and shown off was judged worth one resistor.
+
+### What was added
+
+R30, 4.7 kΩ 0402, from Q1's gate to 3.3 V. On the board it sits between R11 and Q1 at (2.61, 60.3) on the gate trace, with its own via to the 3.3 V plane at (3.12, 61.15). Q1's silkscreen label moved below the part.
+
+### Why 4.7 kΩ and not 10 kΩ
+
+10 kΩ was the first choice. Against the RP2350's weak pull-down (taken as 50–80 kΩ, from memory of the datasheet) plus R11, a 10 kΩ pull-up leaves the gate about 0.54 V below the source in the worst case. The AO3401A's threshold is 0.5 V minimum, so that has no margin. 4.7 kΩ leaves about 0.28 V. The cost is about 0.6 mA while the backlight is on, against a backlight that draws 50 mA or more.
+
+### Also corrected
+
+The BOM described R11 as a gate pull-down. It is a 1 kΩ resistor in series with the gate.
+
 ---
 
-*Written 2026-11-14; section 10 added 2026-11-17; sections 11 and 12 added 2026-11-18; sections 13 and 14 added 2026-11-20.*
+*Written 2026-11-14; section 10 added 2026-11-17; sections 11 and 12 added 2026-11-18; sections 13 to 15 added 2026-11-20.*

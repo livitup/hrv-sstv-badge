@@ -1,6 +1,6 @@
 # DEFCON SSTV Badge — Bill of Materials
 
-**Version:** 3.10
+**Version:** 3.11
 **Last Updated:** 2026-11-13
 **Source:** KiCad schematic export, verified against `docs/electrical-design.md`
 
@@ -169,7 +169,8 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 | J23 | 1 | 1×3 socket | 2.54mm | User | Support for the display's free end (no electrical connection) |
 | — | 1 | 1×3 male header | 2.54mm | User | Soldered into the first three SD header holes on the display module; plugs into J23 |
 | Q1 | 1 | AO3401A | SOT-23 | Fab | Backlight high-side switch (P-channel) |
-| R11 | 1 | 1kΩ | 0603 | User | Gate pull-down |
+| R11 | 1 | 1kΩ | 0603 | User | Gate series resistor |
+| R30 | 1 | 4.7kΩ | 0402 | Fab | Gate pull-up to 3.3V (backlight off during reset and BOOTSEL) |
 
 **Subtotal:** ~$10.00
 
@@ -370,10 +371,11 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 | 470Ω | 1 | 0603 | TX attenuator (R6) |
 | 27Ω | 2 | 0402 | USB series termination (R20, R21) |
 | 33Ω | 1 | 0402 | RP2350 VREG_AVDD filter (R22) |
-| 1kΩ | 1 | 0603 | Backlight gate (R11) |
+| 1kΩ | 1 | 0603 | Backlight gate series resistor (R11) |
 | 1kΩ | 2 | 0402 | BOOTSEL series resistor (R19), crystal series resistor (R29) |
 | 2kΩ | 1 | 0603 | Charge current PROG1 (R3) |
 | 4.7kΩ | 4 | 0603 | RX filter (R7, R8), I2C pullups (R1, R2) |
+| 4.7kΩ | 1 | 0402 | Backlight gate pull-up (R30) |
 | 5.1kΩ | 2 | 0402 | USB CC (R_CC1, R_CC2) |
 | 10kΩ | 3 | 0603 | Camera RST/PWDN (R12, R13), RUN pullup (R17) |
 | 15kΩ | 1 | 0603 | Pre-charge/termination PROG3 (R4) |
@@ -483,6 +485,7 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 | 3.8 | 2026-11 | **Fuel gauge wiring corrected**: U7 supply moved from VSYS to the battery net (VBAT), its thermistor pin disconnected from the charger's NTC, ALARMB grounded, and C84 (1µF) added at its supply pin. |
 | 3.9 | 2026-11 | **Crystal series resistor R29** (1kΩ, 0402) added between XOUT and Y1, as in the RP2350 hardware design guide. |
 | 3.10 | 2026-11 | **Display module specified**: QDtech / LCDwiki MSP2401 (2.4" ILI9341, no touch). **Display support socket J23** (1×3, no connection) added under the module's SD header position, plus a 1×3 pin header to solder to the module. |
+| 3.11 | 2026-11 | **Backlight gate pull-up R30** (4.7kΩ, 0402) added so the backlight is off until firmware turns it on. R11 description corrected: it is a series gate resistor, not a pull-down. |
 
 ---
 

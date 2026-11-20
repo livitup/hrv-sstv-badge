@@ -1236,12 +1236,12 @@ No workflow requires simultaneous display update and SD access.
 The 14-pin ILI9341 module that J3 is pinned for lights its backlight when the LED pin is driven **high** (tie it to 3.3 V for always-on). To add PWM dimming, a P-channel MOSFET switches 3.3 V onto that pin:
 
 ```
-                    +3V3
-                     │
-                     │ S
-    RP2350      ┌──┤ G   Q1 AO3401A (P-channel, SOT-23)
-    ┌───────┐   │    │ D
-    │  GPIO ├─[1kΩ]  └──────────────────────► Display module LED pin (J3 pin 8)
+                +3V3 ───────┬── +3V3
+                 │          │
+               [4.7kΩ] R30  │ S
+    RP2350       ├───────┤ G   Q1 AO3401A (P-channel, SOT-23)
+    ┌───────┐    │          │ D
+    │  GPIO ├─[1kΩ]         └───────────────► Display module LED pin (J3 pin 8)
     │  (BL) │  R11
     └───────┘
 
@@ -1252,7 +1252,7 @@ The 14-pin ILI9341 module that J3 is pinned for lights its backlight when the LE
 
 **PWM Frequency:** 1-10 kHz (higher = no visible flicker)
 
-**Reset behaviour:** the gate has no pull-up. While the RP2350 is in reset or before firmware configures GPIO29, the pin's default pull-down holds the gate low, so the backlight is on. Firmware turns it off by driving GPIO29 high.
+**Reset behaviour:** R30 (4.7kΩ) pulls the gate up to 3.3V, so the backlight is **off** while the RP2350 is in reset, in BOOTSEL mode, or before firmware configures GPIO29. Firmware turns it on by driving GPIO29 low, after it has drawn the first frame. R30 is 4.7kΩ rather than 10kΩ so that it clearly beats the RP2350's weak pull-down on the pin: with a pull-down of 50kΩ the gate sits about 0.3V below the source, under the AO3401A's 0.5V minimum threshold. (The 50–80kΩ pull-down figure is from memory of the RP2350 datasheet, not re-read; the prototype checklist covers it.) With the backlight on, R30 draws about 0.6mA; with it off, nothing.
 
 **Note:** An earlier revision used a 2N7002 switching the LED pin to ground. That assumed the LED pin was the backlight cathode, which is wrong for this module (found in the 2026-11-14 schematic review). A module whose pin is the cathode would need the old low-side circuit instead.
 
@@ -1322,7 +1322,8 @@ The 14-pin ILI9341 module that J3 is pinned for lights its backlight when the LE
 | J23 | 1×3 socket | 2.54mm | User | Support for the display's free end; no electrical connection |
 | — | 1×3 pin header | 2.54mm | User | Soldered to the module's SD header position (pins SD_CS, SD_MOSI, SD_MISO) to plug into J23 |
 | Q_BL (Q1) | AO3401A | SOT-23 | Fab | Backlight high-side P-MOSFET |
-| R_BL | 1kΩ | 0603 | User | Gate resistor |
+| R_BL (R11) | 1kΩ | 0603 | User | Gate series resistor |
+| R30 | 4.7kΩ | 0402 | Fab | Gate pull-up to 3.3V: backlight off until firmware turns it on |
 
 **Cost:** ~$8-12 for module + ~$0.10 for MOSFET/resistor
 
