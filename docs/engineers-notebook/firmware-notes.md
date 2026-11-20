@@ -70,9 +70,63 @@ The LC709203F (U7) has no thermistor. Its TSW and TSENSE pins are unconnected, w
 
 R25 (10 kΩ) holds SD_CS high while the RP2350 is in reset, so the card stays deselected until firmware drives the pin. MISO has a 10 kΩ pull-up (R26) as well, and the card's unused DAT1 and DAT2 pins are pulled up on the board (R27, R28). The display's chip select (GPIO5) has no pull-up; drive it high early in start-up before touching the shared SPI bus.
 
-### Band ID reads as VHF when the radio is off
+### ⚠️ MUST IMPLEMENT: carrier detection by reading the ID pin twice (decided 2026-11-20)
 
-The UHF carrier's ID pull-up goes to the switched radio supply. Read GPIO39 only after the load switch is on. The scheme cannot yet tell "no carrier" from "VHF"; a hardware change is under discussion.
+**This is required firmware, not a nice-to-have.** Without it the badge cannot tell an empty carrier socket from a VHF carrier. No hardware will be changed to help; the decision was to solve this in code.
+
+**The hardware.** GPIO39 (SA818_ID) goes to one resistor on the carrier:
+
+- VHF carrier: 0 Ω to ground.
+- UHF carrier: 10 kΩ pull-up to the radio supply, which only exists while the load switch is on.
+- No carrier: the pin floats.
+
+**The method.** With the radio supply on, read the pin once with the internal pull-down and once with the internal pull-up:
+
+| Pull-down read | Pull-up read | Meaning |
+|---|---|---|
+| low | low | VHF carrier |
+| high | high | UHF carrier |
+| low | high | No carrier (the pin follows whichever pull is on) |
+| high | low | Not possible; treat as a fault |
+
+```c
+typedef enum { CARRIER_NONE, CARRIER_VHF, CARRIER_UHF, CARRIER_FAULT } carrier_t;
+
+// Call only with the radio supply on (SA818_PD high) and settled.
+carrier_t carrier_detect(void) {
+    gpio_init(SA818_ID);
+    gpio_set_dir(SA818_ID, GPIO_IN);
+
+    gpio_pull_down(SA818_ID);
+    sleep_ms(2);
+    bool with_down = gpio_get(SA818_ID);
+
+    gpio_pull_up(SA818_ID);
+    sleep_ms(2);
+    bool with_up = gpio_get(SA818_ID);
+
+    gpio_pull_down(SA818_ID);            // leave it defined
+
+    if (!with_down && !with_up) return CARRIER_VHF;
+    if ( with_down &&  with_up) return CARRIER_UHF;
+    if (!with_down &&  with_up) return CARRIER_NONE;
+    return CARRIER_FAULT;
+}
+```
+
+Call names are from the Pico SDK as remembered; confirm against the SDK version in use. The 2 ms waits are a starting value.
+
+**Rules that go with it:**
+
+1. **Power first.** Raise GPIO34, wait for the radio supply to settle, then detect. With the supply off, the UHF pull-up is tied to a dead rail that sits near ground, so a UHF carrier is expected to read low/low — the same as VHF. A reading taken with the radio off must never be used.
+2. **Detect every time the radio is powered up**, not just at boot. A carrier can be swapped while the badge is in airplane mode or asleep.
+3. **Do nothing on the radio until detection has run.** Frequency limits, the band shown on screen and transmit permission all depend on it.
+4. **No carrier means no radio.** Turn the supply back off, disable transmit and receive, and show it on screen.
+5. **Cross-check over the serial link.** A fitted SA818 answers `AT+DMOCONNECT`. If the ID says a carrier is there and the module does not answer, or the reverse, report a fault rather than guessing. Whether the module also rejects out-of-band frequencies is to be confirmed on a real one.
+
+**Why not hardware.** Both carriers and the main badge are finished, and the method above separates all three states with what is already there. The only thing given up is identifying the carrier with the radio off, which nothing needs. Reasoning and the alternatives are in `main-badge-review-2026-11.md`, section 13.
+
+- The UHF pull-up can sit near 5 V with USB connected. Raspberry Pi states that digital-only pins tolerate 5 V while the chip's I/O supply is on; GPIO39 is digital-only, but this has not been checked against the datasheet's pin table. The current through 10 kΩ is about 0.15 mA in the worst case. On the prototype checklist.
 
 ---
 

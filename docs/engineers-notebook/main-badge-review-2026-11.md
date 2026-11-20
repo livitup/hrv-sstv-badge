@@ -140,7 +140,7 @@ Flash, USB (CC resistors, ESD, series resistors), SAO, Tag-Connect, SD card SPI 
 | Fuel gauge supply | U7 was on VSYS, which sits near 5 V with USB connected, so it read the wrong voltage then. Fixed; see section 10. |
 | Fuel gauge thermistor | Was shared with the charger. Now disconnected; the gauge uses I2C temperature mode. See section 10. |
 | Crystal series resistor | The RP2350 guide uses 1 kΩ; the board had none. Added as R29; see section 11. |
-| Band ID | The UHF pull-up goes to the switched radio supply, so it reads as VHF when the radio is off. A scheme that separates no board / VHF / UHF is still to be discussed. |
+| Band ID | The UHF pull-up goes to the switched radio supply, so it reads as VHF when the radio is off. Settled in firmware, no hardware change; see section 13. |
 | SD card pull-ups | DAT1, DAT2, MISO and CS had none. CS and MISO added afterwards; see section 8. |
 | VBUS capacitance | About 25 µF, above the 10 µF USB inrush limit. Reduced to about 7.9 µF afterwards; see section 8. |
 | Camera XCLK | Closed: the module must have its own oscillator. See section 2. |
@@ -378,6 +378,37 @@ No module was in hand. The numbers come from the manufacturer's drawing (toleran
 
 Sources: [MSP2402/MSP2401 user manual](https://www.lcdwiki.com/res/MSP2402/2.4inch_SPI_Module_MSP2402_User_Manual_EN.pdf), [MSP2401 dimension drawing](https://www.lcdwiki.com/res/MSP2402/MSP2401_Size_QD.pdf).
 
+## 13. Band ID: solved in firmware, hardware unchanged (2026-11-20)
+
+### What the documents said before
+
+- Each carrier has one resistor on the ID pin: 0 Ω to ground (VHF) or 10 kΩ to the radio supply (UHF), read on GPIO39.
+- `electrical-design.md` listed "no module" as reading low, the same as VHF, to be caught by a UART timeout.
+- `carrier-rewiring-checklist.md` added the UHF pull-up and noted the pin is only valid once the radio supply is on.
+- Section 5 of this review and the firmware notes both left "a scheme that separates no board / VHF / UHF" open, with a hardware change under discussion.
+
+### Two problems, two causes
+
+1. **Radio off looks like VHF.** The UHF pull-up is fed from the radio supply. That supply comes from the battery through the TPS22919 load switch, which GPIO34 turns on — the radio is not permanently powered. With the switch off there is nothing to pull the pin high.
+2. **No carrier looks like VHF.** A grounded pin and a floating pin with a pull-down both read low. This has nothing to do with power.
+
+### Options considered
+
+- **A. Firmware only.** With the radio on, read the pin with the internal pull-down, then with the internal pull-up. VHF reads low/low, UHF high/high, an empty socket low/high. Fixes problem 2 completely. Problem 1 becomes a rule: power the radio before reading.
+- **B. Move the ID line to GPIO46** (analogue-capable, spare) and make the UHF resistor about 100 kΩ to ground. Three voltage levels, readable with the radio off, room for more bands. Costs a re-routed trace on the main badge and a change to the UHF carrier.
+- **C. Capacitor on the UHF carrier** in place of the pull-up; firmware times the discharge. Works with the radio off and leaves the main badge alone, but is the fiddliest to get right in code.
+
+### Decision: A
+
+The carrier is fitted but unpowered in three situations — before firmware starts the radio, in airplane mode, and in sleep — and in none of them does the badge need to know the band. It matters only when the radio is about to be used, and then it is powered. So the one thing A gives up costs nothing, and both boards stay as they are.
+
+B remains the better design if a third band or detection without radio power is ever wanted.
+
+### Consequences
+
+- This is now required firmware. `firmware-notes.md` carries the method, a reference implementation and the rules (detect on every radio power-up; no radio activity before detection; cross-check with the serial handshake).
+- The UHF pull-up can reach about 5 V with USB connected. Expected to be within what a digital-only RP2350 pin tolerates, but not confirmed from the datasheet's pin table; a prototype check was added.
+
 ---
 
-*Written 2026-11-14; section 10 added 2026-11-17; sections 11 and 12 added 2026-11-18.*
+*Written 2026-11-14; section 10 added 2026-11-17; sections 11 and 12 added 2026-11-18; section 13 added 2026-11-20.*

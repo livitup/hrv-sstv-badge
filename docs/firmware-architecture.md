@@ -863,6 +863,10 @@ int sa818_enable_tx(bool enable);
 int sa818_get_status(sa818_status_t* status);
 ```
 
+### Carrier and Band Detection (required)
+
+The radio layer must work out which carrier is fitted — none, VHF or UHF — each time it powers the radio up, before setting any frequency. The ID pin (GPIO39) is read twice, once with the internal pull-down and once with the internal pull-up; the method, a reference implementation and the rules around it are in `engineers-notebook/firmware-notes.md` ("MUST IMPLEMENT: carrier detection"). `radio_init()` must not configure the SA818 until this has run.
+
 ### Frequency Management
 ```c
 typedef struct {

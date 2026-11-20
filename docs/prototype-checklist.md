@@ -78,7 +78,7 @@ These check assumptions that are built into the PCB. If one turns out wrong, the
 
 - [ ] **Harmonic filter tuning.** Tune both carriers' low-pass filters on a NanoVNA and lock the BOM values. Procedure: `engineers-notebook/harmonic-filter-design.md`, "Validation Strategy".
 - [ ] **Harmonic levels.** Confirm 2nd and 3rd harmonics with a real SA818 at full power, through at least 30 dB of attenuation.
-- [ ] **Band ID.** GPIO39 reads low on the VHF carrier and high on the UHF carrier once the radio is powered. Note what it reads with no carrier fitted and with the radio off.
+- [ ] **Band ID.** With the radio supply on, read GPIO39 with the internal pull-down and then the internal pull-up. Expect low/low on the VHF carrier, high/high on the UHF carrier, and low/high with no carrier. Repeat with the radio supply off and note the readings (UHF is expected to look like VHF then, which is why firmware must only read with the supply on). With USB connected and the UHF carrier fitted, measure the voltage on GPIO39; it should not exceed what the RP2350 datasheet allows for that pin.
 
 ### Display, camera and controls
 

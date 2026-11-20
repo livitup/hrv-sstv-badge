@@ -987,15 +987,15 @@ All pins connected to GND for RF shielding and mechanical stability.
 
 Instead of a DIP switch, the carrier includes a band ID resistor:
 
-| Module | ID Pin State | Implementation |
-|--------|--------------|----------------|
-| SA818-V (VHF) | LOW | 0Ω resistor to GND on carrier |
-| SA818-U (UHF) | HIGH | 10kΩ pull-up (R18) to SA818 VCC on carrier |
-| No module | LOW | MCU internal pulldown; same reading as VHF, so detect via UART timeout |
+| Module | Carrier wiring | Read with internal pull-down | Read with internal pull-up |
+|--------|----------------|------------------------------|----------------------------|
+| SA818-V (VHF) | 0Ω resistor (R18) to GND | LOW | LOW |
+| SA818-U (UHF) | 10kΩ pull-up (R18) to SA818 VCC | HIGH | HIGH |
+| No carrier | Pin floats | LOW | HIGH |
 
-Firmware reads ID pin on startup and configures frequency limits accordingly.
+Firmware reads the ID pin **twice**, once with each internal pull, every time it powers the radio up, and sets the frequency limits from the result. A single read cannot tell "no carrier" from VHF; the two reads can. (Decided 2026-11-20; no hardware change. An earlier revision of this table relied on a UART timeout to spot a missing carrier — that is now the cross-check, not the method.)
 
-> **Firmware note:** the UHF pull-up is fed from SA818 VCC, which is switched by the TPS22919 load switch. The ID pin only reads HIGH while the carrier is powered, so enable SA818 power before sampling it.
+> **Firmware note:** the UHF pull-up is fed from SA818 VCC, which is switched by the TPS22919 load switch (enabled by GPIO34). Turn the radio supply on and let it settle before reading. With the supply off, the pull-up hangs on a dead rail near ground and a UHF carrier is expected to read the same as VHF, so a reading taken then must not be used. See `engineers-notebook/firmware-notes.md` for the required code.
 
 ### RF Section (On Carrier)
 
@@ -1153,7 +1153,7 @@ This dramatically simplifies the main board design. A 2-layer PCB may be feasibl
 | 4 | SQ | RP2350 GPIO (SA818_SQ) |
 | 5 | TXD | RP2350 UART TX (SA818_TX) |
 | 6 | RXD | RP2350 UART RX (SA818_RX) |
-| 7 | ID | RP2350 GPIO (SA818_ID, with internal pulldown) |
+| 7 | ID | RP2350 GPIO39 (SA818_ID; read with internal pull-down, then pull-up) |
 | 8 | GND | Ground plane |
 
 **J3, J4 Sockets (1x3 each) — Mechanical:**

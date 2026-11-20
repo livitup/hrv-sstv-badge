@@ -84,7 +84,7 @@ This document tracks the design and implementation status for all badge subsyste
 - [x] Carrier board architecture designed (full-width overlay, front-mounted)
 - [x] 4-point mounting defined (2× 1x8 signal + 2× 1x3 mechanical)
 - [x] Header pinouts defined (J14/J18: Power/Audio, J15/J20: Control/Data) and matched to the locked main badge J7/J8
-- [x] Band auto-detection via ID resistor (R18: 0Ω to GND = VHF, 10kΩ pull-up to SA818 VCC = UHF)
+- [x] Band auto-detection via ID resistor (R18: 0Ω to GND = VHF, 10kΩ pull-up to SA818 VCC = UHF); "no carrier" told apart in firmware by reading the pin with pull-down then pull-up (decided 2026-11-20)
 - [x] RF section on carrier only (main board has no RF)
 - [x] Mechanical headers (J16/J17, J21/J22) connected to GND for RF shielding
 - [x] **KiCad: VHF carrier schematic complete** (U9 SA818V, J13-J17, C54-C55, R18, LPF C58-C63 + L3-L5)
@@ -223,7 +223,7 @@ This document tracks the design and implementation status for all badge subsyste
 - [x] Ground pour
 - [x] DRC clean-up — 0 unconnected, 0 schematic-parity issues; only the excluded silkscreen items remain
 - [x] **Design review fixes (2026-11-13)** — see "Main Badge Review" below
-- [ ] Open questions from the reviews: radio supply drop and TPS22919 rating vs TX current, band-ID scheme (crystal series resistor R29 added 2026-11-18), SD card pull-ups, VBUS capacitance — see `engineers-notebook/main-badge-review-2026-11.md`
+- [ ] Open questions from the reviews: radio supply drop and TPS22919 rating vs TX current (crystal series resistor R29 added 2026-11-18; band ID settled in firmware 2026-11-20), SD card pull-ups, VBUS capacitance — see `engineers-notebook/main-badge-review-2026-11.md`
 - [x] **Smaller review items worked through (2026-11-14)**: VBUS capacitance under 10µF, SD card pull-ups, six power test pads, BOOTSEL resistor moved closer, 1.1V links widened — see `engineers-notebook/main-badge-review-2026-11.md` section 8
 - [x] **SD card socket turned to face the board edge (2026-11-14)** — the card now sits flush with the right-hand edge; all four SD pull-ups fitted
 - [ ] Not done: third DVDD cap at U1 pin 32 (no room)
