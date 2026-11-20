@@ -42047,6 +42047,30 @@
 			(justify mirror)
 		)
 	)
+	(gr_text "+"
+		(at 25.8 70.3 0)
+		(layer "B.SilkS")
+		(uuid "ada15b09-e118-40c9-9d32-f43b85f5abd8")
+		(effects
+			(font
+				(size 1.2 1.2)
+				(thickness 0.2)
+			)
+			(justify mirror)
+		)
+	)
+	(gr_text "-"
+		(at 27.8 70.3 0)
+		(layer "B.SilkS")
+		(uuid "2ac4fd27-3d1f-45c9-8786-9cdb4dc8267b")
+		(effects
+			(font
+				(size 1.2 1.2)
+				(thickness 0.2)
+			)
+			(justify mirror)
+		)
+	)
 	(segment
 		(start 60.6 39.13049)
 		(end 60.236985 38.767475)

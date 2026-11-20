@@ -509,6 +509,8 @@ The gauge works by measuring its own supply pin, so **VDD must be the battery it
 
 **Why surface-mount:** J1 sits on the back of the board inside the display area. A through-hole connector there put battery positive and ground pins, 2 mm apart, through to the front directly behind the display module. The SMD part leaves nothing on the front. It is side-entry: the plug lies flat against the back of the board and enters from the top-of-board side. See `engineers-notebook/main-badge-review-2026-11.md`, section 7.
 
+**Polarity:** J1 pin 1 is battery positive, which is the SparkFun/Adafruit JST-PH wiring. "+" and "−" are marked on the back silkscreen above the connector opening (added 2026-11-20). Seen from the back with the board's top edge up, positive is on the right. Many generic battery packs are wired the other way; see the battery polarity item in `prototype-checklist.md` for how to check a pack before plugging it in.
+
 ### Thermistor Placement
 
 The NTC thermistor should be placed:
