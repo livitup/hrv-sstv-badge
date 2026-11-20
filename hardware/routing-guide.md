@@ -297,7 +297,7 @@ VBAT────┤        ├──VIN  SW├──┤      ├──VOUT──
 
 - C17 (100µF 1206) close to output — this is a big cap, plan board space
 - C18 (10µF) also close to output
-- Route output to J7 pin 1 with wide trace (0.5mm minimum, 1mm preferred for 1.7A TX peaks)
+- Route output to J7 pin 1 with wide trace (0.5mm minimum, 1mm preferred; TX current is up to 0.75A)
 
 ### MCP73871 (U4) — Battery Charger
 

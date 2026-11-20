@@ -54,7 +54,8 @@ These check assumptions that are built into the PCB. If one turns out wrong, the
 ### Power
 
 - [ ] **Rail voltages at the test pads.** TP1 GND, TP2 +3V3, TP3 VBUS, TP4 VSYS, TP5 VLED, TP6 SA818_VCC (positions in `electrical-design.md`, "Power Test Pads").
-- [ ] **Real SA818 transmit current.** Measure battery current during high-power TX. The docs assume 1.7 A; the load switch (TPS22919) is rated 1.5 A, and the charger's battery switch plus the load switch lose about 0.3 V per amp. This measurement decides whether the radio supply path needs a redesign.
+- [ ] **Real SA818 transmit current.** Measure battery current during high-power and low-power TX on both carriers. The SA818S datasheet gives 650 mA typical / 750 mA maximum at high power and 450 / 550 mA at low power; the load switch (TPS22919) is rated 1.5 A. If a module draws much more than 750 mA, revisit section 14 of `engineers-notebook/main-badge-review-2026-11.md`.
+- [ ] **Transmit at low battery.** Measure SA818_VCC (TP6) during high-power TX as the battery runs down, and note the battery voltage at which transmit power sags or the module drops out (its minimum supply is 3.3 V; the path from the cell loses about 0.22 V at 0.75 A). Use the result to set a firmware "battery too low to transmit" threshold.
 - [ ] **SA818 supply voltage during TX.** Measure the voltage at the carrier's VCC pin while transmitting on a part-discharged battery (about 3.6 V). The SA818 needs at least 3.5 V.
 - [ ] **Battery trace temperature.** After a two-minute transmission, check the battery trace and the charger (U4) for heating.
 - [ ] **Fuel gauge readings.** Read the LC709203F's cell voltage with and without USB plugged in and compare with a meter on the battery connector. They should agree within a few tens of millivolts in both cases, now that the gauge is powered from the battery net. Check that state of charge moves sensibly through a charge and a discharge.

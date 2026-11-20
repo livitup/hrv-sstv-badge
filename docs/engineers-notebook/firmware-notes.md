@@ -130,6 +130,14 @@ Call names are from the Pico SDK as remembered; confirm against the SDK version 
 
 ---
 
+### Block transmit when the battery is too low
+
+The SA818 needs at least 3.3 V and the path from the cell loses about 0.22 V at full transmit current. Near the end of the battery, transmit power sags or the module drops out. Firmware should refuse to transmit below a battery-voltage threshold and say why on screen. The threshold comes from the prototype test "Transmit at low battery" in `docs/prototype-checklist.md`.
+
+- Source: radio supply review, 2026-11-20 (`main-badge-review-2026-11.md` section 14).
+
+---
+
 ## Already designed — do not re-decide
 
 ### The PWR LED also shows transmit and receive (decided 2026-11-14)

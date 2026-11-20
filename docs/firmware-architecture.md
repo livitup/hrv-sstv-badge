@@ -663,7 +663,7 @@ int debug_get_system_health(system_health_t* health);
 | Active (no TX) | 200mA | 10 hours |
 | Idle | 100mA | 20 hours |
 | Sleep | 10mA | 200 hours |
-| Transmitting | 1.7A | 1.2 hours continuous |
+| Transmitting | ~0.9A (radio 0.65–0.75A + system ~200mA) | ~2 hours continuous |
 
 ---
 

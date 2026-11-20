@@ -136,7 +136,7 @@ Flash, USB (CC resistors, ESD, series resistors), SAO, Tag-Connect, SD card SPI 
 | Question | What is known |
 |---|---|
 | WS2812B supply voltage | The 2020 datasheet specifies 3.7–5.3 V; the LEDs ran from 3.3 V. **Resolved after this review** by a dedicated 4.0 V LED rail — see `led-supply-rail.md`. |
-| Radio supply drop | Charger battery switch is 200 mΩ typical, load switch 90 mΩ, and the TPS22919 is rated 1.5 A. The real SA818 transmit current decides whether this matters. |
+| Radio supply drop | Charger battery switch is 200 mΩ typical, load switch 90 mΩ, and the TPS22919 is rated 1.5 A. The real SA818 transmit current decides whether this matters. Closed with no hardware change; see section 14. |
 | Fuel gauge supply | U7 was on VSYS, which sits near 5 V with USB connected, so it read the wrong voltage then. Fixed; see section 10. |
 | Fuel gauge thermistor | Was shared with the charger. Now disconnected; the gauge uses I2C temperature mode. See section 10. |
 | Crystal series resistor | The RP2350 guide uses 1 kΩ; the board had none. Added as R29; see section 11. |
@@ -409,6 +409,33 @@ B remains the better design if a third band or detection without radio power is 
 - This is now required firmware. `firmware-notes.md` carries the method, a reference implementation and the rules (detect on every radio power-up; no radio activity before detection; cross-check with the serial handshake).
 - The UHF pull-up can reach about 5 V with USB connected. Expected to be within what a digital-only RP2350 pin tolerates, but not confirmed from the datasheet's pin table; a prototype check was added.
 
+## 14. Radio supply drop and load switch rating: no change (2026-11-20)
+
+### What the documents said before
+
+The SA818's transmit current was given as 1.7 A (or "1.5–1.7 A") in `CLAUDE.md`, `electrical-design.md`, `electrical-design-decisions.md`, the routing guide and the firmware battery-life table. None of them cites a source. On that number, this review flagged that the TPS22919 load switch is rated 1.5 A and that the path from battery to radio would lose about 0.5 V.
+
+### What the datasheet says
+
+NiceRF's SA818S specification: transmit current 650 mA typical / 750 mA maximum at high power (1 W), 450 / 550 mA at low power (0.5 W), receive 60 mA; supply 3.3 V minimum, 4.2 V typical, 5.5 V maximum. These were read from search-result excerpts of the specification and the manufacturer's product page, which agree; the PDF itself was not opened. No SA818 source giving 1.7 A was found. NiceRF's higher-power SA818Pro is listed at 1.0 A maximum.
+
+### What follows
+
+- **Load switch:** 0.75 A against a 1.5 A rating. No change.
+- **Drop:** 200 mΩ (charger battery switch) + 90 mΩ (load switch) at 0.75 A is about 0.22 V. With the cell at about 3.5 V under load the radio is at its 3.3 V minimum, so transmit sags or stops near the end of the battery. Accepted: it costs the last few percent of charge. A firmware low-battery transmit lockout is the tidy way to handle it, with the threshold taken from a prototype measurement.
+- **On USB:** the radio rail sits near 5 V, inside the 5.5 V maximum.
+- The 2.0 mm SA818_VCC path added in section 3 stays; it is more than needed and costs nothing.
+
+### Decision
+
+No hardware change. The documents were corrected to the datasheet figures, including the transmit battery life (about 2 hours continuous rather than 1.2). The original reason for taking the radio off the 3.3 V rail still holds: with the rest of the badge, the load would still have exceeded the old 1 A regulator.
+
+### Still to do
+
+SA818 modules vary between batches and sellers. The prototype checklist keeps the transmit-current measurement and adds a low-battery transmit test.
+
+Sources: [NiceRF SA818S specification](https://atta.szlcsc.com/upload/public/pdf/source/20250909/77A4136874318C9FB929E64DC658FE59.pdf), [NiceRF SA818S product page](https://nicerf.com/walkie-talkie-module/1w-embedded-walkie-talkie-module-sa818s.html).
+
 ---
 
-*Written 2026-11-14; section 10 added 2026-11-17; sections 11 and 12 added 2026-11-18; section 13 added 2026-11-20.*
+*Written 2026-11-14; section 10 added 2026-11-17; sections 11 and 12 added 2026-11-18; sections 13 and 14 added 2026-11-20.*

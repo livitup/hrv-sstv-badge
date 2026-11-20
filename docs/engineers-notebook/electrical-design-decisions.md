@@ -15,7 +15,7 @@ The original design used an AMS1117-3.3 LDO to regulate the LiPo battery down to
 | **Dropout voltage** | AMS1117 requires ~1.2V headroom (needs 4.5V+ input for 3.3V output) |
 | **LiPo voltage range** | 4.2V (full) → 3.7V (nominal) → 3.0V (empty) |
 | **Result** | Regulator falls out of regulation before battery is half depleted |
-| **Current rating** | AMS1117 rated 1A max; SA818 TX peaks at 1.7A |
+| **Current rating** | AMS1117 rated 1A max; SA818 TX was taken as 1.7A at the time (datasheet figure is 0.75A max — corrected 2026-11-20, see `main-badge-review-2026-11.md` section 14). The radio plus the rest of the badge would still have exceeded 1A. |
 | **Thermal** | LDO dissipates (Vin-Vout)*I as heat — no thermal solution specified |
 
 The key insight: **Don't run the SA818 through the main 3.3V regulator.** The SA818 module has its own internal regulation and accepts 3.5V-5.5V input directly. Running it from the LiPo (which stays in that range until nearly depleted) means the main 3.3V rail only needs to handle ~250-400mA.

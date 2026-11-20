@@ -10,7 +10,7 @@ This document describes the electrical design of the DEFCON SSTV Badge, includin
 
 ### Architecture
 
-The SA818 runs directly from the LiPo battery (via load switch), not through the 3.3V regulator. This separates the 1.7A TX current spikes from the main digital rail.
+The SA818 runs directly from the LiPo battery (via load switch), not through the 3.3V regulator. This separates the radio's TX current (0.65A typical, 0.75A maximum) from the main digital rail.
 
 The 26 WS2812B LEDs have their own 4.0V rail (VLED) from a second buck-boost converter, U11 (TPS63000), fed from the same VSYS node as the 3.3V regulator and the load switch. It is not shown in the diagram below; see "LED Supply Rail".
 
@@ -65,9 +65,13 @@ The 26 WS2812B LEDs have their own 4.0V rail (VLED) from a second buck-boost con
 
 | Mode | Current |
 |------|---------|
-| Standby | ~20mA |
-| RX active | ~50mA |
-| TX (1W) | ~1.5-1.7A |
+| RX | 60mA |
+| TX, low power (0.5W) | 450mA typical, 550mA maximum |
+| TX, high power (1W) | 650mA typical, 750mA maximum |
+
+Figures from the NiceRF SA818S specification (supply 3.3V minimum, 4.2V typical, 5.5V maximum). Earlier revisions of this document gave 1.5–1.7A for TX; no source for that figure could be found and it was corrected on 2026-11-20. SA818 modules vary between batches, so the real current is measured on the prototype (`prototype-checklist.md`).
+
+**Radio supply path:** battery → MCP73871 battery switch (200mΩ typical) → TPS22919 (90mΩ typical) → J7 → carrier. At 0.75A that is about 0.22V lost in the two switches, plus a little in traces and the header. With the cell near 3.5V under load the radio sees about its 3.3V minimum, so transmit power sags at the end of the battery.
 
 ---
 
@@ -163,7 +167,7 @@ See `engineers-notebook/led-supply-rail.md` for the options that were compared.
 
 The TPS22919 load switch provides:
 - MCU control over SA818 power (airplane mode, sleep)
-- Isolation of 1.7A TX current spikes from main rail
+- Isolation of the radio's TX current (up to 0.75A) from the main rail
 - Clean power sequencing
 
 ### TPS22919 Specifications
@@ -171,7 +175,7 @@ The TPS22919 load switch provides:
 | Parameter | Value |
 |-----------|-------|
 | Input voltage | 1.0V - 5.5V |
-| Continuous current | 1.5A |
+| Continuous current | 1.5A (twice the SA818's 0.75A maximum TX current) |
 | Peak current | 3A |
 | On resistance | 90mΩ typical |
 | Package | SOT-23-5 |

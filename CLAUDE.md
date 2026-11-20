@@ -15,14 +15,14 @@ This is an open-source SSTV (Slow Scan Television) badge for DEFCON and the badg
 
 ## Power System Architecture
 
-**Key Design Decision:** The SA818 runs directly from the LiPo battery (via load switch), NOT through the 3.3V regulator. This separates the 1.7A TX current spikes from the main digital rail.
+**Key Design Decision:** The SA818 runs directly from the LiPo battery (via load switch), NOT through the 3.3V regulator. This separates the radio's TX current (0.65A typical, 0.75A max per the SA818S datasheet) from the main digital rail.
 
 ```
 LiPo (3.0-4.2V) ──┬──► TPS63001 (buck-boost) ──► 3.3V Rail (RP2350, display, etc.)
                   │
                   ├──► TPS63000 (buck-boost) ──► 4.0V VLED Rail (26× WS2812B)
                   │
-                  └──► TPS22919 (load switch) ──► SA818 (3.5-5.5V direct)
+                  └──► TPS22919 (load switch) ──► SA818 (3.3-5.5V direct)
 ```
 
 **Components:**
@@ -228,7 +228,7 @@ defcon-sstv-badge/
 - **Main badge review (2026-11-13)**: charger wiring errors fixed (OUT→VSYS, IN→VBUS), radio supply path widened (2.0mm SA818_VCC path on the PWR layer), USB 27Ω and BOOTSEL 1kΩ resistors and extra decoupling added — see `docs/project-status.md`
 - **Schematic review (2026-11-14)**: border LED pinout (wrong symbol for the 2020 package), TX attenuator wiring, backlight switch polarity (now AO3401A high-side, GPIO low = on) and L1 value (2.2µH) fixed in schematic and PCB — see `docs/engineers-notebook/main-badge-review-2026-11.md`
 - **LED supply rail (2026-11-14)**: WS2812Bs moved from 3.3V to a dedicated 4.0V rail (U11 TPS63000, VLED on the inner power layer) — see `docs/engineers-notebook/led-supply-rail.md`
-- **Open before fab**: visual review of the reworked main badge; open design questions (radio supply drop / load switch rating); LPF prototype tuning
+- **Open before fab**: visual review of the reworked main badge; LPF prototype tuning; the pre-fab checks in `docs/prototype-checklist.md`
 - **Documentation**: Comprehensive technical docs, power/RF design documented
 - **Project structure**: Professional repository setup
 - **Firmware development**: Not started
