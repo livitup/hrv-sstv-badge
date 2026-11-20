@@ -39,7 +39,9 @@ A through-hole pad connects to every copper layer it passes through, so a ground
 
 The main badge has no XCLK net and J4 has no XCLK pin. Rather than reopen the routed board at that point, the requirement was documented loudly: **the OV2640 module must have its own oscillator** (callout in `electrical-design.md`, notes in both BOMs and `CLAUDE.md`).
 
-Adding XCLK to the badge (J4 pin 18 is unconnected, GPIO46/47 are spare) is still an open discussion item. It would remove the dependency on one kind of module.
+Adding XCLK to the badge (J4 pin 18 is unconnected, GPIO46/47 are spare) was left as an open discussion item. It would remove the dependency on one kind of module.
+
+**Closed 2026-11-18:** no clock line will be added. A line that firmware could either drive or leave floating would serve both kinds of module, but only if a clock-less module has its clock input on J4 pin 18, and J4 was not laid out against such a module. The documented requirement stands: the camera module must have its own oscillator.
 
 ---
 
@@ -141,7 +143,7 @@ Flash, USB (CC resistors, ESD, series resistors), SAO, Tag-Connect, SD card SPI 
 | Band ID | The UHF pull-up goes to the switched radio supply, so it reads as VHF when the radio is off. A scheme that separates no board / VHF / UHF is still to be discussed. |
 | SD card pull-ups | DAT1, DAT2, MISO and CS had none. CS and MISO added afterwards; see section 8. |
 | VBUS capacitance | About 25 µF, above the 10 µF USB inrush limit. Reduced to about 7.9 µF afterwards; see section 8. |
-| Camera XCLK | See section 2. |
+| Camera XCLK | Closed: the module must have its own oscillator. See section 2. |
 | Parts not verifiable on paper | Camera module pinout against J4; battery connector polarity; APFA3010 pad numbering (moot once D1 was changed; see section 9). |
 
 ---

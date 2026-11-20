@@ -223,7 +223,7 @@ This document tracks the design and implementation status for all badge subsyste
 - [x] Ground pour
 - [x] DRC clean-up — 0 unconnected, 0 schematic-parity issues; only the excluded silkscreen items remain
 - [x] **Design review fixes (2026-11-13)** — see "Main Badge Review" below
-- [ ] Open questions from the reviews: radio supply drop and TPS22919 rating vs TX current, band-ID scheme (crystal series resistor R29 added 2026-11-18), SD card pull-ups, VBUS capacitance, camera XCLK — see `engineers-notebook/main-badge-review-2026-11.md`
+- [ ] Open questions from the reviews: radio supply drop and TPS22919 rating vs TX current, band-ID scheme (crystal series resistor R29 added 2026-11-18), SD card pull-ups, VBUS capacitance — see `engineers-notebook/main-badge-review-2026-11.md`
 - [x] **Smaller review items worked through (2026-11-14)**: VBUS capacitance under 10µF, SD card pull-ups, six power test pads, BOOTSEL resistor moved closer, 1.1V links widened — see `engineers-notebook/main-badge-review-2026-11.md` section 8
 - [x] **SD card socket turned to face the board edge (2026-11-14)** — the card now sits flush with the right-hand edge; all four SD pull-ups fitted
 - [ ] Not done: third DVDD cap at U1 pin 32 (no room)
