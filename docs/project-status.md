@@ -1,6 +1,6 @@
 # Project Status — DEFCON SSTV Badge
 
-**Last Updated:** 2026-11-14
+**Last Updated:** 2026-11-21
 
 This document tracks the design and implementation status for all badge subsystems.
 
@@ -92,7 +92,7 @@ This document tracks the design and implementation status for all badge subsyste
 - [x] **Harmonic LPF designed** (7-pole Chebyshev, discrete; see `engineers-notebook/harmonic-filter-design.md`)
 - [x] **KiCad: VHF carrier PCB layout complete** (LPF laid out, headers on back; 0 unconnected, 0 parity issues)
 - [x] **KiCad: UHF carrier PCB layout complete** (same layout as VHF; mirrored-header bug fixed; 0 unconnected, 0 parity issues)
-- [ ] Visual review of the UHF carrier PCB in KiCad (it was generated from the VHF layout)
+- [x] Visual review of both carrier PCBs in KiCad — done 2026-11-21; **both carriers locked**
 - [ ] Confirm the SA818 underside has no exposed copper where RXD/TXD/MIC run beneath it
 - [ ] Prototype tuning of both LPFs (NanoVNA), then lock BOM values
 - [ ] Verify SA818 2mm pitch footprint dimensions
@@ -159,7 +159,7 @@ This document tracks the design and implementation status for all badge subsyste
 ### MCU
 - [x] Select MCU variant: **RP2350B (QFN-80)** — 48 GPIOs required
 - [x] Complete GPIO pin assignment for all subsystems (46/48 allocated; GPIO46, GPIO47 spare)
-- [x] Crystal oscillator: 12MHz, 3215 package, 15pF load caps
+- [x] Crystal oscillator: 12MHz, 3225 package (3.2×2.5mm, 4 pads), 15pF load caps
 - [x] External flash: W25Q128 16MB QSPI
 - [x] Decoupling capacitors specified (6× 100nF + 2× 10µF)
 - [x] BOOTSEL button designed (on QSPI_SS, for UF2 bootloader)
@@ -172,7 +172,8 @@ This document tracks the design and implementation status for all badge subsyste
 - [x] KiCad: I2C pullups (with global labels)
 - [x] **KiCad: MCU sheet complete** (all 48 GPIOs labeled, USB, debug, flash, crystal)
 - [ ] Source RP2350B and verify QFN-80 footprint
-- [ ] Verify crystal footprint (3215) and load cap values
+- [x] Verify crystal footprint — it was wrong (3.2×1.5mm two-pad, a watch-crystal size); changed to 3.2×2.5mm four-pad on 2026-11-20
+- [ ] Verify load cap values against the crystal actually ordered
 - [ ] Verify flash footprint (SOIC-8)
 - [ ] Verify peripheral pin mappings (UART1, SPI0, I2C0, PIO)
 
@@ -220,7 +221,8 @@ This document tracks the design and implementation status for all badge subsyste
 - [x] **KiCad schematic complete** (all sheets: Power, Audio, Display/Camera, User Controls, MCU, Connectors)
 - [x] **KiCad: Board outline created** (edge cuts with rabbit ear antennas and ball tips)
 - [x] **KiCad: Component placement nearly complete** (MCU, power, audio, display, camera sections placed; power ICs on back side)
-- [x] Trace routing (main board) — complete, design locked
+- [x] Trace routing (main board) — complete
+- [x] **Visual review complete and main badge locked for the prototype run (2026-11-21)** — see `engineers-notebook/main-badge-review-2026-11.md` section 21. Next: fab files and the assembler questions in `prototype-checklist.md`
 - [x] Ground pour
 - [x] DRC clean-up — 0 unconnected, 0 schematic-parity issues; only the excluded silkscreen items remain
 - [x] **Design review fixes (2026-11-13)** — see "Main Badge Review" below

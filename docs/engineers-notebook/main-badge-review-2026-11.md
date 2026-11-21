@@ -329,7 +329,7 @@ The resistor limits how hard the chip drives the crystal. Small crystals have a 
 
 ### Value
 
-1 kΩ is the guide's value, picked there for the guide's own crystal. The badge's crystal is specified only as a 12 MHz 3215 part with 10 pF load (three candidates are listed in `electrical-design-decisions.md`), so 1 kΩ is a starting value. A prototype check for start-up and USB enumeration is in `docs/prototype-checklist.md`.
+1 kΩ is the guide's value, picked there for the guide's own crystal. The badge's crystal is specified only as a 12 MHz part (then labelled "3215"; see section 17) with 10 pF load (three candidates are listed in `electrical-design-decisions.md`), so 1 kΩ is a starting value. A prototype check for start-up and USB enumeration is in `docs/prototype-checklist.md`.
 
 ### Layout
 
@@ -454,7 +454,7 @@ Sleep was never affected, since firmware sets the pin first. The only thing in f
 
 ### What was added
 
-R30, 4.7 kΩ 0402, from Q1's gate to 3.3 V. On the board it sits between R11 and Q1 at (2.61, 60.3) on the gate trace, with its own via to the 3.3 V plane at (3.12, 61.15). Q1's silkscreen label moved below the part.
+R30, 4.7 kΩ 0402, from Q1's gate to 3.3 V. It was first placed between R11 and Q1 with its own via; both parts were re-arranged the next day (section 20).
 
 ### Why 4.7 kΩ and not 10 kΩ
 
@@ -488,6 +488,97 @@ What deleting J10 would have saved: one fab-placed socket, four pull-up resistor
 
 Wiring the module's slot as a second, optional card slot was also considered. It carries the same fourth-pin and routing cost for little gain, so it was not done.
 
+## 17. Crystal footprint corrected (2026-11-20)
+
+### What was wrong
+
+Y1's footprint was a 3.2 × 1.5 mm two-pad pattern. The documents called the crystal "3215" throughout, and the footprint matched that label. But the 12 MHz crystals the design intends to use (the Abracon ABM8 family, as in Raspberry Pi's reference design) are 3.2 × 2.5 mm with four pads. A 3.2 × 1.5 mm two-pad package is what 32 kHz watch crystals come in; no 12 MHz part in that size was found. The board as drawn could not have been populated with a working crystal.
+
+It was found by the pre-fab footprint check, comparing the board's pads with the ABM8 datasheet. `project-status.md` had carried an unticked "verify crystal footprint" item since the MCU sheet was drawn.
+
+### What changed
+
+- **Schematic:** Y1 is now the four-pin crystal symbol. Pins 1 and 3 are the crystal, pins 2 and 4 are the case, tied to ground.
+- **Footprint:** KiCad's 3225 four-pad pattern, checked against Abracon's ABM8 drawing (pads 1 and 3 crystal, 2 and 4 ground, diagonal).
+- **Layout:** the crystal stands upright at (61.3, 45.5), so that its two crystal pads are top-left and bottom-right. XIN drops straight onto the top-left pad; the bottom-right pad goes to R29 and C_Y2, which now sit in a column to the crystal's right. C_Y1 stands to the crystal's left. The two ground pads are joined by a short trace under the crystal and tied to the existing ground via on the left; C_Y2 has its own ground via. Everything is on the front layer.
+- The XOUT trace from the chip to R29 (section 11) did not move.
+
+### Crystal part
+
+Settled the same day: Abracon ABM8-272-T3. Its datasheet gives 12 MHz, 10 pF load, ±30 ppm. Raspberry Pi's "Hardware design with RP2350" uses this part with 15 pF load capacitors and a 1 kΩ series resistor, which is exactly what is on the board, so section 11's caution about the resistor value being "a starting value" no longer applies as long as this crystal is fitted. One of the three parts listed before, ABM8-12.000MHZ-B2-T, is given as an 18 pF part by a distributor and would not suit.
+
+## 18. SD socket shell grounded (2026-11-20)
+
+The pre-fab footprint check compared J10 with Molex's sales drawing. The pads were right, but the pairing of symbol and footprint was not: KiCad's generic microSD symbol calls pin 9 "shield", while on the Molex 104031-0811 footprint pad 9 is one of the two card-detect contacts and the metal shell is pad 11. The shell's four pads were therefore soldered to nothing, and a card-detect contact was grounded instead.
+
+Nothing would have stopped working, but the shell sits at the board edge where fingers touch it on every card change, and a floating shell gives a static discharge no path to ground.
+
+Fix: the symbol embedded in the connectors sheet gained a pin 11 ("SHIELD"), stacked on pin 9 and tied to ground, and each of the four shell pads got a ground via beside it. This adds one "symbol does not match library" warning to ERC, which is expected.
+
+Molex's own downloadable symbol and footprint were looked at as an alternative. They would not have helped: Molex's symbol has pins 1–10 only, so it leaves the shell pads (numbered 11–14 there) unconnected too, and its footprint is the same pad pattern to within 0.05 mm.
+
+## 19. Charger exposed pad given vias (2026-11-20)
+
+During the owner's visual pass, a question about U4 pin 3 being tied to the chip's centre pad led to checking how that pad reaches ground. Pin 3 (input select) is correctly grounded, which selects the 500 mA USB input limit. But the centre pad (pad 21) had no vias under it: the pad and pins 3, 10 and 11 all reached the ground plane through one via outside the package, along 0.3–0.4 mm traces. Every other chip with an exposed pad had vias (U1 six, U5 and U11 four each, U7 two). The November review widened the charger's supply traces and added vias under U1 but did not look under U4.
+
+The charger is linear, so it turns the difference between USB voltage and battery voltage into heat: about 0.65 W at 500 mA into a 3.7 V battery and about 1 W into a flat one. The exposed pad is the heat path. Without vias the chip would have protected itself by cutting charge current, so charging would have been slower than designed, and it would have run hot beside the battery connector.
+
+Five 0.3 mm vias were added in the pad, four at the corners of a 1.6 mm square and one in the centre, down to the ground plane. Microchip's land pattern shows nine on a 1.0 mm pitch; five keeps them clear of the edge of the pad. Charge-time and temperature are already on the prototype checklist.
+
+## 20. Backlight switch re-arranged around the LED trunk (2026-11-21)
+
+### What the owner saw
+
+On the visual pass: Q1's 3.3 V pad had two vias joined by a very crooked trace on the back.
+
+### Why it was like that
+
+The LED rail's main trunk runs down the left edge on the inner power layer at x = 4.1 mm. It cuts the strip of 3.3 V plane between itself and the board edge off from the rest of the plane. Q1 sat in that strip, so a via under it reached only the cut-off sliver. When the LED rail went in, this was patched with a hop: a via to the back, a short back-layer trace under the trunk, and a second via up into the main plane. The hop was auto-routed on a 0.1 mm grid and left as a 12-segment staircase. R30, added later, got its own via in the same sliver and so depended on that hop as well.
+
+### What changed
+
+Anything needing 3.3 V here has to put its via east of about x = 5.0 mm. So:
+
+- Q1 moved to (4.8, 64.0). Its source pad runs to a single via at (5.3, 65.4), east of the trunk, straight into the main plane.
+- R30 moved to (2.1, 63.56), in line with the gate trace: the trace runs straight down from R11 into R30's top pad and across to Q1's gate, and R30's bottom pad joins Q1's source pad. R30 has no via of its own.
+- Q1's drain pad now sits on the existing vertical trace to the display's LED pin, which was simply extended up into it.
+- R11 did not move.
+
+Three vias and a back-layer hop became one via. Nothing depends on the cut-off sliver any more.
+
+### Rule
+
+Parts that need the 3.3 V plane must not be placed between the left-edge LED trunk and the board edge unless they can reach a via east of x = 5 mm on the front layer. Auto-routed traces are to be replaced with hand-laid segments before the work is called done.
+
 ---
 
-*Written 2026-11-14; section 10 added 2026-11-17; sections 11 and 12 added 2026-11-18; sections 13 to 16 added 2026-11-20.*
+## 21. Visual review finished; all three boards locked (2026-11-21)
+
+The owner finished the visual pass of the main badge and both carriers and locked all three for the prototype run. The boards are not to be changed again unless the owner reopens them.
+
+### What the pass changed, beyond sections 17 to 20
+
+**Main badge**
+
+- **Trace ends.** Several traces stopped at the edge of a pad instead of running into it (U8 pins 13 to 15, U2 pins 1, 2, 3 and 7, pin 5 and pin 10 of both regulators, C21). Each got a short stub to the pad centre.
+- **Redundant ground vias** removed at C38 and C53.
+- **LED supply tracks** re-laid on the front and on the inner power layer: one via per LED along the top and bottom rows, both side columns and both ears. Details are in `led-supply-rail.md`.
+- **LED regulator feed** straightened into hand-laid 45° segments.
+- **Owner's moves kept:** test pads TP2, TP3 and TP5, and R24's ground via, which came out from under the display header.
+
+**Carriers**
+
+- **Supply trace into the radio module.** It was 1.0 mm narrowing to 0.6 mm at the two decoupling capacitors. It is now 1.0 mm to the 10 µF capacitor and 0.8 mm from there through the 100 nF capacitor to module pin 8, on both boards. A full 1.0 mm does not fit on the pad centreline: it leaves 0.18 mm to the 100 nF capacitor's ground pad against a 0.20 mm rule. 0.8 mm leaves 0.28 mm.
+
+### Final checks on the locked files
+
+- Main badge: 0 unconnected, 0 schematic-parity issues, 2 excluded silkscreen-edge items. ERC: 5 library-mismatch warnings, all from deliberately edited symbols.
+- Each carrier: 0 unconnected, 0 schematic-parity issues, 5 excluded copper-edge items.
+
+### What is left before ordering
+
+Fab files and their inspection, the assembler questions, and the radio module pin-direction meter test. All are in `prototype-checklist.md`.
+
+---
+
+*Written 2026-11-14; section 10 added 2026-11-17; sections 11 and 12 added 2026-11-18; sections 13 to 19 added 2026-11-20; sections 20 and 21 added 2026-11-21.*

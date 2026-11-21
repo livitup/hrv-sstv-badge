@@ -271,7 +271,7 @@ Shunt caps stand perpendicular to the RF line with their signal pad on the line;
 ### Routing
 
 - **RF path:** 0.8 mm, F.Cu, four straight segments pad centre to pad centre. The only corner is on C67's pad.
-- **VCC:** 1.0 mm from J18 pin 1 along y = 81.5, narrowing to 0.6 mm past C57/C56 into U10 pad 8.
+- **VCC:** 1.0 mm from J18 pin 1 along y = 81.5 and up a 45° diagonal to C57, then 0.8 mm on the pad centreline through C56 into U10 pad 8. The last section is 0.8 mm, not 1.0 mm, to keep 0.28 mm clear of C56's ground pad (changed from 0.6 mm on 2026-11-21).
 - **PTT, PD, H/L:** F.Cu, straight down from U10's bottom-row pads to J20.
 - **RXD, TXD:** F.Cu, under the module, exiting between bottom-row pads 4 and 3.
 - **MIC, AF_OUT, SQ:** F.Cu to a via just below the module, then B.Cu along y = 82.5 / 84 / 85.3 to the header pins. These are the only B.Cu tracks, and all sit in the bottom strip of the board.

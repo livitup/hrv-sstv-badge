@@ -99,7 +99,7 @@ Sources: [WS2812B-V6 datasheet](https://atta.szlcsc.com/upload/public/pdf/source
 - To keep slots out of the middle of the board, the trunk follows the left and top edges and reaches both ears from there. A slot at the board edge isolates only a sliver of plane.
 - The 3.3 V regulator sits *inside* the ring of border LEDs, so a closed ring of VLED track would have fenced it in. The ring is left open at the top-right corner (between D16 and D17), which is the direct path from the regulator to the MCU.
 - The existing 2.0 mm radio supply track on the same layer blocks the top row between D13 and D14. That link hops over it on the front layer.
-- The backlight FET's 3.3 V via ended up on the wrong side of the edge trunk; it was moved to the other side with a short back-layer hop.
+- The backlight FET's 3.3 V via ended up on the wrong side of the edge trunk; it was first patched with a short back-layer hop to a second via, then fixed properly on 2026-11-21 by moving Q1 so that one via east of the trunk serves it (see `main-badge-review-2026-11.md`, section 20).
 
 **Regulator placement.** On the back between the display socket and the charger: the only free area next to VSYS, and close to the left-edge trunk.
 
@@ -115,3 +115,32 @@ Sources: [WS2812B-V6 datasheet](https://atta.szlcsc.com/upload/public/pdf/source
 ---
 
 *Written 2026-11-14.*
+
+---
+
+## Addendum (2026-11-21): top row and right column connections rebuilt
+
+During the owner's visual pass the LED supply connections along the top of the display (D12–D16 and C38–C42) were found untidy: the front-layer link past D13 was an auto-routed staircase, capacitors had their own vias with stub tracks on the inner layer, and widths were mixed. They were rebuilt to one pattern.
+
+**The pattern.** The inner-layer LED track runs under the row. At each LED there is one via on that track, between the LED and its capacitor. On the front, a short trace runs from the LED's supply pad to the via, and another from the via to the capacitor's supply pad. One via serves both parts; the capacitors have no via or inner-layer stub of their own. D14, D15 and D16 are identical. D12 is the same shape with the via 0.3 mm higher, because the inner track is higher there.
+
+**D13 is the exception.** The 2.0 mm radio supply track crosses the inner layer exactly under D13, so nothing on the LED net can exist on the inner layer between about x = 30.5 and 33.5 mm, and no via can go there. The inner track stops at a via west of it (29.33, 62.265) and starts again at a via east of it (34.228, 62.575). Between them the supply runs on the front: into D13's pad, on along y = 62.9 below D13's data-out pad, with a drop to C42. This front-layer link carries the current for D13 to D16, about 0.15 A at most.
+
+**Right column.** C44 and C45 were to be made alike. They cannot be identical, because USB D+ runs on the back directly under where C45's vias would go. As built: both have a straight trace down from the supply pad to a via (0.85 mm long at C44, 1.4 mm at C45, the nearest point clear of USB D+); C44's ground via is straight below its pad, C45's is beside its pad.
+
+Vias on the LED net in this area are all 0.6 mm; front traces 0.4 mm; inner track 0.5 mm.
+
+**Bottom row, done the same day.** D20, D21, D22 and D24 with C46, C47, C48 and C50 now use the same one-via pattern, mirrored (the via sits on the inner track at y = 109.49, between the LED above and its capacitor). Before this, C46–C48 hung off one 25 mm front-layer trace with a single via, and C50 had its own via and inner-layer stub. The inner track along the bottom was re-laid as one clean line; it keeps its dip to y = 108.99 between x = 33 and 39 mm, which clears a ground via and the USB data via there, and it stays at y = 109.49 (not a rounder number) because that is exactly the clearance limit from a ground via at (23.7, 108.7).
+
+**D23 is the bottom row's exception.** Its ground pad could not get a via of its own (the USB connector's traces are underneath), so its ground trace runs up through the middle of the LED to the capacitor's ground. That trace occupies the spot where the shared via would go. D23 and C49 therefore each have their own via on the inner track, one either side.
+
+**Side columns: a different pattern, by necessity.** The columns (D17–D19 on the right, D25–D27 on the left) cannot use the one-via pattern. In the rows the capacitor sits on the same side of the LED as the LED's supply pad, so one via between them serves both. In the columns the LEDs keep the same rotation but the capacitor is below the LED, which puts it on the opposite side from the supply pad, and the gap through the middle of each LED is already used by the data line going to the next LED. So each column pair keeps two vias: one beside the LED's supply pad on the inner track, and one at the capacitor with a short inner-layer link to that track. The three pairs in each column already matched each other. On 2026-11-21 their front traces were only tidied (odd angles replaced with 45° bends, ends put on pad and via centres). Making the columns single-via would mean rotating the LEDs or capacitors and re-laying the data chain past the camera and USB traces on the right side; that was judged not worth it.
+
+**Inner-layer track in the columns re-laid (same day).** The LED track on the inner layer in both columns had been built up from overlapping pieces, duplicates of different widths and segments a tenth of a millimetre long. It was replaced with single clean lines, all horizontal, vertical or 45°:
+
+- *Left:* 0.8 mm from the top down to D27's via at (4.1, 74.0), then 0.6 mm: a jog west to x = 3.06 (to pass C53's ground via), back to x = 4.284 past D26 and D25, and on to x = 5.384, where it meets the feed from the LED regulator. The regulator's feed now joins the diagonal to the bottom row at (7.605, 103.603) instead of running beside it.
+- *Right:* 0.5 mm from D17's via straight down x = 87.55 and across to D19's via. D18's via sits 0.1 mm west of that line because it cannot move: 0.1 mm further east it is too close to a camera data trace on the front.
+- *Capacitor links:* each capacitor's via has one straight 0.4 mm link at 45° to the main track.
+
+**Ears, same day.** The inner track up each ear was a chain of separate pieces that stopped about 0.1 mm short of each via and relied on overlapping the via's pad; the left ear also had a 12 mm duplicate run lying on top of the main one. Each ear is now a single straight 45° line that passes through every via (within 0.03 mm of each centre), with a short vertical lead-in at the base. D3's via in the left ear sits about 1 mm off that line and keeps a short straight link to it.
+

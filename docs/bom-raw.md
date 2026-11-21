@@ -82,7 +82,7 @@
 
 | Value | Qty | Notes |
 |-------|-----|-------|
-| 12MHz | 1 | 3215 package, 15pF load |
+| 12MHz | 1 | 3225 package (3.2×2.5mm, 4 pads), 10pF load crystal with 15pF load caps |
 
 ## Connectors
 

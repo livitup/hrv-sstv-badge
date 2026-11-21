@@ -389,7 +389,7 @@ The SA868's own harmonic levels were not found in its datasheet, so the "raw" ro
 
 ### Power handling at 2 W
 
-2 W into 50 Ω is 10 V RMS (14 V peak) and 0.2 A RMS. The capacitors are specified at 50 V, which is ample. The inductor rule in this document asked for at least 200 mA, written for 1 W; at 2 W the through current alone is 200 mA and circulating current near cut-off is higher. The Coilcraft 0603HP current ratings for the fitted values were not re-read for this check (the datasheet could not be downloaded), so this is the one open point. It does not apply to production boards with the SA818S, and can be avoided on prototypes by using the SA868's low-power setting.
+2 W into 50 Ω is 10 V RMS (14 V peak) and 0.2 A RMS. The capacitors are specified at 50 V, which is ample. The inductor rule in this document asked for at least 200 mA, written for 1 W; at 2 W the through current alone is 200 mA and circulating current near cut-off is higher. The Coilcraft 0603HP datasheet (Doc 537, read 2026-11-20) gives RMS current ratings of 600 mA for 68 nH, 510 mA for 82 nH, 850 mA for 22 nH and 1100 mA for 24 nH. The lowest is 2.5 times the 200 mA through-current at 2 W, so the inductors are within rating at the SA868's full power.
 
 ### What carries over from prototypes to production, and what does not
 

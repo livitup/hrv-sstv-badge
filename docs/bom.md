@@ -1,6 +1,6 @@
 # DEFCON SSTV Badge — Bill of Materials
 
-**Version:** 3.13
+**Version:** 3.14
 **Last Updated:** 2026-11-13
 **Source:** KiCad schematic export, verified against `docs/electrical-design.md`
 
@@ -232,7 +232,7 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 |-----|-----|-------|---------|----------|-------|
 | U1 | 1 | RP2350B | QFN-80 (10×10mm) | Fab | 48 GPIO variant required |
 | L2 | 1 | 3.3µH, Abracon AOTA-B201610S3R3-101-T | 0806 (2016) | Fab | RP2350 regulator inductor. **Polarity-marked: the dot goes at pad 1 (1.1 V side). Do not substitute** — see the Raspberry Pi hardware design guide |
-| Y1 | 1 | 12MHz | 3215 | Fab | ±20ppm, CL=10pF (required for USB) |
+| Y1 | 1 | Abracon ABM8-272-T3 (12MHz, 10pF load, ±30ppm) | 3225 (3.2×2.5mm, 4 pads) | Fab | Required for USB. This is the crystal Raspberry Pi specifies for the RP2350, used with 15pF load capacitors and a 1kΩ series resistor. Do not substitute without re-testing |
 | C_Y1, C_Y2 | 2 | 15pF | 0402 | Fab | Crystal load caps |
 | U2 | 1 | W25Q128JVS | SOIC-8 | Fab | 16MB QSPI flash |
 | C9 | 1 | 100nF | 0402 | Fab | Flash decoupling |
@@ -488,6 +488,7 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 | 3.11 | 2026-11 | **Backlight gate pull-up R30** (4.7kΩ, 0402) added so the backlight is off until firmware turns it on. R11 description corrected: it is a series gate resistor, not a pull-down. |
 | 3.12 | 2026-11 | **LED revision specified**: WS2812B-V6 and WS2812B-2020-V6. The V6 parts draw 1µA or less when dark, which is what keeps the always-on LED rail out of the sleep budget. Same footprints and pinout. |
 | 3.13 | 2026-11 | **Assembly split corrected**: the audio filter parts (R5–R10, C24–C27) and backlight gate resistor R11 are fab-assembled like every other surface-mount part. SW7 named as C&K OS102011MA1QN1 to match its footprint. SAO connectors J5/J6 described as 2×3 female sockets. |
+| 3.14 | 2026-11 | **Crystal Y1 package corrected** from "3215" to 3225 (3.2×2.5mm, four pads); ABM8-272-T3 named as first choice. The old footprint was a watch-crystal size that no 12MHz part comes in. |
 
 ---
 

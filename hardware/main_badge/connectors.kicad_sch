@@ -1299,6 +1299,25 @@
 						)
 					)
 				)
+				(pin passive line
+					(at 20.32 -15.24 180)
+					(length 3.81)
+					(hide yes)
+					(name "SHIELD"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "11"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
 			)
 			(embedded_fonts no)
 		)
@@ -3730,6 +3749,9 @@
 		)
 		(pin "9"
 			(uuid "b886ca60-8f4f-4221-aeb8-c25fd9592808")
+		)
+		(pin "11"
+			(uuid "d3a613e8-433f-4124-87d0-86184bc4681a")
 		)
 		(pin "3"
 			(uuid "beac9dfd-263a-4f7b-bbb6-4b654661ea47")

@@ -301,9 +301,11 @@ The RP2350 has an internal Ring Oscillator (ROSC), but it's too inaccurate:
 
 ### Crystal Recommendations
 
-- ABM8-12.000MHZ-B2-T (Abracon) — 3215, ±20ppm, CL=10pF, ~$0.35
-- ECS-120-10-36Q-ES-TR (ECS) — 3215, ±10ppm, CL=10pF, ~$0.40
-- FA-238 12.0000MF10Z-K3 (Epson) — 3215, ±10ppm, CL=10pF, ~$0.50
+All 12 MHz crystals of this kind are 3.2 × 2.5 mm, four-pad parts ("3225"). Earlier revisions of this list called them "3215", which is a 3.2 × 1.5 mm two-pad package used for 32 kHz watch crystals; the PCB footprint followed that label and had to be corrected on 2026-11-20 (see `main-badge-review-2026-11.md`, section 17).
+
+- **ABM8-272-T3 (Abracon) — selected.** The part in Raspberry Pi's RP2350 reference design. Datasheet: 12 MHz, 10 pF load, ±30 ppm, drive level 10 µW typical / 200 µW maximum. Raspberry Pi's hardware design guide pairs it with 15 pF load capacitors and a 1 kΩ series resistor, which is what the badge has, and warns that other crystals need re-testing over temperature.
+- ABM8-12.000MHZ-B2-T (Abracon) — 3.2 × 2.5 mm, ±20ppm. A distributor listing gives its load capacitance as 18 pF, not the 10 pF this design's load capacitors assume; do not use without changing C_Y1/C_Y2.
+- ECS-120-10-36Q-ES-TR (ECS) and FA-238 12.0000MF10Z-K3 (Epson) — listed here previously as 10 pF parts; package and load not re-checked.
 
 ### Why 16MB Flash?
 

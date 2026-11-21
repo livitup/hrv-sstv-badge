@@ -1228,6 +1228,8 @@ The standalone SD card socket (J10) shares the SPI bus with the display. This me
 No workflow requires simultaneous display update and SD access.
 
 **Pull-ups:** four 10kΩ resistors to 3.3V — R25 on SD_CS, R26 on SPI_MISO, R27 on the card's DAT2 pin and R28 on its DAT1 pin.
+
+**Shell and card detect:** the socket's metal shell (footprint pad 11, four solder pads) is tied to ground through a via beside each pad. The two card-detect contacts are pads 9 and 10; pad 9 is grounded and pad 10 is unconnected, so card detect is not used. Wiring pad 10 to a GPIO with a pull-up would give a "card present" signal (low when a card is in) if one is ever wanted.
 - The chip-select pull-up keeps the card deselected while the RP2350 is in reset, when its pins default to a weak pull-down.
 - DAT1 and DAT2 are unused in SPI mode. They are pulled up rather than left floating. SanDisk's OEM product manual says the host designer must fit pull-ups on all data lines even if only DAT0 is used, because floating DAT1 and DAT2 inputs can cause unexpectedly high current draw. (Taken from vendor documents; the SD Association's specification text was not read.)
 
@@ -1798,7 +1800,7 @@ The I2C bus on GPIO0 (SDA) and GPIO1 (SCL) is shared by multiple devices:
 
 | Ref | Value | Package | Notes |
 |-----|-------|---------|-------|
-| Y1 | 12MHz | 3215 (3.2×1.5mm) | ±20ppm, 10pF load, fundamental |
+| Y1 | 12MHz | 3225 (3.2×2.5mm, 4 pads) | ±20ppm, 10pF load, fundamental. Pads 1 and 3 are the crystal, pads 2 and 4 are ground |
 | C1, C2 | 15pF | 0402 | Load capacitors (2 × CL - C_stray = 2×10 - 5 = 15pF). C_Y1, C_Y2 on the board |
 | R29 | 1kΩ | 0402 | In series between XOUT and the crystal, to limit crystal drive level. Value from the RP2350 hardware design guide; confirm on the prototype |
 
@@ -1949,7 +1951,7 @@ The RP2350 contains an internal switching regulator that converts the 3.3V input
 |-----|-----|-------|---------|----------|-------|
 | U_MCU | 1 | RP2350B | QFN-80 (10×10mm) | Fab | Dual Cortex-M33, 48 GPIO |
 | L2 | 1 | 3.3µH | 3×3mm | Fab | Internal regulator inductor |
-| Y1 | 1 | 12MHz | 3215 | Fab | ±20ppm, CL=10pF |
+| Y1 | 1 | 12MHz | 3225 (3.2×2.5mm, 4 pads) | Fab | ±20ppm, CL=10pF |
 | C_Y1, C_Y2 | 2 | 15pF | 0402 | Fab | Crystal load caps |
 | U_FLASH | 1 | W25Q128JVSIQ | SOIC-8 | Fab | 16MB QSPI flash |
 | C_FLASH | 1 | 100nF | 0402 | Fab | Flash decoupling |
@@ -2034,10 +2036,10 @@ Six 1.0mm test pads on the back of the board give probe access to the supply rai
 | Ref | Net | Position (mm) | Near |
 |-----|-----|---------------|------|
 | TP1 | GND | (37.0, 101.5) | Below the 3.3V regulator |
-| TP2 | +3V3 | (41.0, 83.5) | 3.3V regulator output caps |
-| TP3 | VBUS | (23.5, 104.75) | Charger input cap C10 |
+| TP2 | +3V3 | (40.87, 82.39) | 3.3V regulator output caps |
+| TP3 | VBUS | (21.87, 104.75) | Charger input cap C10 |
 | TP4 | VSYS | (46.38, 97.26) | 3.3V regulator input cap C13 |
-| TP5 | VLED | (14.5, 87.9) | LED rail regulator output |
+| TP5 | VLED | (14.48, 87.65) | LED rail regulator output |
 | TP6 | SA818_VCC | (17.3, 76.2) | Load switch output cap C17 |
 
 The battery voltage can be probed at the battery connector J1, and the 1.1V core rail at C1.
