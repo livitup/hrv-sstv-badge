@@ -464,6 +464,30 @@ R30, 4.7 kΩ 0402, from Q1's gate to 3.3 V. On the board it sits between R11 and
 
 The BOM described R11 as a gate pull-down. It is a 1 kΩ resistor in series with the gate.
 
+## 16. SD card: keep the on-board socket, do not use the display's (2026-11-20)
+
+### The question
+
+The chosen display module has its own SD card slot, and three of that slot's header pins are already plugged into the badge to support the display (J23, section 12). Could the badge's own socket, J10, be deleted and the display's slot used instead?
+
+### What the documents said before
+
+A standalone socket is recorded as the design in `CLAUDE.md`, `electrical-design.md`, `project-status.md` and the BOM, and it was the owner's plan from early in the project. None of them gives a reason. This section supplies one.
+
+### Decision: keep J10, leave the module's SD pins unconnected
+
+Reasons, in rough order of weight:
+
+- **Access.** The module's slot is on its back, in the gap between the display and the badge. Read from the module's dimension drawing, it opens toward the display's top edge, so the card would go in from above, behind the top row of border LEDs and toward the carrier. Exact clearances were not measured. J10 puts the card flush at the board edge, facing out, which was a specific request (section 8).
+- **Card size.** The manual's photo shows a full-size SD slot on the module. J10 takes microSD.
+- **Speed.** The module's SD lines pass through series resistors (R1–R3 in the manual's photo). On boards of this style they are believed to be about 1 kΩ, which slows the bus; this was not measured or confirmed from a schematic.
+- **The fourth pin.** The slot needs four signals. J23 has three pins because the fourth position lands on CAM_D3 and USB D+ (section 12). Both traces would have to move, and four signals would need routing across to the display's far edge.
+- **Module lock-in.** Any 14-pin ILI9341 module with the right pin order works today, with or without an SD slot. Using the module's slot would tie the badge to modules that have one, wired the same way.
+
+What deleting J10 would have saved: one fab-placed socket, four pull-up resistors (R25–R28) and a little board area.
+
+Wiring the module's slot as a second, optional card slot was also considered. It carries the same fourth-pin and routing cost for little gain, so it was not done.
+
 ---
 
-*Written 2026-11-14; section 10 added 2026-11-17; sections 11 and 12 added 2026-11-18; sections 13 to 15 added 2026-11-20.*
+*Written 2026-11-14; section 10 added 2026-11-17; sections 11 and 12 added 2026-11-18; sections 13 to 16 added 2026-11-20.*

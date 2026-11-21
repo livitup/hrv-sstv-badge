@@ -66,7 +66,7 @@ See `docs/electrical-design.md` for complete carrier board design.
 - **Cost**: ~$2.05 total (vs ~$3.50 for WM8960 codec)
 - **Quality**: Excellent TX, good RX (adequate for indoor LVCC use)
 
-The TX/RX filter components (resistors, caps) are 0603 and user-solderable. The PCM5102A (TSSOP-20) requires hot air or fab assembly.
+The TX/RX filter components (resistors, caps) are 0603 and, like all surface-mount parts, placed by the fab; they are large enough to rework by hand.
 
 See `docs/electrical-design.md` for complete audio circuit design and component values.
 

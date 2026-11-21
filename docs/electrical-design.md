@@ -826,20 +826,20 @@ This is above the SSTV maximum (~2.3kHz) but below the Nyquist limit for a ~20kH
 | U_DAC | PCM5102A | TSSOP-20 | Fab/hot air | I2S DAC |
 | C1 | 10µF | 0805 | Fab/hot air | DVDD decoupling |
 | C2 | 100nF | 0603 | Fab/hot air | AVDD decoupling |
-| R1 | 47kΩ | 0603 | User | TX attenuator |
-| R2 | 470Ω | 0603 | User | TX attenuator |
-| C3 | 10nF | 0603 | User | TX filter |
-| C4 | 100nF | 0603 | User | TX DC block |
-| C5 | 1µF | 0603 | User | RX DC block |
-| R3 | 4.7kΩ | 0603 | User | RX filter |
-| R4 | 4.7kΩ | 0603 | User | RX filter |
-| C6 | 4.7nF | 0603 | User | RX anti-alias |
-| R5 | 47kΩ | 0603 | User | RX bias |
-| R6 | 47kΩ | 0603 | User | RX bias |
+| R1 | 47kΩ | 0603 | Fab | TX attenuator |
+| R2 | 470Ω | 0603 | Fab | TX attenuator |
+| C3 | 10nF | 0603 | Fab | TX filter |
+| C4 | 100nF | 0603 | Fab | TX DC block |
+| C5 | 1µF | 0603 | Fab | RX DC block |
+| R3 | 4.7kΩ | 0603 | Fab | RX filter |
+| R4 | 4.7kΩ | 0603 | Fab | RX filter |
+| C6 | 4.7nF | 0603 | Fab | RX anti-alias |
+| R5 | 47kΩ | 0603 | Fab | RX bias |
+| R6 | 47kΩ | 0603 | Fab | RX bias |
 
 **Total cost:** ~$2.05 (PCM5102A ~$1.75 + passives ~$0.30)
 
-**User-solderable:** All 0603 resistors and capacitors (R1-R6, C3-C6).
+**Assembly:** All of these are placed by the fab with the rest of the surface-mount parts (decided 2026-11-20). They are 0603, large enough to rework by hand if the filter needs tuning.
 
 **Fab/hot air:** PCM5102A (TSSOP-20) and its decoupling caps (C1, C2).
 
@@ -1324,7 +1324,7 @@ The 14-pin ILI9341 module that J3 is pinned for lights its backlight when the LE
 | J23 | 1×3 socket | 2.54mm | User | Support for the display's free end; no electrical connection |
 | — | 1×3 pin header | 2.54mm | User | Soldered to the module's SD header position (pins SD_CS, SD_MOSI, SD_MISO) to plug into J23 |
 | Q_BL (Q1) | AO3401A | SOT-23 | Fab | Backlight high-side P-MOSFET |
-| R_BL (R11) | 1kΩ | 0603 | User | Gate series resistor |
+| R_BL (R11) | 1kΩ | 0603 | Fab | Gate series resistor |
 | R30 | 4.7kΩ | 0402 | Fab | Gate pull-up to 3.3V: backlight off until firmware turns it on |
 
 **Cost:** ~$8-12 for module + ~$0.10 for MOSFET/resistor
@@ -1344,7 +1344,7 @@ So the SD header row is 77.18 − 2.00 − 2.17 = **73.01 mm** from the 14-pin r
 
 Only three of the four positions are used: the fourth would land on the CAM_D3 trace on the front and the USB D+ trace on the back. If a 1×4 header is fitted to the module instead, its fourth pin hangs clear of the board beside the socket.
 
-The module's SD card slot is not used (the badge has its own socket, J10) and the three SD pins in J23 are left unconnected.
+The module's SD card slot is not used (the badge has its own socket, J10) and the three SD pins in J23 are left unconnected. Using the module's slot in place of J10 was considered on 2026-11-20 and rejected; the reasons are in `engineers-notebook/main-badge-review-2026-11.md`, section 16.
 
 The silkscreen "SCREEN" outline is the module's board outline: x 6.636–83.816 mm, y 64.238–106.958 mm.
 
@@ -2137,7 +2137,7 @@ Slide switch that MCU reads to determine RF enable/disable state.
     (Or reverse logic, depending on preference)
 ```
 
-**Recommended switch:** SS12D00 or similar SPDT slide switch (through-hole, user-solderable).
+**Switch:** C&K OS102011MA1QN1, a right-angle SPDT slide switch with 2.0mm pin pitch (through-hole, user-solderable, mounted on the back). The PCB footprint is for this part; the SS12D00 named in earlier revisions is a different shape and does not fit.
 
 **Firmware behavior:**
 1. On boot, read airplane mode switch
@@ -2316,7 +2316,7 @@ The blinky animations (ear lightning + border effects) still show TX/RX as well.
 | Ref | Value | Package | Assembly | Notes |
 |-----|-------|---------|----------|-------|
 | SW_UP, SW_DOWN, SW_LEFT, SW_RIGHT, SW_CENTER | Tactile 6×6mm | Through-hole | User | D-pad switches (center doubles as photo capture) |
-| SW_AIRPLANE | Slide switch SPDT | Through-hole | User | Airplane mode |
+| SW_AIRPLANE | C&K OS102011MA1QN1 slide switch (SPDT, right-angle) | Through-hole | User | Airplane mode |
 | LED_PWR (D1) | AAA3528LSEEZGKQBKS | PLCC-4 3.5×2.8mm | Fab | Kingbright RGB, common-anode |
 | R_PWR_R | 220Ω | 0603 | Fab | PWR LED red cathode current limit |
 | R_PWR_G | 100Ω | 0603 | Fab | PWR LED green cathode current limit |

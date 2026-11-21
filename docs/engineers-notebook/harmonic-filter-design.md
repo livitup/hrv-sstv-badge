@@ -18,9 +18,13 @@ The SA818 module is well-known in the amateur radio community for poor harmonic 
 | 3rd | -40 to -50 dBc |
 | Higher | -50 dBc and below |
 
-**FCC Part 97.307(d)** requires that for amateur transmitters in the 30–225 MHz band operating below 25W, mean spurious emissions be **at least 43 dB below the mean power** of the fundamental. For 222 MHz and above with similar power, the requirement is **60 dB**.
+**FCC Part 97.307(e)** covers amateur transmitters on 30–225 MHz, which includes the 2 m band. For a transmitter of 25 W or less, any spurious emission supplied to the antenna line must **not exceed 25 µW** and must be **at least 40 dB below** the fundamental, but need not be reduced below 10 µW. Because the 25 µW limit is an absolute power, the required suppression grows with transmit power: 46 dB below the carrier at 1 W, about 49 dB at 2 W.
 
-The SA818 alone, transmitting on the air, is therefore **likely to be non-compliant** with Part 97 — particularly on 70cm where the rule is stricter. Anyone operating this badge on the air without external filtering is technically violating their license.
+Above 225 MHz, which includes the 70 cm band, Part 97.307 sets no numerical limit; 97.307(c) requires spurious emissions to be reduced "to the greatest extent practicable". The targets used for the UHF carrier in this document (−50 to −60 dBc) are this project's own, not an FCC figure.
+
+*(Corrected 2026-11-20 from the rule text. An earlier version of this section quoted 43 dB for VHF, which is the below-30 MHz rule in 97.307(d), and 60 dB for 70 cm, which is not in the rule.)*
+
+The SA818 alone, with a raw second harmonic of −30 to −40 dBc, therefore **does not meet the 2 m requirement** without filtering.
 
 This is a known issue. Many community SA818 projects (digital APRS trackers, DMR hotspots, packet radio) include external low-pass filtering for exactly this reason.
 
@@ -360,3 +364,35 @@ Implementation steps and KiCad-specific procedures: see the per-board integratio
 ## Addendum (2026-11-13): UHF starting values reduced
 
 A first-order model of the as-built carrier layout (trace sections, cap/via inductance, inductor loss) showed the calculated UHF values (8.2 pF / 24 nH / 15 pF / 27 nH, fc = 470 MHz) losing about 5 dB in the 420–450 MHz band once layout parasitics are included; the 4% margin above the band edge is too thin. The UHF carrier is now fitted with **6.8 pF / 22 nH / 12 pF / 24 nH** as starting values (modelled: ~0.9 dB loss, 20 dB return loss, 51 dB 2nd-harmonic rejection). The VHF values model fine as built (~0.9 dB loss, 27 dB return loss, 52 dB) and are unchanged. Details and the comparison table are in `hardware/sa818-u-carrier/LPF-INTEGRATION.md`. These are model estimates; prototype measurements decide the final BOM.
+
+---
+
+## Addendum (2026-11-20): Prototypes use SA868S modules; check at higher power
+
+The owner's modules on hand are NiceRF SA868S, not SA818. Production boards will use the SA818S. NiceRF's drawings and pin tables for the two are identical (35.6 × 19.0 mm, 18 pins, 4.45 mm pad pitch), so the SA868 fits the carriers unchanged. It is a higher-power part: 32.5 dBm typical (33 dBm maximum, about 1.8–2 W) at up to 1.0 A, against 1 W and 0.75 A for the SA818S. Its low-power setting is 25 dBm.
+
+### Does the filter still meet Part 97 on 2 m at the higher power?
+
+| | SA818S, 1 W | SA868, 2 W |
+|---|---|---|
+| Carrier | 30 dBm | 33 dBm |
+| Limit for any spurious emission | 25 µW = −16 dBm | −16 dBm |
+| Suppression required | 46 dBc | 49 dBc |
+| Raw 2nd harmonic assumed (SA818 figures) | −30 to −40 dBc | same assumed |
+| Needed from the filter | 6 to 16 dB | 9 to 19 dB |
+| Filter at the 2nd harmonic, as-built model | 52 dB | 52 dB |
+| Margin | 36 dB or more | 33 dB or more |
+
+The extra 3 dB is small against the margin. Even if the SA868's raw second harmonic were 10 dB worse than the SA818 figures, the modelled filter would still have about 23 dB in hand. The third harmonic is attenuated more than the second.
+
+The SA868's own harmonic levels were not found in its datasheet, so the "raw" row is an assumption carried over from the SA818.
+
+### Power handling at 2 W
+
+2 W into 50 Ω is 10 V RMS (14 V peak) and 0.2 A RMS. The capacitors are specified at 50 V, which is ample. The inductor rule in this document asked for at least 200 mA, written for 1 W; at 2 W the through current alone is 200 mA and circulating current near cut-off is higher. The Coilcraft 0603HP current ratings for the fitted values were not re-read for this check (the datasheet could not be downloaded), so this is the one open point. It does not apply to production boards with the SA818S, and can be avoided on prototypes by using the SA868's low-power setting.
+
+### What carries over from prototypes to production, and what does not
+
+- **Carries over:** the filter's passive response (cut-off, loss, match), so tuning done on prototypes is valid.
+- **Does not carry over:** harmonic levels at the antenna, transmit current, supply sag and heat. Those must be measured again with SA818S modules before the design is called compliant.
+- **Decision (2026-11-20):** leave the carriers as they are. No redesign for the SA868.

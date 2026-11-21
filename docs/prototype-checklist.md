@@ -16,13 +16,26 @@ Checks that can be done at a desk with the design files and datasheets, and the 
 
 - [x] **5050 ear LED rated current.** Done 2026-11-20. The WS2812B V5 and WS2812B-V6 datasheets give 12 mA per colour as the working current (the condition for the brightness figures); neither states a separate maximum. That is 36 mA per LED at full white and about 0.94 A for all 26, not the 60 mA / 1.5 A assumed earlier. The WS2812B-2020-V6 datasheet gives the same 12 mA per colour (36 mA white) for the border LEDs. For the V6 parts now specified, both packages have a data-high threshold of 0.55 × supply and a supply range of 3.3–5.3 V.
 - [ ] **Critical footprints against datasheets.** Compare pad positions, sizes and pin 1 with the manufacturer's land pattern for: U1 RP2350B (QFN-80), U4 MCP73871 (QFN-20), U5/U11 TPS63001/TPS63000 (VSON-10), U6 TPS22919 (SC-70-6), U7 LC709203F (WDFN-8), U8 PCM5102A (TSSOP-20), U2 flash (SOIC-8), Y1 crystal (3215), J2 USB-C, J10 microSD, J1 JST PH, D1 and the two WS2812B packages, and the SA818 on the carriers.
+  - **Progress, 2026-11-20** (board pads compared with the manufacturer's drawing unless noted):
+    - **Y1 crystal — PROBLEM.** The footprint is a 3.2 × 1.5 mm two-pad pattern. The three 12 MHz crystals recommended in `electrical-design-decisions.md` are 3.2 × 2.5 mm four-pad parts, and no 12 MHz crystal in a 3.2 × 1.5 mm package was found. The footprint must change to match a real part before fab.
+    - **U1 RP2350B — OK.** Pitch 0.4, pad 0.2 × 0.8, exposed pad 3.4: matches the datasheet's recommended footprint except that the pad row sits about 0.05 mm further out. The pads still cover the leads fully.
+    - **U4 MCP73871 — OK.** Pitch 0.5, pads 0.25 × 0.825 centred 1.94 mm out, exposed pad 2.5; within Microchip's land pattern (0.30 × 0.80 max, pad spacing 4.00, centre pad 2.8 max).
+    - **U5 / U11 TPS6300x — OK.** Exact match to TI's DRC0010J land pattern, including the exposed-pad via positions.
+    - **U6 TPS22919 — OK.** Pitch and outer pad edge match TI's DCK0006A pattern; the pads run about 0.3 mm further in under the body than TI draws them, which is harmless.
+    - **U8 PCM5102A — OK.** Matches TI's PW0020A pattern to within 0.05 mm.
+    - **D1 power LED — OK.** Exact match to Kingbright's soldering pattern, and pad numbering agrees with the datasheet (1 red, 2 anode, 3 green, 4 blue).
+    - **WS2812B-V6 and WS2812B-2020-V6 — OK.** Pad spacing and pin functions match both datasheets' recommended pads.
+    - **J2 USB-C — OK.** Pad positions, widths, shell stakes and locating pegs match GCT's USB4105 drawing.
+    - **J1 JST PH — OK.** Pad sizes match JST's layout for the side-entry SMT header; polarity is covered under Part 1.
+    - **Radio module footprint on the carriers — OK.** NiceRF's drawings for the SA818S and the SA868 are identical: 35.6 × 19.0 mm, pads on a 4.45 mm pitch along the long edges and 4.6 mm on the end, with the same 18-pin assignment. The carrier footprint matches. The "2 mm pitch" in `CLAUDE.md` and the BOM is wrong.
+    - **Not yet checked** (datasheet could not be opened or was not reached): U7 LC709203F, U2 flash, J10 microSD.
 - [ ] **Custom footprints.** Check the three footprints made for this project against their datasheets: `L_Abracon_AOTA-B201610` (including the polarity dot at pad 1), `C_0402_1005Metric_Wide`, and `L_0603HP` on the carriers.
 
 ### Reviews in KiCad
 
 - [ ] **Main badge visual pass.** Look over the areas reworked in the November 2026 review: the power section on the back (U4, U5, U6), under and around U1, the LED rail regulator (about x 10–22, y 89–104 mm), the battery connector J1, the SD socket corner, the power LED beside J6, the border LEDs (D17/D18 are the tightest), the `CAM_HREF` jog near D18, and the inner power layer with the radio supply track and the VLED tracks.
 - [ ] **UHF carrier visual pass.** The UHF carrier PCB was generated from the VHF layout; look it over as a board in its own right.
-- [ ] **ERC and DRC.** Re-run both on all three boards after the last change and confirm: no unconnected items, no schematic-parity issues, and only the known excluded items.
+- [x] **ERC and DRC.** Re-run both on all three boards after the last change and confirm: no unconnected items, no schematic-parity issues, and only the known excluded items. Done 2026-11-20 on the committed files plus the uncommitted doc edits: main badge 0 unconnected, 0 parity, 2 excluded silk-edge items, ERC 4 library-mismatch warnings; each carrier 0 unconnected, 0 parity, 5 excluded copper-edge items, ERC 1 excluded library warning. Re-run again if any board changes (the crystal footprint will).
 
 ### Fab outputs
 
@@ -36,8 +49,8 @@ Checks that can be done at a desk with the design files and datasheets, and the 
 
 These check assumptions that are built into the PCB. If one turns out wrong, the board has to change, so do them **before** the fab order if the parts can be bought first.
 
-- [ ] **Camera module pinout.** The 2×9 header on the OV2640 module matches the J4 pin table in `electrical-design.md` exactly, pin for pin, including which row is odd and which is even.
-- [ ] **Camera module has its own clock.** With 3.3 V applied, RESET high and PWDN low, and no clock fed in, PCLK toggles on a scope. The badge supplies no XCLK, so a module that fails this will not work.
+- [ ] **Camera module pinout.** The 2×9 header on the OV2640 module matches the J4 pin table in `electrical-design.md` exactly, pin for pin, including which row is odd and which is even. Candidate found 2026-11-20: the red-PCB "OV2640 Camera Module ... STM32 Drive Red Board" sold on Amazon (EC Buying store). Its silkscreen, read from the listing photo, matches J4 pin for pin and in the right handedness: lens-side view, row nearer the lens GND, SCL, SDA, D0, D2, D4, D6, DCLK, PWDN; row at the board edge 3.3, VSYNC, HREF, RST, D1, D3, D5, D7, NC. Confirm on the part received.
+- [ ] **Camera module has its own clock.** With 3.3 V applied, RESET high and PWDN low, and no clock fed in, PCLK toggles on a scope. The badge supplies no XCLK, so a module that fails this will not work. For the red-board candidate (see above) this is the open question: the listing photos show no oscillator can on the front or the back. The front has two small black chips (one 5-pin, one 6-pin) and the lens holder could hide a part; one of these must be the clock source or the module cannot work here. Buy one and run this test before relying on it. If it fails, the fallback discussed was re-wiring J4 for the Adafruit OV5640 breakout, which has a selectable on-board 24 MHz oscillator.
 - [ ] **LED revision.** The WS2812B reels are the V6 revision (WS2812B-V6 and WS2812B-2020-V6), not V5 or earlier. Check the reel label and, if in doubt, measure one dark LED's current at 4.0 V: V6 is 1 µA or less, older parts about 0.6 mA.
 - [ ] **Display module backlight polarity.** On the MSP2401, the LED pin lights the backlight when driven **high** (3.3 V), and stays dark when left open or grounded. The manual says so; confirm on a real module. The backlight switch (Q1) assumes this.
 - [ ] **Display module pin order.** The module's 14 pins match J3: VCC, GND, CS, RESET, DC, MOSI, SCK, LED, MISO, then the five touch pins. The manual says so; confirm against the silkscreen on the module actually bought, since look-alike boards exist.
@@ -51,6 +64,8 @@ These check assumptions that are built into the PCB. If one turns out wrong, the
 - [ ] **Regulator versus battery pouch.** The LED rail regulator (U11, L9) sits on the back at about x 10–22 mm, y 89–104 mm. Confirm the battery pouch can be mounted without resting on the inductor.
 
 ## Part 2 — On the first assembled prototypes
+
+> **The prototype radios are SA868S modules, not SA818S** (found 2026-11-20). They fit the same footprint and pinout but transmit at about 1.8 W and draw up to 1.0 A, against 1 W and 0.75 A. Production boards will use the SA818S. Every radio measurement below — transmit current, supply sag, harmonics, heat — must be repeated with SA818S modules before it is taken as a result for the production design. Use the SA868's low-power setting when the test does not need full power.
 
 ### Power
 

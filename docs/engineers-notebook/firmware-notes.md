@@ -142,6 +142,12 @@ Call names are from the Pico SDK as remembered; confirm against the SDK version 
 
 ---
 
+### Prototype radios are SA868S; production radios are SA818S
+
+The modules on hand for prototypes are NiceRF SA868S (about 1.8 W, up to 1.0 A on transmit). Production boards will use the SA818S (1 W, 0.75 A). The pinout is the same. The SA868 datasheet has its own command section; it has not been compared line by line with the SA818S commands, so do that before writing the radio driver, and keep anything module-specific behind one small interface. The SA868's feature list gives 12.5 kHz channel width only, where the SA818S offers 12.5 or 25 kHz.
+
+- Source: SA868 V1.3 and SA818S V1.7 datasheets, read 2026-11-20.
+
 ### Block transmit when the battery is too low
 
 The SA818 needs at least 3.3 V and the path from the cell loses about 0.22 V at full transmit current. Near the end of the battery, transmit power sags or the module drops out. Firmware should refuse to transmit below a battery-voltage threshold and say why on screen. The threshold comes from the prototype test "Transmit at low battery" in `docs/prototype-checklist.md`.

@@ -1,6 +1,6 @@
 # DEFCON SSTV Badge — Bill of Materials
 
-**Version:** 3.12
+**Version:** 3.13
 **Last Updated:** 2026-11-13
 **Source:** KiCad schematic export, verified against `docs/electrical-design.md`
 
@@ -147,15 +147,15 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 | C20 | 1 | 10µF | 0805 | Fab | DVDD decoupling |
 | C19 | 1 | 100nF | 0603 | Fab | AVDD decoupling |
 | C21, C22 | 2 | 2.2µF | 0603 | Fab | Charge pump caps (CAPP, CAPM) |
-| R5 | 1 | 47kΩ | 0603 | User | TX attenuator (high) |
-| R6 | 1 | 470Ω | 0603 | User | TX attenuator (low) |
-| C24 | 1 | 10nF | 0603 | User | TX low-pass filter |
-| C25 | 1 | 100nF | 0603 | User | TX DC blocking |
-| C26 | 1 | 1µF | 0603 | User | RX DC blocking |
-| R7, R8 | 2 | 4.7kΩ | 0603 | User | RX anti-alias filter |
-| C27 | 1 | 4.7nF | 0603 | User | RX anti-alias filter |
-| R9 | 1 | 47kΩ | 0603 | User | RX bias to 3.3V |
-| R10 | 1 | 47kΩ | 0603 | User | RX bias to GND |
+| R5 | 1 | 47kΩ | 0603 | Fab | TX attenuator (high) |
+| R6 | 1 | 470Ω | 0603 | Fab | TX attenuator (low) |
+| C24 | 1 | 10nF | 0603 | Fab | TX low-pass filter |
+| C25 | 1 | 100nF | 0603 | Fab | TX DC blocking |
+| C26 | 1 | 1µF | 0603 | Fab | RX DC blocking |
+| R7, R8 | 2 | 4.7kΩ | 0603 | Fab | RX anti-alias filter |
+| C27 | 1 | 4.7nF | 0603 | Fab | RX anti-alias filter |
+| R9 | 1 | 47kΩ | 0603 | Fab | RX bias to 3.3V |
+| R10 | 1 | 47kΩ | 0603 | Fab | RX bias to GND |
 
 **Subtotal:** ~$2.10
 
@@ -169,7 +169,7 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 | J23 | 1 | 1×3 socket | 2.54mm | User | Support for the display's free end (no electrical connection) |
 | — | 1 | 1×3 male header | 2.54mm | User | Soldered into the first three SD header holes on the display module; plugs into J23 |
 | Q1 | 1 | AO3401A | SOT-23 | Fab | Backlight high-side switch (P-channel) |
-| R11 | 1 | 1kΩ | 0603 | User | Gate series resistor |
+| R11 | 1 | 1kΩ | 0603 | Fab | Gate series resistor |
 | R30 | 1 | 4.7kΩ | 0402 | Fab | Gate pull-up to 3.3V (backlight off during reset and BOOTSEL) |
 
 **Subtotal:** ~$10.00
@@ -197,7 +197,7 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 | Ref | Qty | Value | Package | Assembly | Notes |
 |-----|-----|-------|---------|----------|-------|
 | SW1-SW5 | 5 | Tactile 6×6mm | TH | User | D-pad (up/down/left/right/center); center doubles as photo capture |
-| SW7 | 1 | Slide SPDT | TH | User | Airplane mode toggle |
+| SW7 | 1 | C&K OS102011MA1QN1 (SPDT slide, right-angle, 2.0mm pin pitch) | TH | User | Airplane mode toggle. Mounted on the back. The footprint is for this C&K part; generic vertical slide switches (SS12D00 and similar) do not fit |
 
 ### PWR Status LED (Traditional RGB)
 
@@ -268,8 +268,8 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 | Ref | Qty | Value | Package | Assembly | Notes |
 |-----|-----|-------|---------|----------|-------|
 | J1 | 1 | JST S2B-PH-SM4-TB (JST-PH 2-pin) | SMD, side-entry | Fab | Battery connector, on the back; plug enters from the top-of-board side |
-| J5 | 1 | 2×3 header | 2.54mm | User | SAO connector 1 |
-| J6 | 1 | 2×3 header | 2.54mm | User | SAO connector 2 |
+| J5 | 1 | 2×3 female socket | 2.54mm | User | SAO connector 1 |
+| J6 | 1 | 2×3 female socket | 2.54mm | User | SAO connector 2 |
 | J7, J8 | 2 | 1×8 socket | 2.54mm | User | Carrier signal headers |
 | J9 | 1 | TC2030-CTX-NL | Pads only | Fab | Tag-Connect SWD (no component, excluded from BOM) |
 | J10 | 1 | Micro SD Card | SMD | Fab | Standalone SD card socket |
@@ -487,6 +487,7 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 | 3.10 | 2026-11 | **Display module specified**: QDtech / LCDwiki MSP2401 (2.4" ILI9341, no touch). **Display support socket J23** (1×3, no connection) added under the module's SD header position, plus a 1×3 pin header to solder to the module. |
 | 3.11 | 2026-11 | **Backlight gate pull-up R30** (4.7kΩ, 0402) added so the backlight is off until firmware turns it on. R11 description corrected: it is a series gate resistor, not a pull-down. |
 | 3.12 | 2026-11 | **LED revision specified**: WS2812B-V6 and WS2812B-2020-V6. The V6 parts draw 1µA or less when dark, which is what keeps the always-on LED rail out of the sleep budget. Same footprints and pinout. |
+| 3.13 | 2026-11 | **Assembly split corrected**: the audio filter parts (R5–R10, C24–C27) and backlight gate resistor R11 are fab-assembled like every other surface-mount part. SW7 named as C&K OS102011MA1QN1 to match its footprint. SAO connectors J5/J6 described as 2×3 female sockets. |
 
 ---
 
