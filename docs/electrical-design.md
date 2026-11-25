@@ -1056,7 +1056,7 @@ User receives a complete, band-matched RF assembly. No antenna selection confusi
 
 | Ref | Value | Package | Notes |
 |-----|-------|---------|-------|
-| U1 | SA818-V or SA818-U | Module | 2mm pitch castellated |
+| U1 | SA818-V or SA818-U | Module | 4.45mm pitch castellated |
 | J_SMA | SMA edge-mount | PCB edge | Female, 50Ω |
 | C1 | 100nF | 0402/0603 | Decoupling |
 | C2 | 10µF | 0603/0805 | Bulk |
@@ -2824,7 +2824,7 @@ Test carrier independently before mating with main badge:
 - Female header sockets (J7, J8 signal; J11, J12 mechanical) — through-hole, easy
 
 **Carrier board (hot air assembly):**
-- SA818 module (2mm pitch castellated — needs careful alignment)
+- SA818 module (4.45mm pitch castellated — needs careful alignment)
 - SMA connector (through-hole or reflow depending on part)
 - 0402/0603 passives
 - Male headers (J14-J17 for VHF, J18-J22 for UHF) — through-hole, easy

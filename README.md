@@ -48,7 +48,7 @@ Perfect for ham radio operators, makers, and anyone interested in digital modes 
 
 ## SA818 Carrier Board System
 
-The SA818 transceiver has 2mm pitch castellated pads that are incompatible with user-swappable sockets. Instead of mounting the SA818 directly on the main badge, the design uses a full-width carrier board system.
+The SA818 transceiver has castellated pads (4.45mm pitch) that are incompatible with user-swappable sockets. Instead of mounting the SA818 directly on the main badge, the design uses a full-width carrier board system.
 
 ### How It Works
 
@@ -77,7 +77,7 @@ Each carrier includes a band-matched stubby antenna, so users do not need to sou
 - Main badge PCB has no RF routing, simplifying layout and potentially enabling 2-layer PCB
 - Carrier board has proper 50-ohm microstrip trace from SA818 to SMA
 - Ground stitching around RF trace on carrier for shielding
-- SA818 is factory-assembled onto carrier (2mm pitch not user-solderable)
+- SA818 is factory-assembled onto carrier (castellated module, not socketable)
 
 ## Power System
 

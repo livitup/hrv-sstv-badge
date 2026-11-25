@@ -1,6 +1,6 @@
 # Project Status — DEFCON SSTV Badge
 
-**Last Updated:** 2026-11-21
+**Last Updated:** 2026-11-25
 
 This document tracks the design and implementation status for all badge subsystems.
 
@@ -48,7 +48,7 @@ This document tracks the design and implementation status for all badge subsyste
 - [x] Component selection: USB4105-GF-A (USB 2.0 with D+/D-), USBLC6-2SC6, PESD5V0S1BL
 - [x] CC resistors for sink identification (5.1kΩ)
 - [x] **KiCad: USB-C schematic complete** (connector, CC resistors, ESD protection, D+/D- to MCU)
-- [ ] Verify USB4105-GF-A footprint in KiCad
+- [x] USB4105-GF-A footprint checked against the manufacturer's land pattern 2026-11-20 (`prototype-checklist.md`, Part 0)
 - [ ] Test USB data connection with RP2350 bootloader, including while the radio is transmitting (D+/D− are not routed as a matched pair)
 - [ ] Test charging with various USB sources
 
@@ -60,8 +60,8 @@ This document tracks the design and implementation status for all badge subsyste
 - [x] **KiCad: TPS22919 load switch complete** (VSYS input, SA818_VCC output, SA818_PD enable, output caps)
 - [x] **LED supply rail added (2026-11-14)**: U11 TPS63000 buck-boost at 4.0V (VLED) for all 26 WS2812B LEDs, distributed on the inner power layer; see `engineers-notebook/led-supply-rail.md`
 - [ ] Prototype check of the LED rail: output voltage, stability, voltage at the far ear tip, firmware brightness cap
-- [ ] Verify TPS63001 QFN-10 footprint in KiCad
-- [ ] Verify TPS22919 SOT-23-5 footprint in KiCad
+- [x] TPS63001 / TPS63000 (VSON-10) footprint checked against the manufacturer's land pattern 2026-11-20 (`prototype-checklist.md`, Part 0)
+- [x] TPS22919 (SC-70-6) footprint checked against the manufacturer's land pattern 2026-11-20 (`prototype-checklist.md`, Part 0)
 - [ ] Prototype and validate power system across full battery range
 
 ### Battery Management
@@ -72,8 +72,8 @@ This document tracks the design and implementation status for all badge subsyste
 - [x] Display free-end support socket J23 (1×3, no connection) placed from the MSP2401 dimension drawing (2026-11-18); fit check with a real module is in `prototype-checklist.md`
 - [x] **KiCad: MCP73871 charger complete** (VBUS input, battery connector, PROG resistors, THERM)
 - [x] **KiCad: LC709203F fuel gauge complete** (powered from the battery net VBAT, temperature over I2C, ALARMB grounded, 1µF decoupling — wiring corrected 2026-11-17)
-- [ ] Verify MCP73871 QFN-20 footprint in KiCad
-- [ ] Verify LC709203F WDFN-8 footprint in KiCad
+- [x] MCP73871 QFN-20 footprint checked against the manufacturer's land pattern 2026-11-20 (`prototype-checklist.md`, Part 0); five vias added under its exposed pad
+- [x] LC709203F WDFN-8 footprint checked against the manufacturer's land pattern 2026-11-20 (`prototype-checklist.md`, Part 0)
 - [ ] Source 10K NTC thermistor (B=3380)
 - [ ] Source 2000mAh LiPo with JST-PH connector
 - [ ] Test charge cycle and thermal regulation
@@ -95,7 +95,8 @@ This document tracks the design and implementation status for all badge subsyste
 - [x] Visual review of both carrier PCBs in KiCad — done 2026-11-21; **both carriers locked**
 - [ ] Confirm the SA818 underside has no exposed copper where RXD/TXD/MIC run beneath it
 - [ ] Prototype tuning of both LPFs (NanoVNA), then lock BOM values
-- [ ] Verify SA818 2mm pitch footprint dimensions
+- [x] Radio module footprint dimensions checked against NiceRF's SA818S / SA868 drawings 2026-11-20 (35.6 × 19.0 mm, 4.45 mm pad pitch)
+- [ ] Radio module pin-numbering direction — meter test on a real module before ordering carriers (`prototype-checklist.md`, Part 1)
 - [ ] Source appropriate stubby antennas (VHF and UHF)
 - [ ] Prototype carrier and validate RF performance independently
 
@@ -109,7 +110,7 @@ This document tracks the design and implementation status for all badge subsyste
 - [x] **KiCad: PCM5102A DAC complete** (I2S, power, charge pump caps)
 - [x] **KiCad: TX output filter complete** (R5/R6 100:1 divider, C24 LPF, C25 DC block → MIC+; R6 wiring corrected 2026-11-14)
 - [x] **KiCad: RX input filter complete** (C26 DC block, R7/R8/C27 anti-alias, R9/R10 bias → RX_AUDIO)
-- [ ] Verify PCM5102A TSSOP-20 footprint in KiCad
+- [x] PCM5102A TSSOP-20 footprint checked against the manufacturer's land pattern 2026-11-20 (`prototype-checklist.md`, Part 0)
 - [ ] Test TX audio quality with oscilloscope
 - [ ] Test RX audio chain and verify bias levels
 - [ ] Validate SSTV encode/decode with audio circuits
@@ -171,18 +172,18 @@ This document tracks the design and implementation status for all badge subsyste
 - [x] KiCad: BOOTSEL button
 - [x] KiCad: I2C pullups (with global labels)
 - [x] **KiCad: MCU sheet complete** (all 48 GPIOs labeled, USB, debug, flash, crystal)
-- [ ] Source RP2350B and verify QFN-80 footprint
+- [x] RP2350B QFN-80 footprint checked against the manufacturer's land pattern 2026-11-20 (`prototype-checklist.md`, Part 0)
+- [ ] Source RP2350B
 - [x] Verify crystal footprint — it was wrong (3.2×1.5mm two-pad, a watch-crystal size); changed to 3.2×2.5mm four-pad on 2026-11-20
-- [ ] Verify load cap values against the crystal actually ordered
-- [ ] Verify flash footprint (SOIC-8)
+- [x] Crystal specified as Abracon ABM8-272-T3 (12 MHz, 10 pF load); 15 pF load caps and 1 kΩ series resistor match Raspberry Pi's hardware design guide for this part (2026-11-20)
+- [x] Flash (W25Q128JVS, 208-mil SOIC-8) footprint checked against the manufacturer's land pattern 2026-11-20 (`prototype-checklist.md`, Part 0)
 - [ ] Verify peripheral pin mappings (UART1, SPI0, I2C0, PIO)
 
 ### Debug Interface
 - [x] Interface selected: Tag-Connect TC2030-CTX-NL (pogo pads, no header)
 - [x] Pinout defined (ARM SWD: VCC, SWDIO, RESETn, SWCLK, GND, SWO)
 - [x] **KiCad: Tag-Connect complete** (TC2030-NL symbol with SWD signals and RUN)
-- [ ] Add TC2030-CTX-NL footprint to KiCad
-- [ ] Verify placement on back of PCB
+- [x] Tag-Connect TC2030-NL footprint on the PCB (J9), on the back
 
 ### Blinky / LED Matrix
 - [x] Architecture established: WS2812B chain, single GPIO
@@ -220,13 +221,13 @@ This document tracks the design and implementation status for all badge subsyste
 - [x] Lanyard slot specified (centered oval cutout)
 - [x] **KiCad schematic complete** (all sheets: Power, Audio, Display/Camera, User Controls, MCU, Connectors)
 - [x] **KiCad: Board outline created** (edge cuts with rabbit ear antennas and ball tips)
-- [x] **KiCad: Component placement nearly complete** (MCU, power, audio, display, camera sections placed; power ICs on back side)
+- [x] **KiCad: Component placement complete** (MCU, power, audio, display, camera sections placed; power ICs on back side)
 - [x] Trace routing (main board) — complete
 - [x] **Visual review complete and main badge locked for the prototype run (2026-11-21)** — see `engineers-notebook/main-badge-review-2026-11.md` section 21. Next: fab files and the assembler questions in `prototype-checklist.md`
 - [x] Ground pour
 - [x] DRC clean-up — 0 unconnected, 0 schematic-parity issues; only the excluded silkscreen items remain
 - [x] **Design review fixes (2026-11-13)** — see "Main Badge Review" below
-- [ ] Open questions from the reviews: all closed — radio supply drop and TPS22919 rating (no change needed: datasheet TX current is 0.75A max, 2026-11-20), crystal series resistor (R29 added 2026-11-18), band ID (settled in firmware 2026-11-20), SD card pull-ups, VBUS capacitance — see `engineers-notebook/main-badge-review-2026-11.md`
+- [x] Open questions from the reviews: all closed — radio supply drop and TPS22919 rating (no change needed: datasheet TX current is 0.75A max, 2026-11-20), crystal series resistor (R29 added 2026-11-18), band ID (settled in firmware 2026-11-20), SD card pull-ups, VBUS capacitance — see `engineers-notebook/main-badge-review-2026-11.md`
 - [x] **Smaller review items worked through (2026-11-14)**: VBUS capacitance under 10µF, SD card pull-ups, six power test pads, BOOTSEL resistor moved closer, 1.1V links widened — see `engineers-notebook/main-badge-review-2026-11.md` section 8
 - [x] **SD card socket turned to face the board edge (2026-11-14)** — the card now sits flush with the right-hand edge; all four SD pull-ups fitted
 - [ ] Not done: third DVDD cap at U1 pin 32 (no room)
@@ -265,12 +266,14 @@ Not verifiable on paper: camera module pinout against J4, battery connector pola
 
 ## Next Steps (Priority Order)
 
-1. **Pre-fab review** — look over the reworked main badge power section and the area under U1 in KiCad; settle the open design questions from the review
-2. **Source long-lead components** — SA818, display, camera modules, LPF tuning values (Murata GJM15 caps, Coilcraft 0603HP inductors)
-3. **Generate Gerbers** — main badge and both carriers
-4. **Prototype ordering** — JLCPCB or similar (carriers can go first); tune the LPFs on the prototypes
-5. **Breadboard prototype** — Validate circuits before main board PCB fab
-6. **Firmware development** — Can start in parallel with hardware
+The design reviews are finished and all three boards are locked. The detailed list is `prototype-checklist.md`.
+
+1. **Fab files** — generate Gerbers, drill, pick-and-place and BOM for the main badge and both carriers, and inspect them in a Gerber viewer
+2. **Assembler questions** — fiducials, 0.13 mm copper spacing at the RP2350 regulator, silkscreen text height, via tenting, 4-layer stackup
+3. **Parts-in-hand checks** — radio module pin direction (meter test; blocks the carrier order), camera module clock and pinout, display pin order / backlight polarity / support socket fit, battery polarity and fit, LED revision
+4. **Prototype ordering** — small run first (carriers can go first once the meter test passes); source LPF tuning values (Murata GJM15 caps, Coilcraft 0603HP inductors), antennas and the thermistor
+5. **Prototype bring-up** — Part 2 of the checklist, including LPF tuning; repeat radio measurements with SA818S modules (the prototype radios are SA868S)
+6. **Firmware development** — not started; can begin on a dev board in parallel
 
 ---
 
@@ -285,7 +288,7 @@ Not verifiable on paper: camera module pinout against J4, battery connector pola
 | Carrier PCB layout | ✓ | **Complete** — Both carriers routed with harmonic LPF; 0 unconnected, 0 parity issues |
 | Main badge PCB layout | ✓ | **Complete** — Routed; 2026-11 review fixes and LED supply rail applied, DRC clean |
 | Gerbers generated | | Not started |
-| Prototype ordered | | Not started |
+| Prototype ordered | | Not started — waiting on fab files, assembler questions and parts-in-hand checks |
 | First power-on | | Not started |
 | Firmware MVP | | Not started |
 | DEFCON ready | | Not started |

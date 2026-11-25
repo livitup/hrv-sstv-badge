@@ -1,6 +1,6 @@
 # DEFCON SSTV Badge — Bill of Materials
 
-**Version:** 3.14
+**Version:** 3.15
 **Last Updated:** 2026-11-13
 **Source:** KiCad schematic export, verified against `docs/electrical-design.md`
 
@@ -289,7 +289,7 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 
 | Ref | Qty | Value | Package | Assembly | Notes |
 |-----|-----|-------|---------|----------|-------|
-| U9 | 1 | SA818V | Module (2mm pitch) | Fab | VHF transceiver |
+| U9 | 1 | SA818V | Module (4.45mm pitch) | Fab | VHF transceiver |
 | J13 | 1 | SMA edge-mount | Amphenol 132289 footprint | Fab | Female, 50Ω, LPF output |
 | J14 | 1 | 1×8 male header | 2.54mm | User | Power/Audio (mounted on back) |
 | J15 | 1 | 1×8 male header | 2.54mm | User | Control/Data (mounted on back) |
@@ -309,7 +309,7 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 
 | Ref | Qty | Value | Package | Assembly | Notes |
 |-----|-----|-------|---------|----------|-------|
-| U10 | 1 | SA818U | Module (2mm pitch) | Fab | UHF transceiver |
+| U10 | 1 | SA818U | Module (4.45mm pitch) | Fab | UHF transceiver |
 | J19 | 1 | SMA edge-mount | Amphenol 132289 footprint | Fab | Female, 50Ω, LPF output |
 | J18 | 1 | 1×8 male header | 2.54mm | User | Power/Audio (mounted on back) |
 | J20 | 1 | 1×8 male header | 2.54mm | User | Control/Data (mounted on back) |
@@ -489,6 +489,7 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 | 3.12 | 2026-11 | **LED revision specified**: WS2812B-V6 and WS2812B-2020-V6. The V6 parts draw 1µA or less when dark, which is what keeps the always-on LED rail out of the sleep budget. Same footprints and pinout. |
 | 3.13 | 2026-11 | **Assembly split corrected**: the audio filter parts (R5–R10, C24–C27) and backlight gate resistor R11 are fab-assembled like every other surface-mount part. SW7 named as C&K OS102011MA1QN1 to match its footprint. SAO connectors J5/J6 described as 2×3 female sockets. |
 | 3.14 | 2026-11 | **Crystal Y1 package corrected** from "3215" to 3225 (3.2×2.5mm, four pads); ABM8-272-T3 named as first choice. The old footprint was a watch-crystal size that no 12MHz part comes in. |
+| 3.15 | 2026-11 | Radio module (U9, U10) pad pitch corrected from "2mm" to 4.45mm, per NiceRF's SA818S drawing. Description only; no part or footprint change. |
 
 ---
 

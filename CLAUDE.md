@@ -37,7 +37,7 @@ See `docs/electrical-design.md` for complete power system documentation.
 
 ## SA818 Carrier Board System
 
-**Problem:** SA818 has 2mm pitch castellated pads, incompatible with user-swappable sockets.
+**Problem:** SA818 has castellated pads (4.45mm pitch), incompatible with user-swappable sockets.
 
 **Solution:** Full-width carrier board that overlays the top of the main badge:
 - Carrier is full badge width (~120mm), mounts in FRONT of main badge
