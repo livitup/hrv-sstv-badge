@@ -18,6 +18,7 @@ This directory contains design decisions, trade-off analyses, and educational ba
 
 ### Trade-Off Analyses
 
+- **[plug-in-ears.md](plug-in-ears.md)** — Why the rabbit ears became separate plug-in boards (breakage, panel cost), the socket pinout, the new LED chain order and the as-built layout
 - **[led-supply-rail.md](led-supply-rail.md)** — Why the WS2812B LEDs have their own 4.0 V buck-boost rail: datasheet supply range, the 3.3 V data-level constraint that rules out 5 V, the four options compared (VSYS direct, boost, buck-boost, leave at 3.3 V), and the layout choices for distributing the rail. **Decision: TPS63000 buck-boost at 4.0 V.**
 
 - **[rda1846-vs-sa818-analysis.md](rda1846-vs-sa818-analysis.md)** — Detailed comparison of using the bare RDA1846S transceiver IC vs the SA818 module (which contains the RDA1846S internally). Covers engineering effort, cost, SSTV audio compatibility, assembly, sourcing risk, and carrier board implications. **Decision: Stay with SA818.**

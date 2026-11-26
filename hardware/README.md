@@ -24,6 +24,10 @@ hardware/
 │   ├── sa818-u-carrier.kicad_pro
 │   ├── sa818-u-carrier.kicad_sch
 │   └── sa818-u-carrier.kicad_pcb      # PCB layout complete
+├── ear/                           # Plug-in rabbit ear LED board (one design, used twice)
+│   ├── ear.kicad_pro
+│   ├── ear.kicad_sch
+│   └── ear.kicad_pcb                  # PCB layout complete
 ├── symbols/                       # Custom KiCad symbol libraries
 ├── footprints.pretty/             # Custom KiCad footprint libraries
 ├── fp-lib-table                   # Footprint library table
@@ -35,12 +39,17 @@ hardware/
 ## Design Overview
 
 ### Main Badge
-- **PCB shape**: Simpsons-style retro TV with rabbit ear antennas and stubby feet
+- **PCB shape**: Simpsons-style retro TV with stubby feet; the rabbit ear antennas are two plug-in boards (`ear/`)
 - **Body dimensions**: 120mm × 120mm
-- **Total height**: ~190mm (ears + body + feet)
+- **Total height**: ~199mm with ears plugged in (main board alone 139mm)
 - **Layer count**: Targeting 4-layer (signal/ground/power/signal)
 - **Thickness**: 1.6mm standard FR4
 - **Soldermask**: Purple with white silkscreen (Simpsons TV aesthetic)
+
+### Rabbit Ears
+- **One board, used twice**: 15 × 95.5mm, 2-layer, five WS2812B LEDs and a 2×3 header
+- Plugs into sockets J24/J25 on the back of the main badge; replaceable
+- See `docs/engineers-notebook/plug-in-ears.md`
 
 ### Carrier Boards
 - **Size**: Full badge width (~120mm), overlays top of main badge

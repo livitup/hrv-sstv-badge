@@ -1,6 +1,6 @@
 # DEFCON SSTV Badge — Bill of Materials
 
-**Version:** 3.15
+**Version:** 3.16
 **Last Updated:** 2026-11-13
 **Source:** KiCad schematic export, verified against `docs/electrical-design.md`
 
@@ -19,7 +19,7 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 | Display | ~$10.00 | ILI9341 module + backlight circuit |
 | Camera | ~$6.00 | OV2640 DVP module (must have on-board oscillator) + resistors |
 | User Controls | ~$1.30 | Switches, PWR LED, resistors |
-| Blinky LEDs | ~$2.28 | 10× WS2812B-5050 + 16× WS2812B-2020 + bypass caps |
+| Blinky LEDs | ~$2.28 | 10× WS2812B-5050 (on two plug-in ear boards) + 16× WS2812B-2020 + bypass caps |
 | MCU + Support | ~$3.90 | RP2350B, crystal, flash, regulator inductor, passives |
 | Connectors | ~$2.00 | SAO, carrier sockets, SD card, debug |
 | **Main Badge Total** | **~$66** | Without carrier |
@@ -217,9 +217,12 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 
 | Ref | Qty | Value | Package | Assembly | Notes |
 |-----|-----|-------|---------|----------|-------|
-| D2–D11 | 10 | WS2812B-V6 (Worldsemi) | 5050 (5.0×5.0mm) | Fab | Rabbit ear antennas (5 per ear). **Must be the V6 revision**: standby ≤1µA (V5 is 0.6mA each) |
+| D2–D6 (×2 ear boards) | 10 | WS2812B-V6 (Worldsemi) | 5050 (5.0×5.0mm) | Fab | On the plug-in ear boards, 5 per ear (D2 at the tip). **Must be the V6 revision**: standby ≤1µA (V5 is 0.6mA each) |
 | D12–D27 | 16 | WS2812B-2020-V6 (Worldsemi) | 2020 (2.0×2.0mm) | Fab | Display border (3×5×3×5 layout). **Must be the V6 revision** for the same reason |
-| C28–C53 | 26 | 100nF | 0402 | Fab | Bypass caps (one per LED) |
+| C38–C53 | 16 | 100nF | 0402 | Fab | Bypass caps for the border LEDs (main badge) |
+| C28–C32 (×2 ear boards) | 10 | 100nF | 0402 | Fab | Bypass caps for the ear LEDs (ear boards) |
+| J26 (×2 ear boards) | 2 | 2×3 male pin header | 2.54mm | User | One per ear board, on the LED side; plugs into J24/J25 |
+| — | 2 (+1 spare) | Ear PCB (`hardware/ear`) | 15 × 95.5 mm, 2-layer | Fab | One design for both ears; **ship one spare ear per kit** |
 
 **Subtotal:** ~$2.28
 *(10× WS2812B-5050 @ ~$0.08 = $0.80, 16× WS2812B-2020 @ ~$0.06 = $0.96, 26× caps @ ~$0.02 = $0.52)*
@@ -274,6 +277,7 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 | J9 | 1 | TC2030-CTX-NL | Pads only | Fab | Tag-Connect SWD (no component, excluded from BOM) |
 | J10 | 1 | Micro SD Card | SMD | Fab | Standalone SD card socket |
 | J11, J12 | 2 | 1×3 socket | 2.54mm | User | Carrier mechanical (GND) |
+| J24, J25 | 2 | 2×3 female socket | 2.54mm | User | Rabbit ear sockets, on the **back** at the top edge, at 45°. SAO pinout with VLED (4.0V) on pin 1 |
 
 **Subtotal:** ~$2.50
 
@@ -372,7 +376,7 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 | 27Ω | 2 | 0402 | USB series termination (R20, R21) |
 | 33Ω | 1 | 0402 | RP2350 VREG_AVDD filter (R22) |
 | 1kΩ | 1 | 0603 | Backlight gate series resistor (R11) |
-| 1kΩ | 2 | 0402 | BOOTSEL series resistor (R19), crystal series resistor (R29) |
+| 1kΩ | 3 | 0402 | BOOTSEL series resistor (R19), crystal series resistor (R29), ear data bypass (R31) |
 | 2kΩ | 1 | 0603 | Charge current PROG1 (R3) |
 | 4.7kΩ | 4 | 0603 | RX filter (R7, R8), I2C pullups (R1, R2) |
 | 4.7kΩ | 1 | 0402 | Backlight gate pull-up (R30) |
@@ -398,7 +402,7 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 | 39pF | 2 | 0402 C0G | VHF carrier LPF (C59, C60) |
 | 4.7nF | 1 | 0603 | RX anti-alias (C27) |
 | 10nF | 1 | 0603 | TX filter (C24) |
-| 100nF | 42 | 0402/0603 | Decoupling: MCU (C3-C7, C9, C70, C72), LEDs (C28-C53), ICs (incl. C74, C75), carriers (C54, C56) |
+| 100nF | 42 | 0402/0603 | Decoupling: MCU (C3-C7, C9, C70, C72), LEDs (C38-C53 on the main badge, C28-C32 on each ear board), ICs (incl. C74, C75), carriers (C54, C56) |
 | 1µF | 4 | 0402/0603 | RX DC block (C26), load switch input (C73), VBUS at connector (C_USB1), fuel gauge supply (C84) |
 | 4.7µF | 3 | 0402 | RP2350 regulator (C1, C77, C78) |
 | 4.7µF | 1 | 0603 | Charger input (C76) |
@@ -446,6 +450,7 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 - Include 2-3 spare 0603 resistors/caps (easy to lose)
 - Print assembly instructions with component placement diagram
 - Include test procedure checklist
+- Include three ear boards (two fitted, one spare)
 
 ---
 
@@ -490,6 +495,7 @@ This is the consolidated BOM for the DEFCON SSTV badge. Components are organized
 | 3.13 | 2026-11 | **Assembly split corrected**: the audio filter parts (R5–R10, C24–C27) and backlight gate resistor R11 are fab-assembled like every other surface-mount part. SW7 named as C&K OS102011MA1QN1 to match its footprint. SAO connectors J5/J6 described as 2×3 female sockets. |
 | 3.14 | 2026-11 | **Crystal Y1 package corrected** from "3215" to 3225 (3.2×2.5mm, four pads); ABM8-272-T3 named as first choice. The old footprint was a watch-crystal size that no 12MHz part comes in. |
 | 3.15 | 2026-11 | Radio module (U9, U10) pad pitch corrected from "2mm" to 4.45mm, per NiceRF's SA818S drawing. Description only; no part or footprint change. |
+| 3.16 | 2026-11 | **Rabbit ears became plug-in boards.** Ear LEDs D2–D11 and caps C28–C37 left the main badge; each ear board (`hardware/ear`) carries D2–D6, C28–C32 and header J26. Main badge gained ear sockets J24, J25 and bypass resistor R31 (1kΩ). One spare ear per kit. |
 
 ---
 

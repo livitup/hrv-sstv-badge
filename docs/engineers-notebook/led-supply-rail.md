@@ -144,3 +144,6 @@ Vias on the LED net in this area are all 0.6 mm; front traces 0.4 mm; inner trac
 
 **Ears, same day.** The inner track up each ear was a chain of separate pieces that stopped about 0.1 mm short of each via and relied on overlapping the via's pad; the left ear also had a 12 mm duplicate run lying on top of the main one. Each ear is now a single straight 45° line that passes through every via (within 0.03 mm of each centre), with a short vertical lead-in at the base. D3's via in the left ear sits about 1 mm off that line and keeps a short straight link to it.
 
+---
+
+**Later change (2026-11-25):** the ears are now plug-in boards. The VLED trunk ends at pin 1 of the two ear sockets instead of running up the ears, and the ear descriptions above describe the board as it was. See [plug-in-ears.md](plug-in-ears.md).

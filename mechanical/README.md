@@ -15,7 +15,7 @@ As a DEFCON badge, this device is designed to be worn **without a traditional en
 ### Dimensions and Weight
 | Parameter | Value | Notes |
 |-----------|-------|-------|
-| **PCB Size** | 120mm × 120mm body, ~190mm total height | TV-shaped outline with rabbit ear antennas and stubby feet |
+| **PCB Size** | 120mm × 120mm body, ~199mm total height with ears | TV-shaped outline with stubby feet; rabbit ear antennas are separate boards that plug into the back |
 | **Thickness** | ~15mm max | Including tallest components |
 | **Weight** | ~150g | Including 2000mAh battery |
 | **Balance Point** | Center-bottom | Optimized for comfortable wearing |
@@ -24,7 +24,7 @@ As a DEFCON badge, this device is designed to be worn **without a traditional en
 - **Rounded PCB edges** - No sharp corners that could snag or poke
 - **Component placement** - Heavy components (battery, SA818) positioned for balance
 - **Smooth back side** - Minimal components on reverse for comfort against clothing
-- **Lanyard mounting** - Centered oval slot for easy lanyard attachment
+- **Lanyard mounting** - Two 4mm holes at the top edge, one each side
 
 ## 📁 Directory Structure
 
@@ -76,9 +76,9 @@ While not required, these mechanical aids can improve assembly quality:
 ## 🎒 Wearing and Transportation
 
 ### Lanyard Attachment
-- **Mounting**: Single oval slot at top center (~20mm × 5mm)
-- **Hardware**: None required - lanyard threads directly through slot
-- **Lanyard types**: Standard conference lanyards compatible
+- **Mounting**: Two 4mm holes at the top edge, 80mm apart (behind the carrier board)
+- **Hardware**: A cord loop or split ring through each hole; the lanyard threads in from the back and up between the two boards
+- **Lanyard types**: Two-clip conference lanyards, or a single clip on a cord bridle; bulky swivel clips may not fit behind the carrier (to be checked on a prototype)
 - **Load rating**: PCB designed for >2kg static load
 
 ### Protective Considerations
@@ -164,7 +164,7 @@ For detailed design information, see:
 ### Mechanical Safety  
 - **Sharp edges** - All PCB edges rounded and smooth
 - **Component security** - All parts firmly attached, no loose items
-- **Lanyard slot** - Centered slot rated for safety loads
+- **Lanyard holes** - Two 4mm holes at the top edge, 3.5mm of board above each
 - **Material safety** - Lead-free solder, RoHS compliant components
 
 ---

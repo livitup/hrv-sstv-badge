@@ -152,9 +152,9 @@ See `engineers-notebook/led-supply-rail.md` for the options that were compared.
 ### Layout
 
 - U11 and its parts are on the back, at about (10–22, 89–104) mm, between the display socket J3 and the charger. The layout is a copy of U5's.
-- VLED is distributed on the inner power layer (In2) as tracks, not as a plane. The trunk follows the board edges so that it does not cut the 3.3 V plane through the middle of the board: from U11 up the left edge, along the top edge, and into each ear. Border rows and columns chain LED to LED.
+- VLED is distributed on the inner power layer (In2) as tracks, not as a plane. The trunk follows the board edges so that it does not cut the 3.3 V plane through the middle of the board: from U11 up the left edge and along the top edge to pin 1 of each ear socket (J24, J25). Border rows and columns chain LED to LED. Between the sockets the trunk runs at y = 2.6 mm and drops below the right-hand socket to reach its pin 1 from the east.
 - The radio supply track on the same layer blocks the top row between D13 and D14; that one link is on the front layer.
-- Trunk resistance from U11 to the far ear tip is about 0.2 Ω, so the drop is under 0.1 V at 300 mA.
+- Trunk resistance from U11 to the far ear tip is about 0.2 Ω, so the drop is under 0.1 V at 300 mA. The ears are now plug-in boards, so this path also includes one header contact per ear (a few tens of milliohms).
 - VLED is in the `Power` net class (0.2 mm clearance).
 
 ---
@@ -1616,7 +1616,7 @@ Position the camera for the "take a picture" use case:
 
 | GPIO | Function | Notes |
 |------|----------|-------|
-| 0 | LED_DATA | WS2812B chain (PIO), routes to ear base |
+| 0 | LED_DATA | WS2812B chain (PIO), routes to the first border LED (D12) |
 | 1 | I2S_LRCK | Word select to PCM5102A (PIO) |
 | 2 | I2S_DIN | Data to PCM5102A (PIO) |
 | 3 | I2S_BCK | Bit clock to PCM5102A (PIO) |
@@ -2323,7 +2323,7 @@ The blinky animations (ear lightning + border effects) still show TX/RX as well.
 | R_PWR_R | 220Ω | 0603 | Fab | PWR LED red cathode current limit |
 | R_PWR_G | 100Ω | 0603 | Fab | PWR LED green cathode current limit |
 | R_PWR_B | 100Ω | 0603 | Fab | PWR LED blue cathode current limit |
-| WS2812B (×10) | WS2812B | 5050 SMD | Fab | Ear LEDs — blinky chain (see Blinky section) |
+| WS2812B (×10) | WS2812B | 5050 SMD | Fab | Ear LEDs, five on each plug-in ear board — blinky chain (see Blinky section) |
 | WS2812B-2020 (×16) | WS2812B-2020 | 2020 SMD | Fab | Border LEDs — blinky chain (see Blinky section) |
 | C_LED (×26) | 100nF | 0402 | Fab | WS2812B bypass capacitors |
 
@@ -2333,14 +2333,14 @@ All switches use software debounce (no external caps). *See [Engineer's Notebook
 
 ### Blinky LED Matrix
 
-The badge features a 26-LED WS2812B chain for full #badgelife blinky appeal. The PCB is cut in the shape of a retro TV (Simpsons-style) with rabbit ear antennas as part of the main board.
+The badge features a 26-LED WS2812B chain for full #badgelife blinky appeal. The PCB is cut in the shape of a retro TV (Simpsons-style). The rabbit ear antennas are two separate plug-in boards (`hardware/ear`, one design for both sides) that plug into 2×3 sockets on the back of the main badge — see "Plug-in Rabbit Ears" below.
 
 Battery status is handled by a separate traditional RGB LED (see Status LED section).
 
 **Dual-Package Approach:**
 
 The chain uses two different WS2812B packages optimized for their location:
-- **Ear LEDs (D2-D11):** 10× WS2812B in **5050 package** (5.0×5.0mm) — large and visible on the rabbit ear antennas, 5 per ear
+- **Ear LEDs (D2-D6 on each ear board):** 10× WS2812B in **5050 package** (5.0×5.0mm) — large and visible on the rabbit ear antennas, 5 per ear
 - **Display border LEDs (D12-D27):** 16× WS2812B-2020 in **2020 package** (2.0×2.0mm) — compact for tight spacing around the display, 3×5×3×5 layout
 - Each LED has a 100nF bypass cap between VDD and GND
 - All 26 LEDs are powered from the 4.0V **VLED** rail (U11, TPS63000), not from 3.3V — see "LED Supply Rail" in the power section. The data line stays at 3.3V logic.
@@ -2353,9 +2353,9 @@ Both packages use the same WS2812B protocol and are daisy-chained on a single da
 
 | Section | LEDs | Package | Index | Purpose |
 |---------|------|---------|-------|---------|
-| Left Ear | 5 | WS2812B 5050 | #0-4 | L0 (base) → L4 (tip) |
-| Right Ear | 5 | WS2812B 5050 | #5-9 | R0 (base) → R4 (tip) |
-| Display Border | 16 | WS2812B-2020 | #10-25 | B0-B15 clockwise from top-left |
+| Display Border | 16 | WS2812B-2020 | #0-15 | B0-B15 clockwise from top-left |
+| Left Ear | 5 | WS2812B 5050 | #16-20 | L4 (tip) → L0 (base) |
+| Right Ear | 5 | WS2812B 5050 | #21-25 | R4 (tip) → R0 (base) |
 | **Total** | **26** | | | |
 
 **Physical Layout:**
@@ -2391,20 +2391,38 @@ Both packages use the same WS2812B protocol and are daisy-chained on a single da
 **WS2812B Chain Order (26 LEDs):**
 
 ```
-GPIO ─►[L0]─►[L1]─►[L2]─►[L3]─►[L4]─►[R0]─►[R1]─►[R2]─►[R3]─►[R4]─►[B0]─►...─►[B15]
-        #0    #1    #2    #3    #4    #5    #6    #7    #8    #9   #10       #25
+GPIO ─►[B0]─►...─►[B15]─►(J24)─►[L4]─►[L3]─►[L2]─►[L1]─►[L0]─►(J25)─►[R4]─►[R3]─►[R2]─►[R1]─►[R0]
+        #0         #15           #16   #17   #18   #19   #20          #21   #22   #23   #24   #25
 ```
+
+The border comes first so that it keeps working whatever happens to the ears. Inside each ear the data enters at the tip LED and works down to the base (changed 2026-11-25; before that the ears were first in the chain).
 
 **Index Map:**
 
 | Index | LED ID | Location |
 |-------|--------|----------|
-| 0-4 | L0-L4 | Left rabbit ear (base to tip) |
-| 5-9 | R0-R4 | Right rabbit ear (base to tip) |
-| 10-14 | B0-B4 | Border top (left to right) |
-| 15-17 | B5-B7 | Border right (top to bottom) |
-| 18-22 | B8-B12 | Border bottom (right to left) |
-| 23-25 | B13-B15 | Border left (bottom to top) |
+| 0-4 | B0-B4 | Border top (left to right), D12-D16 |
+| 5-7 | B5-B7 | Border right (top to bottom), D17-D19 |
+| 8-12 | B8-B12 | Border bottom (right to left), D20-D24 |
+| 13-15 | B13-B15 | Border left (bottom to top), D25-D27 |
+| 16-20 | L4-L0 | Left rabbit ear (tip to base), ear board D2-D6 |
+| 21-25 | R4-R0 | Right rabbit ear (tip to base), ear board D2-D6 |
+
+**If an ear is missing:** with the left ear unplugged, R31 passes the data on and the right ear's LEDs become #16-20. With the right ear unplugged nothing else changes. Firmware cannot detect a missing ear; an animation written for both ears simply plays the left-ear part on the right ear.
+
+### Plug-in Rabbit Ears
+
+*Changed 2026-11-25. Reasoning and as-built details: [Engineer's Notebook](engineers-notebook/plug-in-ears.md).*
+
+The ears used to be part of the main badge outline. They are now a separate small board, **`hardware/ear`**, used twice. An ear that is knocked unplugs instead of snapping, a broken one can be replaced, and the main badge fits a much smaller fab panel (bounding box 128 × 139 mm instead of 186 × 199 mm).
+
+- **Ear board:** 15.0 × 95.5 mm, 2 layers, five WS2812B 5050 LEDs (D2 at the tip to D6 nearest the badge), five 100 nF capacitors (C28-C32) and one 2×3 pin header (J26) on the LED side.
+- **Sockets:** J24 (left) and J25 (right), 2×3 female, on the **back** of the main badge at the top edge, turned 45° each way. The ear sits behind the badge with its LEDs facing forward; the bottom 13 mm of the ear is hidden behind the badge. With an ear plugged in, its LEDs and tip are where they were on the one-piece board (within 0.04 mm), so the overall height is unchanged.
+- **Pinout (SAO-compatible):** 1 = VLED (4.0 V), 2 = GND, 3 and 4 = not connected, 5 = data in, 6 = data out. Same connector and pin arrangement as the SAO ports J5/J6, so an ear in an SAO port or an SAO in an ear socket does no harm. An SAO in an ear socket gets 4.0 V on its supply pin instead of 3.3 V and no I2C.
+- **Bypass resistor:** R31 (1 kΩ) joins data in to data out at the left socket. With the ear fitted, the ear's last LED drives the line and the resistor does nothing; with the ear missing, it carries the data to the right ear.
+- **Ear header numbering:** J26's pin numbers are the mirror of the socket's, as on any SAO: socket 1/2/5/6 meet J26 pins 2/1/6/5.
+- **Do not plug an ear in upside down** (pointing down behind the badge) or one row off. That puts 4.0 V on LED data pins. The ear only looks right one way round.
+- Sockets are fitted by the user; the ear's LEDs and capacitors by the fab; the ear's pin header by the user.
 
 ### Blinky Animations
 
@@ -2654,10 +2672,10 @@ The sleep figure is the 10mA target from `firmware-architecture.md`; an earlier 
 ### Blinky PCB Routing
 
 **Rabbit Ears:**
-- LEDs placed along PCB outline of each ear shape
-- Data chain: up left ear (L0→L4), jump to right ear base, up right ear (R0→R4)
-- Jump from L4 to R0 routes across carrier board area (back layer or around edge)
-- Ground pours on both layers for solid return path
+- The ears are plug-in boards (`hardware/ear`); see "Plug-in Rabbit Ears"
+- On the main badge: border LED D27's output runs up the left edge on the front layer to pin 5 of the left ear socket J24; J24 pin 6 runs along the top edge on the back layer to pin 5 of the right ear socket J25
+- On the ear: data runs up the back of the ear to the tip LED, then down LED to LED on the front; the last LED's output returns to the header
+- Ground pours on both layers of the ear for solid return path
 
 **Display Border:**
 - 16 LEDs in rectangular ring around display module
@@ -2679,8 +2697,11 @@ The sleep figure is the 10mA target from `firmware-architecture.md`; an earlier 
 
 | Ref | Qty | Value | Package | Assembly | Notes |
 |-----|-----|-------|---------|----------|-------|
-| LED_L0-L4 | 5 | WS2812B | 5050 (5.0×5.0mm) | Fab | Left rabbit ear |
-| LED_R0-R4 | 5 | WS2812B | 5050 (5.0×5.0mm) | Fab | Right rabbit ear |
+| LED_L0-L4 | 5 | WS2812B | 5050 (5.0×5.0mm) | Fab | Left rabbit ear (ear board D2-D6) |
+| LED_R0-R4 | 5 | WS2812B | 5050 (5.0×5.0mm) | Fab | Right rabbit ear (ear board D2-D6) |
+| J24, J25 | 2 | 2×3 socket | 2.54mm | User | Ear sockets, back of main badge |
+| J26 (per ear) | 2 | 2×3 pin header | 2.54mm | User | On each ear board, LED side |
+| R31 | 1 | 1kΩ | 0402 | Fab | Data bypass at the left ear socket |
 | LED_B0-B15 | 16 | WS2812B-2020 | 2020 (2.0×2.0mm) | Fab | Display border |
 | C_LED | 26 | 100nF | 0402 | Fab | Bypass capacitors (one per LED) |
 
@@ -2702,9 +2723,9 @@ The physical PCB design (outline, dimensions, component placement, manufacturing
 
 Key specs:
 - **Body:** 120mm × 120mm with 2mm corner radius (top only, square at leg junctions)
-- **Ears:** ~50mm at ~45°, with ~15mm ball tips
+- **Ears:** separate plug-in boards, 15 × 95.5 mm; plugged in they rise ~60mm above the body at 45°, with 15mm ball tips
 - **Feet:** ~15mm at 15° outward with semicircular ends
-- **Total height:** ~190mm
+- **Total height:** ~199mm with ears plugged in (main board alone 139mm)
 - **Color:** Purple soldermask (Simpsons TV aesthetic)
 - **Layers:** 4-layer recommended
 
@@ -2789,9 +2810,10 @@ Test carrier independently before mating with main badge:
 
 5. **WS2812B Blinky Chain (26 LEDs):**
    - Send full chain test pattern via PIO, verify all 26 LEDs respond
-   - LEDs #0-4 (Left Ear, 5050): Test lightning TX animation, materialize RX animation
-   - LEDs #5-9 (Right Ear, 5050): Test animations, verify sync with left ear
-   - LEDs #10-25 (Border, 2020): Test rainbow chase, waterfall fill effects
+   - LEDs #0-15 (Border, 2020): Test rainbow chase, waterfall fill effects
+   - LEDs #16-20 (Left Ear, 5050): Test lightning TX animation, materialize RX animation
+   - LEDs #21-25 (Right Ear, 5050): Test animations, verify sync with left ear
+   - Unplug the left ear: the right ear must still light (via R31)
    - Test ear tip breathing animation (idle)
    - Test TX capacitor discharge effect (charge → ZAP!)
    - Test RX filling tank effect (pulse per row)

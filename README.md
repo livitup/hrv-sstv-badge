@@ -171,10 +171,10 @@ hrv-sstv-badge/
 | **Battery** | 2000mAh LiPo, USB-C charging (MCP73871) |
 | **Regulator** | TPS63001 buck-boost, 3.3V output |
 | **Operating Time** | 8-10 hours typical use |
-| **LEDs** | 26x WS2812B (10x 5050 on ears, 16x 2020 on border) + RGB PWR LED |
+| **LEDs** | 26x WS2812B (10x 5050 on the two plug-in ears, 16x 2020 on border) + RGB PWR LED |
 | **Expansion** | 2x SAO (Shitty Add-On) connectors |
-| **Dimensions** | ~120mm x 120mm body, ~190mm total height with ears and feet |
-| **Form Factor** | Retro TV shape with rabbit ear antennas, wearable badge (no enclosure) |
+| **Dimensions** | ~120mm x 120mm body, ~199mm total height with ears and feet |
+| **Form Factor** | Retro TV shape with plug-in, replaceable rabbit ear antennas; wearable badge (no enclosure) |
 
 ## Software Architecture
 

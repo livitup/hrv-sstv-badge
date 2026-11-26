@@ -4659,4 +4659,645 @@
 		(at 243.84 59.69)
 		(uuid "4b1fede5-823c-47f0-9e55-2a3baf6822d7")
 	)
+	(symbol
+		(lib_id "Connector_Generic:Conn_02x03_Odd_Even")
+		(at 43.18 140.97 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "68e5222e-4e22-494e-8e9c-04e37371f49f")
+		(property "Reference" "J24"
+			(at 44.45 132.08 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "EAR_L"
+			(at 44.45 134.62 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_2x03_P2.54mm_Vertical"
+			(at 43.18 140.97 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 43.18 140.97 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Generic connector, double row, 02x03, odd/even pin numbering scheme (row 1 odd numbers, row 2 even numbers), script generated (kicad-library-utils/schlib/autogen/connector/)"
+			(at 43.18 140.97 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "KLC_S4.2_DVDD" ""
+			(at 43.18 140.97 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "KLC_S4.2_VREG_LX" ""
+			(at 43.18 140.97 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "e3f424fd-b6a1-4928-8b0c-b6305f15279e")
+		)
+		(pin "3"
+			(uuid "cbe05ab3-b693-4957-b18d-d188e662198f")
+		)
+		(pin "5"
+			(uuid "4a7948ca-7cca-4342-b1ac-b09c879ff35f")
+		)
+		(pin "2"
+			(uuid "95c8a878-36e9-40d0-92c6-ccc31f13fb59")
+		)
+		(pin "4"
+			(uuid "8431548e-ea75-4c7f-9595-f0261c08fe4e")
+		)
+		(pin "6"
+			(uuid "fe8bdd9d-3490-4e55-a42f-46acb4f602cd")
+		)
+		(instances
+			(project ""
+				(path "/6bfeada4-0da3-4bdd-af4a-70929e466b35/7e9c56de-ddef-4aba-ac8d-c699010ce68c"
+					(reference "J24")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(global_label "VLED"
+		(shape input)
+		(at 38.1 138.43 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "dcd2563c-8c83-4bd8-8217-6cb88aced20d")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 38.1 138.43 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+	)
+	(no_connect
+		(at 38.1 140.97)
+		(uuid "e6f5d79d-c989-4dee-8e21-cf31a77cfd06")
+	)
+	(no_connect
+		(at 50.8 140.97)
+		(uuid "bd84acad-49c7-418b-9cd7-1402b6bc8c1b")
+	)
+	(wire
+		(pts
+			(xy 50.8 138.43) (xy 68.58 138.43)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "cf45a7d0-b97d-48e5-8025-483c20ed090d")
+	)
+	(wire
+		(pts
+			(xy 68.58 138.43) (xy 68.58 152.4)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "984647a9-faa9-4f3c-ab07-4f477aa58047")
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 68.58 152.4 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "afb26f7e-c55c-4055-915e-3469361aac64")
+		(property "Reference" "#PWR0215"
+			(at 68.58 158.75 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 68.58 157.48 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 68.58 152.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 68.58 152.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 68.58 152.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "f237ab4f-ffc0-414d-a016-3a5c5f6c2602")
+		)
+		(instances
+			(project ""
+				(path "/6bfeada4-0da3-4bdd-af4a-70929e466b35/7e9c56de-ddef-4aba-ac8d-c699010ce68c"
+					(reference "#PWR0215")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(global_label "EAR_L_DIN"
+		(shape input)
+		(at 38.1 143.51 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "70818000-f318-4748-8e64-41f06179bf96")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 38.1 143.51 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+	)
+	(global_label "EAR_R_DIN"
+		(shape input)
+		(at 50.8 143.51 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "b537e8f1-76a8-4ea6-aa8a-ae7e1fc50fdd")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 50.8 143.51 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector_Generic:Conn_02x03_Odd_Even")
+		(at 111.76 140.97 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "f4a176f7-003f-4bd9-a9fd-8ce34f5b0d45")
+		(property "Reference" "J25"
+			(at 113.03 132.08 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "EAR_R"
+			(at 113.03 134.62 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_2x03_P2.54mm_Vertical"
+			(at 111.76 140.97 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 111.76 140.97 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Generic connector, double row, 02x03, odd/even pin numbering scheme (row 1 odd numbers, row 2 even numbers), script generated (kicad-library-utils/schlib/autogen/connector/)"
+			(at 111.76 140.97 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "KLC_S4.2_DVDD" ""
+			(at 111.76 140.97 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "KLC_S4.2_VREG_LX" ""
+			(at 111.76 140.97 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "8c23f7b3-7202-4f86-97d7-c9a0c74bb7ba")
+		)
+		(pin "3"
+			(uuid "0d56dacf-9094-45d7-8187-240c83cf27ea")
+		)
+		(pin "5"
+			(uuid "016e561d-ca63-4961-b8a5-e85f77808ec0")
+		)
+		(pin "2"
+			(uuid "3e28ea9d-7454-4e67-837a-831cd5459c63")
+		)
+		(pin "4"
+			(uuid "4a319086-1dbe-41c0-b8ab-d33c576dd94c")
+		)
+		(pin "6"
+			(uuid "3b327552-929d-4f93-9d1f-7d134b5bb299")
+		)
+		(instances
+			(project ""
+				(path "/6bfeada4-0da3-4bdd-af4a-70929e466b35/7e9c56de-ddef-4aba-ac8d-c699010ce68c"
+					(reference "J25")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(global_label "VLED"
+		(shape input)
+		(at 106.68 138.43 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "0caf15d0-20bd-4ab8-abba-0f10417c5524")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 106.68 138.43 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+	)
+	(no_connect
+		(at 106.68 140.97)
+		(uuid "e39a514b-79cd-491b-a826-f5e9bd8c0424")
+	)
+	(no_connect
+		(at 119.38 140.97)
+		(uuid "483f7805-1a2d-4077-af3e-4d40413ea452")
+	)
+	(wire
+		(pts
+			(xy 119.38 138.43) (xy 124.46 138.43)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "4c2721e1-a916-4b5d-ae7c-1979b9c9f930")
+	)
+	(wire
+		(pts
+			(xy 124.46 138.43) (xy 124.46 152.4)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1ee92874-ef6f-4b0d-8a99-518e4d8c8b27")
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 124.46 152.4 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "2d1de5d0-55ca-4bf5-9453-90a89724537e")
+		(property "Reference" "#PWR0216"
+			(at 124.46 158.75 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 124.46 157.48 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 124.46 152.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 124.46 152.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 124.46 152.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "b131baed-29d6-444f-89c0-85b6fa7017dd")
+		)
+		(instances
+			(project ""
+				(path "/6bfeada4-0da3-4bdd-af4a-70929e466b35/7e9c56de-ddef-4aba-ac8d-c699010ce68c"
+					(reference "#PWR0216")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(global_label "EAR_R_DIN"
+		(shape input)
+		(at 106.68 143.51 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "52441b04-4e2d-4ed1-87d6-470ac3e8ba39")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 106.68 143.51 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+	)
+	(no_connect
+		(at 119.38 143.51)
+		(uuid "1baef2c5-8b34-4fe0-982b-40494c06ebc4")
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 43.18 172.72 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "80377a15-b0bf-4886-88ee-92a842dc9889")
+		(property "Reference" "R31"
+			(at 45.72 171.45 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "1k"
+			(at 45.72 173.99 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
+			(at 41.402 172.72 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 43.18 172.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 43.18 172.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "KLC_S4.2_DVDD" ""
+			(at 43.18 172.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "KLC_S4.2_VREG_LX" ""
+			(at 43.18 172.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "b782e6e9-25ee-4f1e-bb54-1b9c0b5e8c6c")
+		)
+		(pin "2"
+			(uuid "dd72d022-775f-4b4f-bc17-8d44ff5ce8c9")
+		)
+		(instances
+			(project ""
+				(path "/6bfeada4-0da3-4bdd-af4a-70929e466b35/7e9c56de-ddef-4aba-ac8d-c699010ce68c"
+					(reference "R31")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(global_label "EAR_L_DIN"
+		(shape input)
+		(at 43.18 168.91 90)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "dee53cd8-da3b-4d59-aea8-1f33d5d69446")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 43.18 168.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+	)
+	(global_label "EAR_R_DIN"
+		(shape input)
+		(at 43.18 176.53 270)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "d5928082-a84a-4b2d-b4f6-93ed270719f3")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 43.18 176.53 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+	)
+	(text "RABBIT EAR SOCKETS (on the back, SAO pinout: 1 VLED 4.0V, 2 GND, 3/4 unused, 5 data in, 6 data out).\nEars are separate plug-in boards: hardware/ear. R31 passes data on to the right ear if the left ear is unplugged."
+		(exclude_from_sim no)
+		(at 36 128 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "6fabaffd-af4e-4f41-a27e-0b2dcbababc5")
+	)
 )

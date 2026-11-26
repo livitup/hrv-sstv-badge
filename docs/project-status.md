@@ -38,6 +38,7 @@ This document tracks the design and implementation status for all badge subsyste
 | Carrier harmonic LPF (VHF + UHF) | ✓ | ✓ | | |
 | SA818 Carrier PCBs | ✓ | ✓ | | |
 | Main Badge PCB | ✓ | ✓ (routed) | | |
+| Rabbit Ear board (plug-in, ×2) | ✓ | ✓ (routed) | | |
 
 ---
 
@@ -200,6 +201,8 @@ This document tracks the design and implementation status for all badge subsyste
 - [x] **KiCad: WS2812B chain complete** (26 LEDs with 100nF bypass caps, LED_DATA input, organized by section; border LEDs moved to the correct WS2812B-2020 symbol 2026-11-14)
 - [x] **KiCad: PCB outline created** (edge cuts with rabbit ear antennas and ball tips)
 - [x] **KiCad: All 26 LEDs placed** (10 ear LEDs on antennas, 16 border LEDs around display)
+- [x] **Rabbit ears made plug-in boards (2026-11-25)**: new `hardware/ear` board (5 LEDs, used twice) on 2×3 sockets J24/J25 on the back of the main badge; chain reordered to border → left ear → right ear; bypass resistor R31 — see `engineers-notebook/plug-in-ears.md`
+- [x] Main badge and ear board **locked again by the owner 2026-11-25**
 - [ ] Implement PIO driver for 26-LED chain
 - [ ] Implement HSV rainbow animation for border
 - [ ] Implement ear lightning animations (TX discharge, RX materialize)
@@ -218,12 +221,13 @@ This document tracks the design and implementation status for all badge subsyste
 ### Main Board
 - [x] PCB outline designed: 120×120mm body with diagonal rabbit ear antennas and semicircular ball tips
 - [x] Component placement zones defined
-- [x] Lanyard slot specified (centered oval cutout)
+- [x] Lanyard attachment: two 4 mm holes at the top edge, H1 and H2, added 2026-11-25 (the centred slot first specified was never on the board and does not fit — see `hardware/pcb-design.md`)
 - [x] **KiCad schematic complete** (all sheets: Power, Audio, Display/Camera, User Controls, MCU, Connectors)
 - [x] **KiCad: Board outline created** (edge cuts with rabbit ear antennas and ball tips)
 - [x] **KiCad: Component placement complete** (MCU, power, audio, display, camera sections placed; power ICs on back side)
 - [x] Trace routing (main board) — complete
 - [x] **Visual review complete and main badge locked for the prototype run (2026-11-21)** — see `engineers-notebook/main-badge-review-2026-11.md` section 21. Next: fab files and the assembler questions in `prototype-checklist.md`
+- [x] **Reopened 2026-11-25 for plug-in ears**: ear outline, ear LEDs and their copper removed; ear sockets J24/J25 and R31 added; LED data re-routed. DRC 0 unconnected, 0 parity. Two lanyard holes added the same day. **Locked again 2026-11-25**
 - [x] Ground pour
 - [x] DRC clean-up — 0 unconnected, 0 schematic-parity issues; only the excluded silkscreen items remain
 - [x] **Design review fixes (2026-11-13)** — see "Main Badge Review" below
@@ -266,9 +270,9 @@ Not verifiable on paper: camera module pinout against J4, battery connector pola
 
 ## Next Steps (Priority Order)
 
-The design reviews are finished and all three boards are locked. The detailed list is `prototype-checklist.md`.
+The design reviews are finished. The main badge was reopened on 2026-11-25 to make the rabbit ears plug-in boards and to add lanyard holes, and was locked again the same day. All four boards (main badge, ear board, both carriers) are locked. The detailed list is `prototype-checklist.md`.
 
-1. **Fab files** — generate Gerbers, drill, pick-and-place and BOM for the main badge and both carriers, and inspect them in a Gerber viewer
+1. **Fab files** — generate Gerbers, drill, pick-and-place and BOM for the main badge, both carriers and the ear board, and inspect them in a Gerber viewer
 2. **Assembler questions** — fiducials, 0.13 mm copper spacing at the RP2350 regulator, silkscreen text height, via tenting, 4-layer stackup
 3. **Parts-in-hand checks** — radio module pin direction (meter test; blocks the carrier order), camera module clock and pinout, display pin order / backlight polarity / support socket fit, battery polarity and fit, LED revision
 4. **Prototype ordering** — small run first (carriers can go first once the meter test passes); source LPF tuning values (Murata GJM15 caps, Coilcraft 0603HP inductors), antennas and the thermistor
@@ -286,7 +290,8 @@ The design reviews are finished and all three boards are locked. The detailed li
 | PCB outline designed | ✓ | Done |
 | KiCad schematic | ✓ | **Complete** — ERC clean (Main board + VHF/UHF carriers) |
 | Carrier PCB layout | ✓ | **Complete** — Both carriers routed with harmonic LPF; 0 unconnected, 0 parity issues |
-| Main badge PCB layout | ✓ | **Complete** — Routed; 2026-11 review fixes and LED supply rail applied, DRC clean |
+| Main badge PCB layout | ✓ | **Complete** — Routed; 2026-11 review fixes, LED supply rail and plug-in ear sockets applied, DRC clean |
+| Ear board PCB layout | ✓ | **Complete** — Routed 2026-11-25, DRC clean |
 | Gerbers generated | | Not started |
 | Prototype ordered | | Not started — waiting on fab files, assembler questions and parts-in-hand checks |
 | First power-on | | Not started |

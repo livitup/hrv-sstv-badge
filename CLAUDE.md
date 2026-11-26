@@ -12,6 +12,7 @@ This is an open-source SSTV (Slow Scan Television) badge for DEFCON and the badg
 - **Power**: 2000mAh LiPo battery with USB-C charging
 - **Audio**: PCM5102A DAC (TX) + RP2350 ADC (RX) for SSTV signal processing
 - **Expansion**: 2x SAO (Shitty Add-On) connectors
+- **Rabbit ears**: two identical plug-in LED boards (`hardware/ear`) on 2×3 sockets on the back of the main badge
 
 ## Power System Architecture
 
@@ -128,18 +129,26 @@ Note: D-pad center button doubles as photo capture when idle (no dedicated photo
 - Software debounce (no hardware debounce caps)
 
 **Blinky LED Matrix (26 LEDs, dual packages):**
-- PCB shaped like Simpsons-style retro TV with rabbit ear antennas
+- PCB shaped like Simpsons-style retro TV; the rabbit ear antennas are plug-in boards (see below)
 - Single GPIO drives entire WS2812B chain via PIO
-- **Rabbit Ears D2-D11 (#0-9):** 10× WS2812B (5050 package), 5 LEDs per ear
+- **Chain order (since 2026-11-25):** border first (#0-15), then left ear (#16-20), then right ear (#21-25); in each ear the tip is the first index
+- **Rabbit Ears (#16-25):** 10× WS2812B (5050 package), 5 LEDs per ear, D2-D6 on each ear board (D2 at the tip)
   - TX: Amber chase UP → tip flashes light blue → WHITE lightning discharge
   - RX: WHITE materializes at tips → light blue → green chase DOWN
   - Idle: Tips breathe soft blue (~4sec cycle, very subtle) — "listening to the ether"
-- **Display Border D12-D27 (#10-25):** 16× WS2812B-2020 (2020 package) for smaller profile
+- **Display Border D12-D27 (#0-15):** 16× WS2812B-2020 (2020 package) for smaller profile
   - Idle: Rainbow chase flowing around frame
   - TX: "Capacitor Discharge" — border charges up, ears ZAP, everything flashes WHITE
   - RX: "Filling Tank" — each ear pulse adds a row, border fills up over multiple pulses
 - Powered from the 4.0V VLED rail (not 3.3V); data line is 3.3V logic
 - Power budget: ~70mA idle, ~110mA active TX/RX
+
+**Plug-in ears (2026-11-25):** the ears are a separate 15 × 95.5 mm 2-layer board, `hardware/ear`, one design for both sides, so a knocked ear unplugs instead of snapping and the main badge panel is much smaller.
+- Sockets J24 (left) / J25 (right) are 2×3, on the BACK of the main badge at the top edge, turned 45°; the ear's header J26 is on its LED side
+- SAO-compatible pinout: 1 VLED (4.0V), 2 GND, 3/4 unused, 5 data in, 6 data out
+- R31 (1kΩ) bridges data in to data out at J24, so the right ear still works with the left ear unplugged (its LEDs then appear as #16-20)
+- Each kit ships a spare ear
+- See `docs/engineers-notebook/plug-in-ears.md`
 
 See `docs/electrical-design.md` for complete user controls circuit design.
 
@@ -218,6 +227,7 @@ defcon-sstv-badge/
 │   ├── main_badge/               # Main badge PCB
 │   ├── sa818-v-carrier/          # SA818 VHF carrier board
 │   ├── sa818-u-carrier/          # SA818 UHF carrier board
+│   ├── ear/                      # Plug-in rabbit ear LED board (used twice)
 │   └── pcb-design.md             # Physical PCB layout and dimensions
 └── mechanical/                   # Badge accessories and mounting
 ```
@@ -225,6 +235,7 @@ defcon-sstv-badge/
 ## Current Development Status
 - **Hardware design**: Schematic complete, ERC clean
 - **KiCad**: All schematic sheets complete; main badge PCB and both carrier PCBs (with harmonic LPF) reviewed and **locked for the prototype run 2026-11-21** (0 unconnected, 0 parity issues) — do not change the boards without the owner reopening them
+- **Plug-in ears (2026-11-25)**: the owner reopened the main badge to make the rabbit ears separate plug-in boards; main badge changed (ear sockets, new LED chain order, two lanyard holes) and a new ear board added, both DRC clean. **All four boards — main badge, ear board and both carriers — are locked again as of 2026-11-25**; do not change them without the owner reopening them — see `docs/engineers-notebook/plug-in-ears.md`
 - **Main badge review (2026-11-13)**: charger wiring errors fixed (OUT→VSYS, IN→VBUS), radio supply path widened (2.0mm SA818_VCC path on the PWR layer), USB 27Ω and BOOTSEL 1kΩ resistors and extra decoupling added — see `docs/project-status.md`
 - **Schematic review (2026-11-14)**: border LED pinout (wrong symbol for the 2020 package), TX attenuator wiring, backlight switch polarity (now AO3401A high-side, GPIO low = on) and L1 value (2.2µH) fixed in schematic and PCB — see `docs/engineers-notebook/main-badge-review-2026-11.md`
 - **LED supply rail (2026-11-14)**: WS2812Bs moved from 3.3V to a dedicated 4.0V rail (U11 TPS63000, VLED on the inner power layer) — see `docs/engineers-notebook/led-supply-rail.md`
@@ -263,6 +274,8 @@ defcon-sstv-badge/
 | Photo button | Dedicated SW6 (12mm) | D-pad center doubles as capture |
 | Display border LEDs | WS2812B (5050) | WS2812B-2020 (2020) for smaller profile |
 | TV feet | None | Stubby angled feet at bottom corners (~15mm, 15° outward) |
+| Rabbit ears | Part of the main PCB outline | Separate plug-in boards on 2×3 sockets (replaceable; smaller main panel) |
+| LED chain order | Ears first, then border | Border first, then left ear, then right ear |
 
 ## Key Hardware Interfaces
 ```c
@@ -271,7 +284,7 @@ defcon-sstv-badge/
 // Organized by physical side of QFN-80 package
 
 // TOP SIDE — Audio + LED (pins 61-64, face carrier headers)
-#define LED_DATA         0    // PIO, WS2812B chain (26 LEDs)
+#define LED_DATA         0    // PIO, WS2812B chain (26 LEDs: border, then plug-in ears)
 #define I2S_LRCK         1    // PIO, PCM5102A word select
 #define I2S_DIN          2    // PIO, PCM5102A data
 #define I2S_BCK          3    // PIO, PCM5102A bit clock

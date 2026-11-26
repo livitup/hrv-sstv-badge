@@ -38,6 +38,14 @@ The LED rail regulator (U11, TPS63000, 4.0 V) can supply roughly 0.8 A when boos
 - The 0.8 A figure is an estimate from the regulator's 1.8 A switch limit, not a measured value. Measure it on the first prototype.
 - Source: `led-supply-rail.md`.
 
+### LED chain order: border first, ears last (changed 2026-11-25)
+
+The chain is border #0–15 (D12–D27, clockwise from top-left), left ear #16–20, right ear #21–25. Inside each ear the first index is the **tip** and the last is the base. Earlier documents had the ears first.
+
+- The ears are plug-in boards and may be missing. With the left ear unplugged, a bypass resistor passes the data on and the right ear's LEDs appear as #16–20. Firmware cannot detect this. Always send all 26 LEDs' worth of data.
+- Keep the ear and border groups behind one index map in the driver so a later reorder is a one-line change.
+- Source: `plug-in-ears.md`.
+
 ### The two LED packages will not match in brightness
 
 Both packages are driven at 12 mA per colour (36 mA at full white), read from the WS2812B-V6 and WS2812B-2020-V6 datasheets. They still differ in brightness: typical figures are 310 / 780 / 215 mcd (red / green / blue) for the 5050 ear LEDs against 200 / 520 / 160 mcd for the 2020 border LEDs, so the border is about two-thirds as bright at the same value. Plan a per-group scale factor and tune it by eye on the prototype.

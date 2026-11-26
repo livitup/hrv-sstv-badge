@@ -241,6 +241,8 @@ All switches with internal pullups. Route with any convenient path. Switches are
 
 ### WS2812B LED Chain (GPIO47)
 
+> **Out of date since 2026-11-25.** The ears are now plug-in boards and the chain runs border first, then the ears. The LED data pin is GPIO0. See `docs/engineers-notebook/plug-in-ears.md` and the "Blinky LED Matrix" section of `docs/electrical-design.md` for the board as built. The text below is the original routing plan.
+
 Single-wire protocol at 800kHz. Route as a daisy chain:
 
 ```

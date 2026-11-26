@@ -49,7 +49,7 @@ Design decisions, trade-off analyses, and educational background material. These
 | **Storage** | MicroSD card (user supplied) |
 | **Power** | 2000mAh LiPo, USB-C charging, TPS63001 buck-boost |
 | **Battery Life** | 8-10 hours typical use |
-| **Dimensions** | ~120mm x 120mm TV-shaped PCB + rabbit ear antennas with ball tips |
+| **Dimensions** | ~120mm x 120mm TV-shaped PCB + plug-in rabbit ear antennas with ball tips |
 | **Interfaces** | SMA antenna (on carrier), 2x SAO expansion ports |
 
 ## Signal Flow
